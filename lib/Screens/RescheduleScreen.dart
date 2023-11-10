@@ -169,7 +169,8 @@ class _Reschedule_ScreenState extends State<Reschedule_Screen> {
                         ),
 
                         onPressed: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context)=>Add_reminder_Screen()));
+                          Navigator.pop(context);
+                         // Navigator.push(context,MaterialPageRoute(builder: (context)=>Add_reminder_Screen()));
                           // onPressUpdatePassword();
                         },
                         child:Text(

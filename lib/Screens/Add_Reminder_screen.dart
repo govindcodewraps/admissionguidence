@@ -182,7 +182,7 @@ class _Add_reminder_ScreenState extends State<Add_reminder_Screen> {
                               // onPressUpdatePassword();
                             },
                             child:Text(
-                              "Saveaaaa",
+                              "Save",
                               // AppLocalizations.of(context).update_password_ucf,
                               style: TextStyle(
                                   color: Colors.white,

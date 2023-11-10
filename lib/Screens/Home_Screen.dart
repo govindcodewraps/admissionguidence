@@ -1,12 +1,12 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-
 import '../my_theme.dart';
+import 'Meeting_record_Screen.dart';
+import 'Reminder_Screen.dart';
 import 'RescheduleScreen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -85,6 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
 
                         onPressed: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>Meeting_record_screen()));
+
                           // onPressUpdatePassword();
                         },
                         child: Text(
@@ -125,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
 
                         onPressed: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context)=>Reschedule_Screen()));
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
                           // onPressUpdatePassword();
                         },
                         child:Text(
