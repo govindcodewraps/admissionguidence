@@ -137,7 +137,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Add_reminder_Screen(),
+              builder: (context) => AddReminderScreen(),
             ),
           );
         },
