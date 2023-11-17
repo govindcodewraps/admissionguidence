@@ -1,3 +1,4 @@
+import 'package:admissionguidence/Screens/stembuilder.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
@@ -127,7 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
 
                         onPressed: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
+                          //Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
                           // onPressUpdatePassword();
                         },
                         child:Text(

@@ -1,23 +1,23 @@
 // To parse this JSON data, do
 //
-//     final upcommingAppointmentModel = upcommingAppointmentModelFromJson(jsonString);
+//     final appointmentsListModel = appointmentsListModelFromJson(jsonString);
 
 import 'dart:convert';
 
-UpcommingAppointmentModel upcommingAppointmentModelFromJson(String str) => UpcommingAppointmentModel.fromJson(json.decode(str));
+AppointmentsListModel appointmentsListModelFromJson(String str) => AppointmentsListModel.fromJson(json.decode(str));
 
-String upcommingAppointmentModelToJson(UpcommingAppointmentModel data) => json.encode(data.toJson());
+String appointmentsListModelToJson(AppointmentsListModel data) => json.encode(data.toJson());
 
-class UpcommingAppointmentModel {
+class AppointmentsListModel {
   int? success;
   List<Datum>? data;
 
-  UpcommingAppointmentModel({
+  AppointmentsListModel({
     this.success,
     this.data,
   });
 
-  factory UpcommingAppointmentModel.fromJson(Map<String, dynamic> json) => UpcommingAppointmentModel(
+  factory AppointmentsListModel.fromJson(Map<String, dynamic> json) => AppointmentsListModel(
     success: json["success"],
     data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
   );
