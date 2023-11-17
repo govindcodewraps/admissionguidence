@@ -128,8 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
 
                         onPressed: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
-                          //Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
+                          //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
                           // onPressUpdatePassword();
                         },
                         child:Text(
@@ -143,9 +143,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-
-
-
               ],
             ),
           ),
