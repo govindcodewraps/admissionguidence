@@ -417,144 +417,152 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, int index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              spreadRadius: 2,
-                              blurRadius: 4,
-                              offset: Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: Container(
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text("Time slot:"),
-                                      SizedBox(width: 5,),
-                                      Text(snapshot.data!.data![index]
-                                          .appointmentTime.toString()),
-                                    ],
-                                  ),
+                      return
 
-                                  Row(
-                                    children: [
-                                      if(snapshot.data!.data![index].status == "0")
-                                      Row(
-                                        children: [
-                                          InkWell(
-                                            onTap: () {
-                                              // Add your logic here
-                                            },
-                                            child: Icon(Icons.calendar_month_outlined),
-                                          ),
-                                          SizedBox(width: 10,),
-                                          InkWell(
-                                            onTap: () {
-                                              _updateBookingStatus(
-                                                snapshot.data!.data![index].id.toString(),
-                                                Approved,
-                                              );
-                                            },
-                                            child: Icon(Icons.done),
-                                          ),
-                                          SizedBox(width: 10,),
-                                          InkWell(
-                                            onTap: () {
-                                              _updateBookingStatus(
-                                                snapshot.data!.data![index].id.toString(),
-                                                Canceled,
-                                              );
-                                            },
-                                            child: Icon(Icons.cancel_outlined),
+                        InkWell(
+                          onTap: (){
+                            print("govind kkk");
+                          },
+                          child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 2,
+                                blurRadius: 4,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Container(
+                            padding: EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text("Time slot:"),
+                                        SizedBox(width: 5,),
+                                        Text(snapshot.data!.data![index]
+                                            .appointmentTime.toString()),
+                                      ],
+                                    ),
+
+                                    Row(
+                                      children: [
+                                        if(snapshot.data!.data![index].status == "0")
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                // Add your logic here
+                                              },
+                                              child: Icon(Icons.calendar_month_outlined),
+                                            ),
+                                            SizedBox(width: 10,),
+                                            InkWell(
+                                              onTap: () {
+                                                _updateBookingStatus(
+                                                  snapshot.data!.data![index].id.toString(),
+                                                  Approved,
+                                                );
+                                              },
+                                              child: Icon(Icons.done),
+                                            ),
+                                            SizedBox(width: 10,),
+                                            InkWell(
+                                              onTap: () {
+                                                _updateBookingStatus(
+                                                  snapshot.data!.data![index].id.toString(),
+                                                  Canceled,
+                                                );
+                                              },
+                                              child: Icon(Icons.cancel_outlined),
+                                            ),
+                                          ],
+                                        ),
+                                        if(snapshot.data!.data![index].status == "1")
+                                          Icon(Icons.done,color: Colors.green,),
+                                        if(snapshot.data!.data![index].status == "2")
+                                          Icon(Icons.cancel_outlined,color: Colors.red,),
+                                      ],
+                                    ),
+
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text("Date :"),
+                                    SizedBox(width: 10,),
+                                    Text(
+                                      DateFormat('yyyy-MM-dd').format(
+                                        snapshot.data!.data![index].appointmentDate!.toLocal(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text("Name :"),
+                                    Text(snapshot.data!.data![index].name.toString()),
+                                    SizedBox(width: 10,),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text("Email:"),
+                                    SizedBox(width: 2,),
+                                    Text(snapshot.data!.data![index].email.toString()),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text("Contact :"),
+                                    SizedBox(width: 10,),
+                                    Text("+91 98765432121"),
+                                  ],
+                                ),
+
+                                Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  elevation: 2,
+                                  color: Colors.white,
+                                  child: Material( // Wrap with Material or GestureDetector
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: () {
+                                        // Add your code here to be executed when the Card is tapped
+                                        print('hello');
+                                      },
+                                      child: ExpansionTile(
+                                        title: Text('Reschedule List'),
+                                        children: <Widget>[
+                                          ListTile(
+                                            title: Column(
+                                              children: [
+                                                Text("  "),
+                                                // upcomingappointmentlist(),
+                                                SizedBox(height: 20,),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      if(snapshot.data!.data![index].status == "1")
-                                        Icon(Icons.done,color: Colors.green,),
-                                      if(snapshot.data!.data![index].status == "2")
-                                        Icon(Icons.cancel_outlined,color: Colors.red,),
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text("Date :"),
-                                  SizedBox(width: 10,),
-                                  Text(snapshot.data!.data![index]
-                                      .appointmentDate.toString()),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text("Name :"),
-                                  Text(snapshot.data!.data![index].name.toString()),
-                                  SizedBox(width: 10,),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text("Email:"),
-                                  SizedBox(width: 2,),
-                                  Text(snapshot.data!.data![index].email.toString()),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text("Contact :"),
-                                  SizedBox(width: 10,),
-                                  Text("+91 98765432121"),
-                                ],
-                              ),
-
-                              Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                elevation: 2,
-                                color: Colors.white,
-                                child: Material( // Wrap with Material or GestureDetector
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                    onTap: () {
-                                      // Add your code here to be executed when the Card is tapped
-                                      print('hello');
-                                    },
-                                    child: ExpansionTile(
-                                      title: Text('Reschedule List'),
-                                      children: <Widget>[
-                                        ListTile(
-                                          title: Column(
-                                            children: [
-                                              Text("  "),
-                                              // upcomingappointmentlist(),
-                                              SizedBox(height: 20,),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
                                     ),
                                   ),
                                 ),
-                              ),
-
-
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
+                      ),
+                        );
                     },
                     separatorBuilder: (context, index) {
                       return SizedBox(height: 16);

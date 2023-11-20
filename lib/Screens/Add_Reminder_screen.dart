@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import '../my_theme.dart';
@@ -14,6 +18,11 @@ class AddReminderScreen extends StatefulWidget {
 
 class _AddReminderScreenState extends State<AddReminderScreen> {
   TextEditingController dateInputController = TextEditingController();
+  TextEditingController remarkInputtextController = TextEditingController();
+  bool _isLoading = false;
+
+
+ //TextEditingController dateInputController = TextEditingController();
   Time _time = Time(hour: 11, minute: 30, second: 20);
   bool iosStyle = true;
 
@@ -41,7 +50,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
           ),
         ),
       ),
-      body: Container(
+      body:
+      Container(
         width: double.infinity,
         color: MyTheme.backgroundcolor,
         child: Column(
@@ -59,8 +69,9 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Text(widget.meetingid.toString()),
                     Text(
-                      "Add Reminder",
+                      "Edit Reminder",
                       style: TextStyle(
                         color: MyTheme.backgroundcolor,
                         fontSize: 16,
@@ -97,79 +108,10 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                         }
                       },
                     ),
-                    //SizedBox(height: 30),
-                    // Time picker
-                 /*   TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            width: 3,
-                            color: Colors.greenAccent,
-                          ),
-                        ),
-                        labelText: "Time slot",
-                        hintText: _time.format(context),
-                        suffixIcon: Icon(Icons.watch_later_outlined, color: Colors.black),
-                      ),
-                      readOnly: true,
-                      onTap: () async {
-                        Navigator.of(context).push(
-                          showPicker(
-                            context: context,
-                            value: _time,
-                            sunrise: TimeOfDay(hour: 6, minute: 0),
-                            sunset: TimeOfDay(hour: 18, minute: 0),
-                            duskSpanInMinutes: 120,
-                            onChange: onTimeChanged,
-                          ),
-                        );
-                      },
-                    ),*/
-                    SizedBox(height: 30),
-
-                    // Dropdown for time slots
-                    DropdownButtonFormField<String>(
-                      value: selectedTimeSlot,
-                      onChanged: (String? newValue) {
-                        if (newValue != null) {
-                          setState(() {
-                            selectedTimeSlot = newValue;
-                          });
-                        }
-                      },
-                      items: timeSlotOptions.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            width: 3,
-                            color: Colors.grey, // Unselected color
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            width: 3,
-                            color: MyTheme.backgroundcolor, // Selected color
-                          ),
-                        ),
-                      ),
-                      isExpanded: true,
-                    ),
-
-
-
-
 
                     SizedBox(height: 30),
                     TextField(
+                      controller: remarkInputtextController,
                       maxLines: 4,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(vertical: 10.0),
@@ -195,9 +137,34 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                                 ),
                               ),
                             ),
-                            onPressed: () {
-                              // Handle button press
+                            onPressed: ()
+                            {
+                              if (dateInputController.text.isEmpty ||
+                                  remarkInputtextController.text.isEmpty) {
+                                Fluttertoast.showToast(
+                                  msg: "Please fill in all fields",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0,
+                                );
+                              } else {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                addmeeting(dateInputController.text,remarkInputtextController.text);                              }
                             },
+
+                            //
+                            // {
+                            //   print("Date input ${dateInputController.text}");
+                            //   print("Remark input ${remarkInputtextController.text}");
+                            //   updatemeeting(dateInputController.text,remarkInputtextController.text,widget.meetingid);
+                            //   // Handle button press
+                            // },
+
                             child: Text(
                               "Save",
                               style: TextStyle(
@@ -218,5 +185,49 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> addmeeting(date,remark) async{
+
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=98f15c64ab923ccf587d6169af3d3708'
+    };
+    var data = {
+      'reminder_add': '1',
+      'date': date,
+      'remark': remark
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+      Fluttertoast.showToast(
+        msg: "Meeting Add Succesfully",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
+      Navigator.pop(context);
+    }
+    else {
+      print(response.statusMessage);
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

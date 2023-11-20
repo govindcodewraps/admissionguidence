@@ -40,7 +40,9 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
           ),
         ),
       ),
-      body: Container(
+      body:
+
+      Container(
         width: double.infinity,
         color: MyTheme.backgroundcolor,
         child: Column(
