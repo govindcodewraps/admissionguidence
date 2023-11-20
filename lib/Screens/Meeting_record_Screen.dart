@@ -958,11 +958,11 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-              //child: Center(child: CircularProgressIndicator()),
+              child: Center(child: CircularProgressIndicator()),
             );
           } else if (snapshot.hasError) {
             return Container(
-              child: Center(child: Text(" ")),
+              child: Center(child: Text("No More Data")),
             );
           } else if (snapshot.hasData) {
             var appointmentsListModel =
@@ -972,6 +972,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
               padding: EdgeInsets.only(left: 16, right: 16),
               child: Column(
                 children: [
+                  Text("Filter Result"),
+                  SizedBox(height: 15,),
                   ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -1074,9 +1076,11 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   SizedBox(
                                     width: 2,
                                   ),
-                                  Text(appointmentsListModel
-                                      .data![index].appointmentDate
-                                      .toString()),
+                                  Text(
+                                    DateFormat('yyyy-MM-dd').format(
+                                      snapshot.data!.data![index].appointmentDate!.toLocal(),
+                                    ),
+                                  ),
                                 ],
                               ),
                               Row(
