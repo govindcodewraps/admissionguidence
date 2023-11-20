@@ -57,7 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: 10,),
                       Text("Password", style: GoogleFonts.roboto(fontWeight: FontWeight.w500, fontSize: 16)),
+
                       TextField(
+
                         controller: _userpasswordController,
                         decoration: InputDecoration(
                           hintText: "Password",
@@ -67,6 +69,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
+
+
                       Align(
                         alignment: Alignment.centerRight,
                         child: Text(
