@@ -772,6 +772,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                           children: [
                                             InkWell(
                                               onTap: () {
+                                                print("meeting id ${snapshot.data!.data![index].id.toString()}");
                                                 // Add your logic here
                                               },
                                               child: Icon(Icons.calendar_month_outlined),
