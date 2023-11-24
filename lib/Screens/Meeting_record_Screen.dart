@@ -966,7 +966,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-              //child: Center(child: CircularProgressIndicator()),
+              child: Center(child: CircularProgressIndicator()),
             );
           } else if (snapshot.hasError) {
             return Container(
@@ -980,6 +980,9 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
               padding: EdgeInsets.only(left: 16, right: 16),
               child: Column(
                 children: [
+                  SizedBox(height: 10,),
+                  Text("Filterd Meeting List",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
+                  SizedBox(height: 10,),
                   ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

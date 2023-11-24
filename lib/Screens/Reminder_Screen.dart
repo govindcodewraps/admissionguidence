@@ -50,11 +50,13 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       body: Container(
         width: double.infinity,
         color: MyTheme.backgroundcolor,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            reminderlistwidget(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              reminderlistwidget(),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
