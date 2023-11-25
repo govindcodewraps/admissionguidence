@@ -9,10 +9,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../models/AppointmentsList_Model.dart';
+import '../models/Notification_Model.dart';
 import '../models/Time_slot_model.dart';
 import '../models/Todays_Appointment_model.dart';
 import '../models/Upcoming_Appointment.dart';
 import '../models/pastpast_appointment_model.dart';
+import 'Notification_Screen.dart';
 import 'RescheduleScreen.dart';
 
 class Meeting_record_screen extends StatefulWidget {
@@ -28,10 +30,9 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
   String Approved ="1";
   String Canceled ="2";
+  String _nitificationcount="0";
   bool _isApproving = false;
   bool _isCanceling = false;
-
-
 
   int buttonvalue = 0; // Set an initial value
 
@@ -39,13 +40,11 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    notificationCountApi();
     pastappointmentapi();
     todayappointmentlist();
     upcoming_appointment();
-   // appointmentslistwidget();
     time_slot();
-
-    print("sidhu ");
   }
 
   @override
@@ -68,6 +67,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         child: Column(
           children: [
             Container(
+              padding: EdgeInsets.only(left: 10,right: 10),
               height: 120,
               color: MyTheme.backgroundcolor,
               child: Column(
@@ -84,7 +84,40 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                       Text(
                         "Meetings",
                         style: TextStyle(color: Colors.white),
-                      )
+                      ),
+                      Spacer(),
+
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Notification_Screen()));
+                        },
+                        child: Stack(
+                          children: [
+                            Icon(Icons.notifications,color: Colors.white,),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: Container(
+                                padding: EdgeInsets.all(1),
+                                decoration: BoxDecoration(
+                                  color:Colors.green,
+                                  borderRadius: BorderRadius.circular(50), // Set a circular border radius
+                                ),
+                                child: Text(
+                                  " ${_nitificationcount} ",
+                                  style: TextStyle(
+                                    fontSize: 8,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+
                     ],
                   ),
                   SizedBox(height: 20,),
@@ -332,9 +365,6 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                 ],),
               ),
             )
-
-
-
           ],
         ),
       ),
@@ -388,7 +418,6 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         ],
       );
   }
-
   Widget todayappointmentlist() {
     bool isExpanded = false;
     return FutureBuilder(
@@ -585,7 +614,6 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       },
     );
   }
-
   Widget pastappointmentlist() {
     return FutureBuilder(
       future: pastappointmentapi(),
@@ -706,7 +734,6 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       },
     );
   }
-
   Widget upcomingappointmentlist() {
     return FutureBuilder(
       future: upcoming_appointment(),
@@ -908,7 +935,6 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       throw Exception('Failed to load data');
     }
   }
-
   Future<AppointmentsListModel?> getAppointments(String startDate, String endDate) async {
     var headers = {
       'accept': 'application/json',
@@ -955,7 +981,6 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       throw Exception('Error fetching appointments');
     }
   }
-
   Widget appointmentslist() {
     return
       FutureBuilder(
@@ -970,7 +995,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
             );
           } else if (snapshot.hasError) {
             return Container(
-              child: Center(child: Text(" ")),
+              child: Center(child: Text("No Meeting ")),
             );
           } else if (snapshot.hasData) {
             var appointmentsListModel =
@@ -1123,7 +1148,6 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       );
   }
 
-
   Future<TodaysAppointmentModel> todayappointmentapi() async {
     var headers = {
       'accept': 'application/json',
@@ -1207,9 +1231,6 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       throw Exception('Failed to load data');
     }
   }
-
-
-
 
   Future<TimeslotModel> time_slot() async {
     var headers = {
@@ -1300,5 +1321,46 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
     setState(() {});
   }
 
+  Future<int?> notificationCountApi() async {
+    var headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=8e9fa73e42b049d31d22a09758fdccf0'
+    };
+    var data = {
+      'getnotificationCount': '1'
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
 
+    if (response.statusCode == 200) {
+      print("Notification count response: ${response.data}");
+
+      // Decode the JSON string to a Map
+      Map<String, dynamic> responseData = json.decode(response.data);
+
+      // Check if 'data' field is present in the response
+      if (responseData.containsKey('data')) {
+        var dataValue = responseData['data'];
+
+        print("Data value: $dataValue");
+        _nitificationcount=dataValue.toString();
+        print("_nitificationcount: $_nitificationcount");
+        return dataValue;
+      } else {
+        print("Error: 'data' field not found in the response");
+        return null; // or throw an exception
+      }
+    } else {
+      print("Error: ${response.statusMessage}");
+      return null; // or throw an exception
+    }
+  }
 }

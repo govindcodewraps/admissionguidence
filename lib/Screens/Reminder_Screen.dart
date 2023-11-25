@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -167,6 +168,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                     ),
                                     Row(
                                       children: [
+
                                         InkWell(
                                           onTap: () {
                                             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -175,12 +177,25 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                             print(snapshot.data!.data![index].remark.toString());
                                             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-
                                             Navigator.push(context, MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString())));
                                             // Handle the "Edit Reminder" tap
                                           },
-                                          child: Text("Edit Reminder"),
+                                          child: Icon(Icons.edit),
+
+                                          //Text("Edit Reminder"),
                                         ),
+                                        SizedBox(width: 10,),
+
+                                        InkWell(
+                                            onTap: (){
+
+                                              _showCustomDialog(context);
+                                            },
+                                            child: Icon(Icons.recycling_rounded)),
+
+                                        SizedBox(width: 10,),
+                                        Icon(Icons.delete),
+
                                       ],
                                     ),
                                   ],
@@ -208,6 +223,63 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       );
   }
 
+
+  void _showCustomDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alertDialog(context); // Call your alertDialog function here
+      },
+    );
+  }
+
+  Widget alertDialog(BuildContext context) {
+    return AlertDialog(
+      title: Text('Select Reminder Type'),
+      content: Container(
+        width: double.maxFinite,
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 8.0,
+          ),
+          itemCount: 4,
+          itemBuilder: (BuildContext context, int index) {
+            return GridTile(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+
+                    borderRadius: BorderRadius.circular(12)
+                ),
+                child: Center(
+                  child: Text(
+                    'Reminder Type $index',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(); // Close the dialog
+          },
+          child: Text('Close'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(); // Close the dialog
+          },
+          child: Text('Save'),
+        ),
+      ],
+    );
+  }
 
 
 
