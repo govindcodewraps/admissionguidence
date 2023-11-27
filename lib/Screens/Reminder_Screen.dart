@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../models/ReminderTypeModel.dart';
 import '../models/Reminder_List_Model.dart';
 import '../my_theme.dart';
 import 'Add_Reminder_screen.dart';
@@ -22,6 +24,11 @@ class Reminder_Screen extends StatefulWidget {
 }
 
 class _Reminder_ScreenState extends State<Reminder_Screen> {
+
+  var Remindertypevalue;
+  var ReminderListvalue;
+  int selectedIdx = -1;
+
   TextEditingController dateInputController = TextEditingController();
 
   Time _time = Time(hour: 11, minute: 30, second: 20);
@@ -31,6 +38,15 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     setState(() {
       _time = newTime;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    reminderlistapi();
+    ReminderTypeApi();
+
+    super.initState();
   }
 
   @override
@@ -187,14 +203,28 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                         SizedBox(width: 10,),
 
                                         InkWell(
-                                            onTap: (){
 
+                                            onTap: (){
+                                              setState(() {
+                                                Remindertypevalue = ''; // You can assign any default or empty value
+                                              });
+                                              Remindertypevalue == null ? Remindertypevalue.clear:"";
+                                              ReminderListvalue=snapshot.data!.data![index].id.toString();
                                               _showCustomDialog(context);
+                                              print("print reminder list id:: ${snapshot.data!.data![index].id.toString()}");
                                             },
                                             child: Icon(Icons.recycling_rounded)),
 
                                         SizedBox(width: 10,),
-                                        Icon(Icons.delete),
+
+                                        InkWell(
+                                            onTap: (){
+                                              var reminderid=snapshot.data!.data![index].id.toString();
+                                              print("delet id ${reminderid}");
+
+                                              deletreminderapi(reminderid.toString());
+                                            },
+                                            child: Icon(Icons.delete)),
 
                                       ],
                                     ),
@@ -234,55 +264,212 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   }
 
   Widget alertDialog(BuildContext context) {
-    return AlertDialog(
-      title: Text('Select Reminder Type'),
-      content: Container(
-        width: double.maxFinite,
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 8.0,
-            mainAxisSpacing: 8.0,
-          ),
-          itemCount: 4,
-          itemBuilder: (BuildContext context, int index) {
-            return GridTile(
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.blue,
 
-                    borderRadius: BorderRadius.circular(12)
-                ),
-                child: Center(
-                  child: Text(
-                    'Reminder Type $index',
-                    style: TextStyle(color: Colors.white),
+    return  FutureBuilder(
+      future: ReminderTypeApi(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            //child: Center(child: CircularProgressIndicator()),
+          );
+        } else if (snapshot.hasError) {
+          return Container(
+            child: Center(child: Text(" ")),
+          );
+        } else if (snapshot.hasData) {
+          var appointmentsListModel =
+          snapshot.data as ReminderTypeModel;
+
+          return
+            AlertDialog(
+
+              title: Text('Select Reminder Type'),
+              content: Container(
+                width: double.maxFinite,
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
                   ),
+                  itemCount:snapshot.data!.data!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GridTile(
+                      child:
+
+                      InkWell(
+                        onTap: (){
+                          Remindertypevalue=snapshot.data!.data![index].id.toString();
+                          //print(snapshot.data!.data![index].id.toString());
+                          print("Reminder type value:: ${Remindertypevalue}");
+                          Fluttertoast.showToast(
+                            msg: "Selected : ${snapshot.data!.data![index].type.toString()}",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.black,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                            BoxShadow(
+                            color: Colors.grey, // Choose your shadow color
+                            blurRadius: 5.0,   // Adjust the blur radius
+                            offset: Offset(0, 2), // Adjust the offset
+                          ),
+                          ],                          ),
+                          child: Center(
+                            child: Text(
+                              //'Reminder Type',
+                              snapshot.data!.data![index].type.toString(),
+                              style: TextStyle(color: Colors.black,fontWeight:FontWeight.w500,fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      Remindertypevalue = ''; // You can assign any default or empty value
+                    });
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: Text('Close'),
+                ),
+                TextButton(
+                  onPressed: () {
+                   // Navigator.of(context).pop();
+                    // Remindertypevalue == null;
+                    // Fluttertoast.showToast(
+                    //   msg: "Select Reminder Type",
+                    //   toastLength: Toast.LENGTH_LONG,
+                    //   gravity: ToastGravity.CENTER,
+                    //   timeInSecForIosWeb: 1,
+                    //   backgroundColor: Colors.grey,
+                    //   textColor: Colors.white,
+                    //   fontSize: 16.0,
+                    // );
+                   // print("Select id ");
+
+                    setreminderapi(ReminderListvalue,Remindertypevalue);
+                  },
+                  child: Text('Save'),
+                ),
+              ],
             );
-          },
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(); // Close the dialog
-          },
-          child: Text('Close'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(); // Close the dialog
-          },
-          child: Text('Save'),
-        ),
-      ],
+
+        } else {
+          return Container(
+            child: Center(child: Text("No data available")),
+          );
+        }
+      },
     );
   }
 
 
+Future setreminderapi(reminderid,typeid) async{
+  var headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Cookie': 'PHPSESSID=30ead7cbd26e9fcee6465b06417e7aba'
+  };
+  var data = {
+    'set_reminder': '1',
+    'reminder_id':reminderid,
+    'type_id': typeid
+  };
+  var dio = Dio();
+  var response = await dio.request(
+    'https://admissionguidanceindia.com/appdata/webservice.php',
+    options: Options(
+      method: 'POST',
+      headers: headers,
+    ),
+    data: data,
+  );
 
+  if (response.statusCode == 200) {
+    print("successfully set remionder");
+    print(json.encode(response.data));
+    Fluttertoast.showToast(
+      msg: "successfully set remionder",
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+    Navigator.pop(context);
+  }
+
+  else if (response.statusCode == 401) {
+
+    Fluttertoast.showToast(
+      msg: "Please enter all required fields",
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+
+  }
+
+  else {
+    print(response.statusMessage);
+  }
+}
+
+Future deletreminderapi(reminderid,) async{
+  var headers = {
+    'accept': 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Cookie': 'PHPSESSID=30ead7cbd26e9fcee6465b06417e7aba'
+  };
+  var data = {
+    'reminder_delete': '1',
+    'id': reminderid
+  };
+  var dio = Dio();
+  var response = await dio.request(
+    'https://admissionguidanceindia.com/appdata/webservice.php',
+    options: Options(
+      method: 'POST',
+      headers: headers,
+    ),
+    data: data,
+  );
+
+  if (response.statusCode == 200) {
+    print(json.encode(response.data));
+    Fluttertoast.showToast(
+      msg: "Deleted successfully",
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+    Navigator.pop(context);
+  }
+  else {
+    print(response.statusMessage);
+  }
+}
 
   Future<ReminderListModel> reminderlistapi() async {
     var headers = {
@@ -308,7 +495,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       if (response.statusCode == 200) {
         print(json.encode(response.data));
         print(response.data);
-        print("print response");
+        print("reminder_list response print ");
 
         // Check if the response is a string, then decode it to a Map
         var responseData = response.data is String
@@ -325,4 +512,46 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       throw Exception('Failed to load data');
     }
   }
+
+
+  Future<ReminderTypeModel?> ReminderTypeApi() async {
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=30ead7cbd26e9fcee6465b06417e7aba'
+    };
+    var data = {
+      'reminder_type': '1'
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      //print(json.encode(response.data));
+
+      var responseData = response.data is String
+          ? json.decode(response.data)
+          : response.data;
+
+      print("Reminder type print ${responseData}");
+
+      return ReminderTypeModel.fromJson(responseData);
+    }
+
+    else {
+      print(response.statusMessage);
+    }
+  }
+
+
+
+
+
 }

@@ -15,6 +15,7 @@ import '../models/Todays_Appointment_model.dart';
 import '../models/Upcoming_Appointment.dart';
 import '../models/pastpast_appointment_model.dart';
 import 'Notification_Screen.dart';
+import 'RescheduleMeetingScreen.dart';
 import 'RescheduleScreen.dart';
 
 class Meeting_record_screen extends StatefulWidget {
@@ -490,6 +491,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                             InkWell(
                                               onTap: () {
                                                 // Add your logic here
+                                                print("Meeting ID: ${snapshot.data!.data![index].id.toString()}");
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString())));
                                               },
                                               child: Icon(Icons.calendar_month_outlined),
                                             ),
@@ -800,6 +803,9 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                             InkWell(
                                               onTap: () {
                                                 // Add your logic here
+                                                print("Meeting ID upcoming : ${snapshot.data!.data![index].id.toString()}");
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString())));
+
                                               },
                                               child: Icon(Icons.calendar_month_outlined),
                                             ),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../my_theme.dart';
+import 'Account_Details/AccountScreen.dart';
 import 'Meeting_record_Screen.dart';
 import 'Reminder_Screen.dart';
 import 'RescheduleScreen.dart';
@@ -134,6 +135,47 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                         child:Text(
                           "REMINDERS",
+                          // AppLocalizations.of(context).update_password_ucf,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        ),),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30,),
+
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    alignment: Alignment.center,
+                    //width: DeviceInfo(context).width/1,
+
+                    child:
+                    SizedBox(
+                      height: 50,
+                      width:double.infinity,
+                      child: ElevatedButton(
+
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(MyTheme.backgroundcolor),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    //side: BorderSide()
+                                )
+                            )
+                        ),
+
+                        onPressed: (){
+                          //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountdetailsScreen()));
+                          // onPressUpdatePassword();
+                        },
+                        child:Text(
+                          "MANAGE ACCOUNT",
                           // AppLocalizations.of(context).update_password_ucf,
                           style: TextStyle(
                               color: Colors.white,
