@@ -169,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print("response");
       print(json.encode(json.decode(response.body)));
       print("response");
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
       Fluttertoast.showToast(
         msg: "Login Successfully",

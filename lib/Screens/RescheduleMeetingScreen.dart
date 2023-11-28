@@ -10,13 +10,16 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
+import '../models/Time_slot_model.dart';
 import '../my_theme.dart';
 
 class Reschedule_Meeting_Screen extends StatefulWidget {
   String meetingid;
   String date;
   String appointmenttime;
+
 
    Reschedule_Meeting_Screen({super.key, required this.meetingid,required this.date,required this.appointmenttime,});
 
@@ -29,6 +32,9 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
   TextEditingController remarkInputController = TextEditingController();
  var _inputdate;
  var _inputtime;
+ var _timeslotid;
+  String newdate =" ";
+
 
   Time _time = Time(hour: 11, minute: 30, second: 20);
   bool iosStyle = true;
@@ -39,8 +45,21 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
     });
   }
 
+  String selectedValue = 'Select Time';
+ // List<String> option = ['Transaction Type', 'CR', 'DR',];
+  //Map optio={};
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    timeslotlist();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+   // print(option);
+    print("print mapp drop down list ");
     //print(_time);
     //print(_time.format(context));
     _inputtime=_time.format(context);
@@ -73,6 +92,8 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
           children: [
 
 
+
+
             SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.fromLTRB(16, 16, 16, 20),
@@ -90,8 +111,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    Text(widget.meetingid),
-
+                    //Text(widget.meetingid),
 
                     Text("Reschedule Meeting",  style: TextStyle(
                         color:MyTheme.backgroundcolor,
@@ -133,36 +153,38 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                     ),
                     SizedBox(height: 30,),
                     //Time picker
-                    TextFormField(
 
-                      decoration:  InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                              width: 3, color: Colors.greenAccent), //<-- SEE HERE
-                        ),
-                        // border: InputBorder.none,
-                        //label: "DOB",
-                        labelText: _time.format(context),
-                        hintText: _time.format(context),
-                        suffixIcon: Icon(Icons.watch_later_outlined,color: Colors.black,),
-
-                      ),
-                      //  controller: dateInputController,
-                      readOnly: true,
-                      onTap: () async {
-                        Navigator.of(context).push(
-                          showPicker(
-                            context: context,
-                            value: _time,
-                            sunrise: TimeOfDay(hour: 6, minute: 0), // optional
-                            sunset: TimeOfDay(hour: 18, minute: 0), // optional
-                            duskSpanInMinutes: 120, // optional
-                            onChange: onTimeChanged,
-                          ),
-                        );
-                      },
-                    ),
+                    timeslotwidget(),
+                    // TextFormField(
+                    //
+                    //   decoration:  InputDecoration(
+                    //     border: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(12),
+                    //       borderSide: BorderSide(
+                    //           width: 3, color: Colors.greenAccent), //<-- SEE HERE
+                    //     ),
+                    //     // border: InputBorder.none,
+                    //     //label: "DOB",
+                    //     labelText: _time.format(context),
+                    //     hintText: _time.format(context),
+                    //     suffixIcon: Icon(Icons.watch_later_outlined,color: Colors.black,),
+                    //
+                    //   ),
+                    //   //  controller: dateInputController,
+                    //   readOnly: true,
+                    //   onTap: () async {
+                    //     Navigator.of(context).push(
+                    //       showPicker(
+                    //         context: context,
+                    //         value: _time,
+                    //         sunrise: TimeOfDay(hour: 6, minute: 0), // optional
+                    //         sunset: TimeOfDay(hour: 18, minute: 0), // optional
+                    //         duskSpanInMinutes: 120, // optional
+                    //         onChange: onTimeChanged,
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
                     SizedBox(height: 30,),
 
                     TextField(
@@ -207,11 +229,16 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                               _inputdate=dateInputController.text;
                               print("Input Date ${_inputdate}");
                               print("Input Remark ${remarkInputController.text}");
+                              var meetingidd = widget.meetingid;
+                              print("Time slotttt");
+                              print(_timeslotid);
+                              print("Time slotttt");
 
                               // Navigator.push(context,MaterialPageRoute(builder: (context)=>Reschedule_Screen()));
                               // onPressUpdatePassword();
 
-                              reschedulemeetingapi(widget.meetingid,widget.date,widget.appointmenttime,remarkInputController.text);
+                              rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
+
                             },
                             child:Text(
                               "Save",
@@ -235,31 +262,30 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
   }
 
 
-  Future reschedulemeetingapi(_bookindid,_date,_time,_remark) async{
+
+  Future rescheduleMeetingApi(_bookingId, _date, _time, _remark)async{
+
     var headers = {
       'accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Cookie': 'PHPSESSID=30ead7cbd26e9fcee6465b06417e7aba'
+      'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
     };
-    var data = {
+    var request = http.Request('POST', Uri.parse('https://admissionguidanceindia.com/appdata/webservice.php'));
+    request.bodyFields = {
       'reschedule_appointment': '1',
-      'booking_id': _bookindid,
+      'booking_id': _bookingId,
       'date': _date,
-      'appointment_time': _time,
-      'remark': _remark
+      'appointment_time':_time,
+      'remark':_remark
     };
-    var dio = Dio();
-    var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
-      options: Options(
-        method: 'POST',
-        headers: headers,
-      ),
-      data: data,
-    );
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-
+      newdate=" ";
+      print("200000");
+      print(await response.stream.bytesToString());
       Fluttertoast.showToast(
         msg: "Meeting Reschedule Successful Submit",
         toastLength: Toast.LENGTH_SHORT,
@@ -269,13 +295,140 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-
-      print(json.encode(response.data));
     }
+    else if(response.statusCode == 401)
+      {
+        newdate=" ";
+        print("40111");
+        Fluttertoast.showToast(
+                    msg: "Time slot is already booked. Please choose another time",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.redAccent[100],
+                    textColor: Colors.white,
+                    fontSize: 16.0,
+                  );
+      }
     else {
-      print(response.statusMessage);
+      print(response.reasonPhrase);
     }
+
   }
 
+
+  Widget timeslotwidget() {
+    return FutureBuilder(
+      future: timeslotlist(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            child: Center(child: CircularProgressIndicator()),
+          );
+        } else if (snapshot.hasError) {
+          return Container(
+            child: Center(
+              child: Text('Error: Internal error'),
+            ),
+          );
+        } else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+          return Container(
+            child: Center(
+              child: Text('No data available.'),
+            ),
+          );
+        } else {
+          return Container(
+           // padding: EdgeInsets.only(left: 16, right: 16),
+            child: Column(
+              children: [
+
+
+
+                Container(
+                  width: MediaQuery.of(context).size.width*1,
+                  padding: EdgeInsets.only(left: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),  // Set the color of the border
+                    borderRadius: BorderRadius.circular(12), // Set the border radius
+                  ),
+                  child:
+
+                  DropdownButton<String>(
+
+                    value: selectedValue,
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedValue = newValue!;
+                       print(newValue);
+                        _timeslotid=newValue;
+                        print("time slot id print ${_timeslotid}");
+                      });
+                    },
+                    underline: Container(),
+
+                    items: [
+                      DropdownMenuItem<String>(
+                        value: 'Select Time',
+                        child: Text('Select Time'),
+                      ),
+                      ...snapshot.data!.data!.map((datum) {
+                        return DropdownMenuItem<String>(
+                          value: datum.id!,
+                          child: Text("${datum.slotFrom!}-${datum.slotTo!}"),
+                        );
+                      }).toList(),
+                    ],
+
+                  ),
+                ),
+
+           // selectedValue= snapshot.data.data.length;
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+
+
+Future<TimeslotModel?> timeslotlist() async {
+  var headers = {
+    'accept': 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
+  };
+  var data = {
+    'time_slot': '1',
+    'date': '2023-11-10'
+  };
+  var dio = Dio();
+  var response = await dio.request(
+    'https://admissionguidanceindia.com/appdata/webservice.php',
+    options: Options(
+      method: 'POST',
+      headers: headers,
+    ),
+    data: data,
+  );
+
+  if (response.statusCode == 200) {
+
+
+    var responseData = response.data is String
+        ? json.decode(response.data)
+        : response.data;
+    print("time slot list");
+    print(responseData);
+    print("time slot list");
+   //optionss=responseData;
+    return TimeslotModel.fromJson(responseData);
+  }
+  else {
+    print(response.statusMessage);
+  }
+}
 
 }

@@ -203,6 +203,17 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
 
     if (response.statusCode == 200) {
       print(json.encode(response.data));
+      Fluttertoast.showToast(
+          msg: "Update Reminder",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      Navigator.pop(context);
+      Navigator.pop(context);
     }
     else {
       print(response.statusMessage);
