@@ -212,7 +212,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
     if (response.statusCode == 200) {
       print(json.encode(response.data));
       Fluttertoast.showToast(
-        msg: "Meeting Add Succesfully",
+        msg: "Reminder Set Succesfully",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,

@@ -19,6 +19,8 @@ class Reschedule_Meeting_Screen extends StatefulWidget {
   String meetingid;
   String date;
   String appointmenttime;
+ // DateFormat('yyyy-MM-dd').format(pickedDate)
+  //String timeslotdate
 
 
    Reschedule_Meeting_Screen({super.key, required this.meetingid,required this.date,required this.appointmenttime,});
@@ -30,7 +32,8 @@ class Reschedule_Meeting_Screen extends StatefulWidget {
 class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
   TextEditingController dateInputController = TextEditingController();
   TextEditingController remarkInputController = TextEditingController();
- var _inputdate;
+  var _inputdate;
+ //_inputdate = _inputdate.isEmpty ? '2023-11-20' : _inputdate,
  var _inputtime;
  var _timeslotid;
   String newdate =" ";
@@ -52,7 +55,6 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
   @override
   void initState() {
     // TODO: implement initState
-    timeslotlist();
     super.initState();
   }
 
@@ -65,6 +67,12 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
     _inputtime=_time.format(context);
     print("Input time ${_inputtime}");
     _inputdate=dateInputController.text;
+
+    print("OLD");
+    print(widget.date);
+    print("OLD");
+
+
 
     print("Input Date ${_inputdate}");
     print("Input Remark ${remarkInputController.text}");
@@ -147,8 +155,21 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
 
                         if (pickedDate != null) {
                           dateInputController.text =
-                              DateFormat('dd-MM-yyyy').format(pickedDate);
+                              DateFormat('yyyy-MM-dd').format(pickedDate);
                         }
+
+                          // Call the future method when both dates are selected
+
+                        // if (dateInputController.text.isNotEmpty ? dateInputController.text == '2023-11-29' : false
+                        // ) {
+                        //   // Call the future method when both dates are selected
+                        //
+                        // }
+
+
+
+
+
                       },
                     ),
                     SizedBox(height: 30,),
@@ -234,10 +255,13 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                               print(_timeslotid);
                               print("Time slotttt");
 
+
+                              print("AAAAAAAAA ${widget.date}");
+
                               // Navigator.push(context,MaterialPageRoute(builder: (context)=>Reschedule_Screen()));
                               // onPressUpdatePassword();
 
-                              rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
+                              //rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
 
                             },
                             child:Text(
@@ -295,6 +319,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+      Navigator.pop(context);
     }
     else if(response.statusCode == 401)
       {
@@ -321,23 +346,28 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
     return FutureBuilder(
       future: timeslotlist(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if
+        (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
             child: Center(child: CircularProgressIndicator()),
           );
-        } else if (snapshot.hasError) {
-          return Container(
-            child: Center(
-              child: Text('Error: Internal error'),
-            ),
-          );
-        } else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+        }
+        // else if (snapshot.hasError) {
+        //   return Container(
+        //     child: Center(
+        //       child: Text('Error: Internal error'),
+        //     ),
+        //   );
+        // }
+        else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
           return Container(
             child: Center(
               child: Text('No data available.'),
             ),
           );
-        } else {
+        }
+        else
+        {
           return Container(
            // padding: EdgeInsets.only(left: 16, right: 16),
             child: Column(
@@ -402,7 +432,8 @@ Future<TimeslotModel?> timeslotlist() async {
   };
   var data = {
     'time_slot': '1',
-    'date': '2023-11-10'
+    'date':widget.date
+    //'date': '2023-11-29'
   };
   var dio = Dio();
   var response = await dio.request(
@@ -423,6 +454,7 @@ Future<TimeslotModel?> timeslotlist() async {
     print("time slot list");
     print(responseData);
     print("time slot list");
+
    //optionss=responseData;
     return TimeslotModel.fromJson(responseData);
   }
@@ -432,3 +464,4 @@ Future<TimeslotModel?> timeslotlist() async {
 }
 
 }
+

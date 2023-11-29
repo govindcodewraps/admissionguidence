@@ -53,183 +53,191 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         return true;
       },
-      child:   Scaffold(body:
-      Container(
-        width: double.infinity,
-        color: MyTheme.backgroundcolor,
-        child: Stack(
-          children: [
-            Positioned(
-                right: 15,
-                top: 25,
-                child:
-                //ElevatedButton(onPressed: (){}, child:Text("Logout",style:TextStyle(color: Colors.red),) )
-                InkWell(
-                    onTap: (){
-                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
-                    },
-                    child: Text("Logout",style:TextStyle(color: Colors.red,fontSize: 20,fontWeight: FontWeight.w500),))
+      child:   SafeArea(
+        child: Scaffold(body:
+        Container(
+          width: double.infinity,
+          color: MyTheme.backgroundcolor,
+          child: Stack(
+            children: [
+              Positioned(
+                  right: 15,
+                  top: 10,
+                  child:
+                  //ElevatedButton(onPressed: (){}, child:Text("Logout",style:TextStyle(color: Colors.red),) )
+                  InkWell(
+                      onTap: (){
+                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                      },
+                      child:
+                      Column(
+                        children: [
+                          Icon(Icons.logout,color: Colors.red,),
+                          Text("Logout",style: TextStyle(color: Colors.red),),
+                        ],
+                      )
+                     // Text("Logout",style:TextStyle(color: Colors.red,fontSize: 20,fontWeight: FontWeight.w500),)
+                  )
 
-            ),
+              ),
 
-            Center(
-              child: Column(
-                //crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+              Center(
+                child: Column(
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
 
 
-                  Container(
-                    padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-                    decoration: BoxDecoration(
-                        color: MyTheme.WHITECOLOR,
-                        borderRadius:BorderRadius.circular(12)
-                      // borderRadius: BorderRadius.all(Radius.circular(10))
+                    Container(
+                      padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                      decoration: BoxDecoration(
+                          color: MyTheme.WHITECOLOR,
+                          borderRadius:BorderRadius.circular(12)
+                        // borderRadius: BorderRadius.all(Radius.circular(10))
+                      ),
+
+                      height: 276,
+                      width: 300,
+
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        //crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Container(
+                              alignment: Alignment.center,
+                              //width: DeviceInfo(context).width/1,
+
+                              child:
+                              SizedBox(
+                                height: 50,
+                                width:double.infinity,
+                                child: ElevatedButton(
+
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(MyTheme.backgroundcolor),
+
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+
+                                            borderRadius: BorderRadius.circular(12.0),
+                                            // side: BorderSide()
+                                          )
+                                      )
+                                  ),
+
+                                  onPressed: (){
+                                    Navigator.push(context,MaterialPageRoute(builder: (context)=>Meeting_record_screen()));
+
+                                    // onPressUpdatePassword();
+                                  },
+                                  child: Text(
+                                    "APPOINTMENTS",
+                                    // AppLocalizations.of(context).update_password_ucf,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 30,),
+
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Container(
+                              alignment: Alignment.center,
+                              //width: DeviceInfo(context).width/1,
+
+                              child:
+                              SizedBox(
+                                height: 50,
+                                width:double.infinity,
+                                child: ElevatedButton(
+
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
+
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+
+                                            borderRadius: BorderRadius.circular(12.0),
+                                            //side: BorderSide()
+                                          )
+                                      )
+                                  ),
+
+                                  onPressed: (){
+                                    //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
+                                    Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
+                                    // onPressUpdatePassword();
+                                  },
+                                  child:Text(
+                                    "REMINDERS",
+                                    // AppLocalizations.of(context).update_password_ucf,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 30,),
+
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Container(
+                              alignment: Alignment.center,
+                              //width: DeviceInfo(context).width/1,
+
+                              child:
+                              SizedBox(
+                                height: 50,
+                                width:double.infinity,
+                                child: ElevatedButton(
+
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(MyTheme.backgroundcolor),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+
+                                            borderRadius: BorderRadius.circular(12.0),
+                                            //side: BorderSide()
+                                          )
+                                      )
+                                  ),
+
+                                  onPressed: (){
+                                    //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
+                                    Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountdetailsScreen()));
+                                    // onPressUpdatePassword();
+                                  },
+                                  child:Text(
+                                    "TRANSACTION",
+                                    // AppLocalizations.of(context).update_password_ucf,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                  ],),
+              ),
+            ],
+          ),
 
-                    height: 276,
-                    width: 300,
-
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      //crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            alignment: Alignment.center,
-                            //width: DeviceInfo(context).width/1,
-
-                            child:
-                            SizedBox(
-                              height: 50,
-                              width:double.infinity,
-                              child: ElevatedButton(
-
-                                style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(MyTheme.backgroundcolor),
-
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-
-                                          borderRadius: BorderRadius.circular(12.0),
-                                          // side: BorderSide()
-                                        )
-                                    )
-                                ),
-
-                                onPressed: (){
-                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>Meeting_record_screen()));
-
-                                  // onPressUpdatePassword();
-                                },
-                                child: Text(
-                                  "APPOINTMENTS",
-                                  // AppLocalizations.of(context).update_password_ucf,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
-                                ),),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 30,),
-
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            alignment: Alignment.center,
-                            //width: DeviceInfo(context).width/1,
-
-                            child:
-                            SizedBox(
-                              height: 50,
-                              width:double.infinity,
-                              child: ElevatedButton(
-
-                                style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
-
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-
-                                          borderRadius: BorderRadius.circular(12.0),
-                                          //side: BorderSide()
-                                        )
-                                    )
-                                ),
-
-                                onPressed: (){
-                                  //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
-                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
-                                  // onPressUpdatePassword();
-                                },
-                                child:Text(
-                                  "REMINDERS",
-                                  // AppLocalizations.of(context).update_password_ucf,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
-                                ),),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 30,),
-
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            alignment: Alignment.center,
-                            //width: DeviceInfo(context).width/1,
-
-                            child:
-                            SizedBox(
-                              height: 50,
-                              width:double.infinity,
-                              child: ElevatedButton(
-
-                                style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(MyTheme.backgroundcolor),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-
-                                          borderRadius: BorderRadius.circular(12.0),
-                                          //side: BorderSide()
-                                        )
-                                    )
-                                ),
-
-                                onPressed: (){
-                                  //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
-                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountdetailsScreen()));
-                                  // onPressUpdatePassword();
-                                },
-                                child:Text(
-                                  "TRANSACTION",
-                                  // AppLocalizations.of(context).update_password_ucf,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
-                                ),),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],),
-            ),
-          ],
-        ),
-
-      ),),
+        ),),
+      ),
     );
-
-
 
   }
 }

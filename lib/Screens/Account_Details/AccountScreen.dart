@@ -20,6 +20,11 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
   var valu;
   String selectedValue = 'Transaction Type';
   List<String> options = ['Transaction Type', 'CR', 'DR',];
+
+  String selectedtransactiontype = 'all';
+  List<String> optionslist = ['all', 'CR', 'DR',];
+  var transationtypevalue='';
+
   var accountNumber='';
   var transationtype='';
 
@@ -110,6 +115,56 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
           todaybalancelistwidget(),
           SizedBox(height: 10,),
 
+          // Text("Govindd"),
+          // if(selectedtransactiontype == "CR")
+          //   Text("creadet cart"),
+          // if(selectedtransactiontype == "DR")
+          //   Text("DR cart"),
+          // if(selectedtransactiontype == "Transaction Type")
+          //   Text("Transaction Type"),
+
+
+          SizedBox(height: 10,),
+          Container(
+            padding: EdgeInsets.only(left: 10),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),  // Set the color of the border
+              borderRadius: BorderRadius.circular(12), // Set the border radius
+            ),
+            child: Row(
+           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Select Transaction Type: "),
+                SizedBox(width: 10,),
+                Row(
+                  children: [
+                    DropdownButton<String>(
+
+                      value: selectedtransactiontype,
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedtransactiontype = newValue!;
+                          transationtypevalue=newValue;
+                          print("Transation type ${newValue}");
+                        });
+                      },
+                      underline: Container(),
+                      items: optionslist.map((option) {
+                        return DropdownMenuItem<String>(
+                          value: option,
+                          child: Text(option),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(width: 15,),
+                  ],
+                ),
+                //SizedBox(width: 1,),
+              ],
+            ),
+          ),
+          SizedBox(height: 10,),
+
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -157,6 +212,15 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                   ),
                 ),
               ),
+
+             // if(selectedValue == "CR")
+             //   Text("creadet cart"),
+             //  if(selectedValue == "DR")
+             //    Text("DR cart"),
+             //  if(selectedValue == "Transaction Type")
+             //    Text("Transaction Type"),
+
+
               SizedBox(height: 15,),
               Text(
                 "Transaction Type: ",
@@ -392,7 +456,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.0),
+                      borderRadius: BorderRadius.circular(10.0),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
@@ -412,42 +476,42 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                             children: [
                               Row(
                                 children: [
-                                  Text("Type"),
+                                  Text("Transaction Type : "),
                                   SizedBox(width: 5,),
                                   Text(snapshot.data!.data![index]
                                       .type.toString()),
                                 ],
                               ),
-
                             ],
                           ),
 
                           Row(
                             children: [
                               Text("Amount :"),
+                              SizedBox(width: MediaQuery.of(context).size.width*0.185,),
                               Text(snapshot.data!.data![index].amount.toString()),
-                              SizedBox(width: 10,),
+
                             ],
                           ),
                           Row(
                             children: [
-                              Text("Old Balance:"),
-                              SizedBox(width: 2,),
+                              Text("Old Balance:   "),
+                              SizedBox(width: MediaQuery.of(context).size.width*0.1,),
                               Text(snapshot.data!.data![index].oldBalance.toString()),
                             ],
                           ),
                           Row(
                             children: [
                               Text("New Balance :"),
-                              SizedBox(width: 10,),
+                              SizedBox(width: MediaQuery.of(context).size.width*0.1,),
                               Text(snapshot.data!.data![index].newBalance.toString()),
                             ],
                           ),
 
                           Row(
                             children: [
-                              Text("Bank Name :"),
-                              SizedBox(width: 10,),
+                              Text("Bank Name :   "),
+                              SizedBox(width: MediaQuery.of(context).size.width*0.1,),
                               Flexible(child: Text(snapshot.data!.data![index].bankName.toString())),
                             ],
                           ),
@@ -473,17 +537,11 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
       future: todaybalanceApi(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            child: Center(
-               // child: CircularProgressIndicator()
-            ),
+          return Center(
+              child: CircularProgressIndicator()
           );
         } else if (snapshot.hasError) {
-          return Container(
-            child: Center(
-              child: Text('Error: Internal error'),
-            ),
-          );
+          return Text('Error: Internal error');
         }
         // else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
         //   return Container(
@@ -503,44 +561,94 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                   onTap: (){
                     print("govind kkk");
                   },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 4,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
+                  child:  Container(
+                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.2,right: MediaQuery.of(context).size.width*0.2),
+                    height: 90,
+                    //width: MediaQuery.of(context).size.width*0.1,
+                    //color: Colors.red,
+                    child:    Container(
 
-                          Row(
-                            children: [
-                              Text("Balance :"),
-                              SizedBox(width: 10,),
-                              Text(snapshot.requireData!.data.toString()),
-                            ],
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: Offset(0, 3),
                           ),
-
-                          Row(
-                            children: [
-                              Text("Message :"),
-                              SizedBox(width: 10,),
-                              Text(snapshot.requireData!.message.toString()),
-                            ]
-                          ),
-
                         ],
                       ),
+                      child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizedBox(height: 1,),
+                            Row(
+                              children: [
+                                Text("Balance :"),
+                                SizedBox(width: 10,),
+                                Text(snapshot.requireData!.data.toString(),style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),),
+                              ],
+                            ),
+
+                            Row(
+                                children: [
+                                  Text("Message :"),
+                                  SizedBox(width: 10,),
+                                  Text(snapshot.requireData!.message.toString()),
+                                ]
+                            ),
+                            SizedBox(height: 1,),
+
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                  )
+
+
+                  // Container(
+                  //
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.amber,
+                  //     borderRadius: BorderRadius.circular(10.0),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.black.withOpacity(0.2),
+                  //         spreadRadius: 2,
+                  //         blurRadius: 4,
+                  //         offset: Offset(0, 3),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: Container(
+                  //     padding: EdgeInsets.all(8.0),
+                  //     child: Column(
+                  //       children: [
+                  //
+                  //         Row(
+                  //           children: [
+                  //             Text("Balance :"),
+                  //             SizedBox(width: 10,),
+                  //             Text(snapshot.requireData!.data.toString()),
+                  //           ],
+                  //         ),
+                  //
+                  //         Row(
+                  //           children: [
+                  //             Text("Message :"),
+                  //             SizedBox(width: 10,),
+                  //             Text(snapshot.requireData!.message.toString()),
+                  //           ]
+                  //         ),
+                  //
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                 );
             },
             separatorBuilder: (context, index) {
@@ -586,7 +694,9 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+
       print(json.encode(response.data));
+      Navigator.pop(context);
     }
     else {
       print(response.statusMessage);
@@ -600,7 +710,8 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
       'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
     };
     var data = {
-      'payment_list': '1'
+      'payment_filter': '1',
+      'type': selectedtransactiontype
     };
     var dio = Dio();
     var response = await dio.request(

@@ -213,7 +213,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                               _showCustomDialog(context);
                                               print("print reminder list id:: ${snapshot.data!.data![index].id.toString()}");
                                             },
-                                            child: Icon(Icons.recycling_rounded)),
+                                            child: Icon(Icons.autorenew_rounded)),
 
                                         SizedBox(width: 10,),
 
@@ -285,6 +285,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
               title: Text('Select Reminder Type'),
               content: Container(
+                height: 600,
                 width: double.maxFinite,
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

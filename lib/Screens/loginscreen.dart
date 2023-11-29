@@ -45,30 +45,65 @@ class _LoginScreenState extends State<LoginScreen> {
                       Image.asset("assets/logo.png"),
                       SizedBox(height: 30,),
                       Text("Email", style: GoogleFonts.roboto(fontWeight: FontWeight.w500, fontSize: 16),),
+
                       TextField(
                         controller: _useridController,
+                       // keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          hintText: "Email",
-                          contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          labelText: "Email",
+                          filled: true,
+                          isDense: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),
+
+
+                      // TextField(
+                      //   controller: _useridController,
+                      //   decoration: InputDecoration(
+                      //     hintText: "Email",
+                      //     contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                      //     border: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(12),
+                      //     ),
+                      //   ),
+                      // ),
+
                       SizedBox(height: 10,),
                       Text("Password", style: GoogleFonts.roboto(fontWeight: FontWeight.w500, fontSize: 16)),
 
-                      TextField(
 
+
+                      TextField(
                         controller: _userpasswordController,
+                        // keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          hintText: "Password",
-                          contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          labelText: "Password",
+                          filled: true,
+                          isDense: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),
+
+
+
+                      // TextField(
+                      //
+                      //   controller: _userpasswordController,
+                      //   decoration: InputDecoration(
+                      //     hintText: "Password",
+                      //     contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                      //     border: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(12),
+                      //     ),
+                      //   ),
+                      // ),
 
 
                       Align(
