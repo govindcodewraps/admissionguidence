@@ -1,70 +1,53 @@
 import 'package:flutter/material.dart';
-import '../my_theme.dart';
 
-class Reschedule_Meeting_Screen extends StatefulWidget {
-
-
-  Reschedule_Meeting_Screen({super.key,});
+class griddd extends StatefulWidget {
+  const griddd({super.key});
 
   @override
-  State<Reschedule_Meeting_Screen> createState() => _Reschedule_Meeting_ScreenState();
+  State<griddd> createState() => _gridddState();
 }
 
-class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
+class _gridddState extends State<griddd> {
+  int selectedIdx = -1; // Index of the selected item
 
+  List<String> items = List.generate(10, (index) => 'Item $index');
 
   @override
   Widget build(BuildContext context) {
+    return
 
-
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.white, // Change the icon color here
-        ),
-        backgroundColor: MyTheme.backgroundcolor,
-        title: Text("Reschedule Meeting",
-          style: TextStyle(
-            color: Colors.white, // Change the text color here
-          ),),
+      GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 8.0,
+        mainAxisSpacing: 8.0,
       ),
-      body:
-      Container(
-        width: double.infinity,
-        color: MyTheme.backgroundcolor,
-        child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-
-            SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.fromLTRB(16, 16, 16, 20),
-                decoration: BoxDecoration(
-                    color: MyTheme.WHITECOLOR,
-                    borderRadius:BorderRadius.circular(12)
-                  // borderRadius: BorderRadius.all(Radius.circular(10))
-                ),
-
-                //height: 276,
-                width: 300,
-
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                 Text("dropdown"),
-               ],
+      itemCount: items.length,
+      itemBuilder: (BuildContext context, int index) {
+        return GestureDetector(
+          onTap: () {
+            // Update the selected index
+            setState(() {
+              selectedIdx = index;
+            });
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: selectedIdx == index ? Colors.blue : Colors.grey,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Center(
+              child: Text(
+                items[index],
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-          ],),
-
-      ),);
+          ),
+        );
+      },
+    );
   }
-
-
-
-
 }

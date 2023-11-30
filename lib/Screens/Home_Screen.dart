@@ -5,6 +5,7 @@ import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../my_theme.dart';
 import 'Account_Details/AccountScreen.dart';
 import 'Meeting_record_Screen.dart';
@@ -62,12 +63,14 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Positioned(
                   right: 15,
-                  top: 10,
+                  top: 13,
                   child:
                   //ElevatedButton(onPressed: (){}, child:Text("Logout",style:TextStyle(color: Colors.red),) )
                   InkWell(
-                      onTap: (){
-                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
+                      onTap: () async{
+                        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                        sharedPreferences.remove('email');
+                       Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
                       },
                       child:
                       Column(

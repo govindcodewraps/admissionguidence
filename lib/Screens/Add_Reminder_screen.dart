@@ -58,7 +58,11 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SingleChildScrollView(
-              child: Container(
+              child:
+              _isLoading
+                  ? CircularProgressIndicator() // Show the circular progress indicator
+                  :
+              Container(
                 padding: EdgeInsets.fromLTRB(16, 16, 16, 20),
                 decoration: BoxDecoration(
                   color: MyTheme.WHITECOLOR,
@@ -188,6 +192,9 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
   }
 
   Future<void> addmeeting(date,remark) async{
+    setState(() {
+      _isLoading = true;
+    });
 
     var headers = {
       'accept': 'application/json',

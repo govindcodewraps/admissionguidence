@@ -15,6 +15,8 @@ import '../models/Reminder_List_Model.dart';
 import '../my_theme.dart';
 import 'Add_Reminder_screen.dart';
 import 'Edit_Reminder.dart';
+import 'ReminderTypeScreen.dart';
+import 'dropdownscreen.dart';
 
 class Reminder_Screen extends StatefulWidget {
   const Reminder_Screen({super.key});
@@ -24,10 +26,11 @@ class Reminder_Screen extends StatefulWidget {
 }
 
 class _Reminder_ScreenState extends State<Reminder_Screen> {
-
+  int selectedIdx = -1;
+  bool isLoading = false;
   var Remindertypevalue;
   var ReminderListvalue;
-  int selectedIdx = -1;
+  bool _isLoading = false;
 
   TextEditingController dateInputController = TextEditingController();
 
@@ -64,15 +67,26 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
           ),
         ),
       ),
-      body: Container(
-        width: double.infinity,
-        color: MyTheme.backgroundcolor,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              reminderlistwidget(),
-            ],
+      body: SingleChildScrollView(
+        child:
+        Center(
+
+          child:
+          // isLoading
+          //     ? CircularProgressIndicator() // Show the circular progress indicator
+          //     :
+          Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height*1,
+            color: MyTheme.backgroundcolor,
+            child:
+            Column(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                reminderlistwidget(),
+
+              ],
+            ),
           ),
         ),
       ),
@@ -210,8 +224,11 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                               });
                                               Remindertypevalue == null ? Remindertypevalue.clear:"";
                                               ReminderListvalue=snapshot.data!.data![index].id.toString();
-                                              _showCustomDialog(context);
+                                              //_showCustomDialog(context);
                                               print("print reminder list id:: ${snapshot.data!.data![index].id.toString()}");
+
+                                           Navigator.push(context, MaterialPageRoute(builder: (context)=>ReminderTypesScreen(reminderid:snapshot.data!.data![index].id.toString() ,)));
+
                                             },
                                             child: Icon(Icons.autorenew_rounded)),
 
@@ -225,6 +242,12 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                               deletreminderapi(reminderid.toString());
                                             },
                                             child: Icon(Icons.delete)),
+                                        // InkWell(
+                                        //     onTap: (){
+                                        //       Navigator.push(context, MaterialPageRoute(builder: (context)=>griddd()));
+                                        //         },
+                                        //     child: Icon(Icons.delete)),
+
 
                                       ],
                                     ),
@@ -287,48 +310,33 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
               content: Container(
                 height: 600,
                 width: double.maxFinite,
-                child: GridView.builder(
+                child:
+                GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 8.0,
                     mainAxisSpacing: 8.0,
                   ),
-                  itemCount:snapshot.data!.data!.length,
+                  itemCount: snapshot.data!.data!.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return GridTile(
-                      child:
-
-                      InkWell(
-                        onTap: (){
-                          Remindertypevalue=snapshot.data!.data![index].id.toString();
-                          //print(snapshot.data!.data![index].id.toString());
-                          print("Reminder type value:: ${Remindertypevalue}");
-                          Fluttertoast.showToast(
-                            msg: "Selected : ${snapshot.data!.data![index].type.toString()}",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.black,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
+                    return GestureDetector(
+                      onTap: () {
+                        // Update the selected index
+                        setState(() {
+                          selectedIdx = index;
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: selectedIdx == index ? Colors.blue : Colors.grey,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(
+                          child: Text(
+                            snapshot.data!.data![index].type.toString(),
+                            style: TextStyle(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                            BoxShadow(
-                            color: Colors.grey, // Choose your shadow color
-                            blurRadius: 5.0,   // Adjust the blur radius
-                            offset: Offset(0, 2), // Adjust the offset
-                          ),
-                          ],                          ),
-                          child: Center(
-                            child: Text(
-                              //'Reminder Type',
-                              snapshot.data!.data![index].type.toString(),
-                              style: TextStyle(color: Colors.black,fontWeight:FontWeight.w500,fontSize: 16),
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
@@ -336,6 +344,56 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                     );
                   },
                 ),
+
+                // GridView.builder(
+                //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                //     crossAxisCount: 2,
+                //     crossAxisSpacing: 8.0,
+                //     mainAxisSpacing: 8.0,
+                //   ),
+                //   itemCount:snapshot.data!.data!.length,
+                //   itemBuilder: (BuildContext context, int index) {
+                //     return GridTile(
+                //       child:
+                //
+                //       InkWell(
+                //         onTap: (){
+                //           Remindertypevalue=snapshot.data!.data![index].id.toString();
+                //           //print(snapshot.data!.data![index].id.toString());
+                //           print("Reminder type value:: ${Remindertypevalue}");
+                //           Fluttertoast.showToast(
+                //             msg: "Selected : ${snapshot.data!.data![index].type.toString()}",
+                //             toastLength: Toast.LENGTH_SHORT,
+                //             gravity: ToastGravity.CENTER,
+                //             timeInSecForIosWeb: 1,
+                //             backgroundColor: Colors.black,
+                //             textColor: Colors.white,
+                //             fontSize: 16.0,
+                //           );
+                //         },
+                //         child: Container(
+                //           decoration: BoxDecoration(
+                //               color: Colors.white,
+                //               borderRadius: BorderRadius.circular(12),
+                //             boxShadow: [
+                //             BoxShadow(
+                //             color: Colors.grey, // Choose your shadow color
+                //             blurRadius: 5.0,   // Adjust the blur radius
+                //             offset: Offset(0, 2), // Adjust the offset
+                //           ),
+                //           ],                          ),
+                //           child: Center(
+                //             child: Text(
+                //               //'Reminder Type',
+                //               snapshot.data!.data![index].type.toString(),
+                //               style: TextStyle(color: Colors.black,fontWeight:FontWeight.w500,fontSize: 16),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // ),
               ),
               actions: <Widget>[
                 TextButton(
@@ -349,18 +407,6 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                 ),
                 TextButton(
                   onPressed: () {
-                   // Navigator.of(context).pop();
-                    // Remindertypevalue == null;
-                    // Fluttertoast.showToast(
-                    //   msg: "Select Reminder Type",
-                    //   toastLength: Toast.LENGTH_LONG,
-                    //   gravity: ToastGravity.CENTER,
-                    //   timeInSecForIosWeb: 1,
-                    //   backgroundColor: Colors.grey,
-                    //   textColor: Colors.white,
-                    //   fontSize: 16.0,
-                    // );
-                   // print("Select id ");
 
                     setreminderapi(ReminderListvalue,Remindertypevalue);
                   },
@@ -435,6 +481,9 @@ Future setreminderapi(reminderid,typeid) async{
 }
 
 Future deletreminderapi(reminderid,) async{
+  setState(() {
+    isLoading = true;
+  });
   var headers = {
     'accept': 'application/json',
     'Content-Type': 'application/x-www-form-urlencoded',
@@ -465,11 +514,15 @@ Future deletreminderapi(reminderid,) async{
       textColor: Colors.white,
       fontSize: 16.0,
     );
-    Navigator.pop(context);
+   // Navigator.pop(context);
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
   }
   else {
     print(response.statusMessage);
   }
+  setState(() {
+    isLoading = true;
+  });
 }
 
   Future<ReminderListModel> reminderlistapi() async {

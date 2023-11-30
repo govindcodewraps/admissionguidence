@@ -552,44 +552,15 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                     Text(snapshot.data!.data![index].email.toString()),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    Text("Contact :"),
-                                    SizedBox(width: 10,),
-                                    Text("+91 98765432121"),
-                                  ],
-                                ),
+                                // Row(
+                                //   children: [
+                                //     Text("Contact :"),
+                                //     SizedBox(width: 10,),
+                                //     Text("+91 98765432121"),
+                                //   ],
+                                // ),
 
-                                Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  elevation: 2,
-                                  color: Colors.white,
-                                  child: Material( // Wrap with Material or GestureDetector
-                                    color: Colors.transparent,
-                                    child: InkWell(
-                                      onTap: () {
-                                        // Add your code here to be executed when the Card is tapped
-                                        print('hello');
-                                      },
-                                      child: ExpansionTile(
-                                        title: Text('Reschedule List'),
-                                        children: <Widget>[
-                                          ListTile(
-                                            title: Column(
-                                              children: [
-                                                Text("  "),
-                                                // upcomingappointmentlist(),
-                                                SizedBox(height: 20,),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
+
                               ],
                             ),
                           ),

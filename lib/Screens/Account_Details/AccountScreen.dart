@@ -562,8 +562,8 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                     print("govind kkk");
                   },
                   child:  Container(
-                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.2,right: MediaQuery.of(context).size.width*0.2),
-                    height: 90,
+                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.15,right: MediaQuery.of(context).size.width*0.15),
+                    height: 80,
                     //width: MediaQuery.of(context).size.width*0.1,
                     //color: Colors.red,
                     child:    Container(
@@ -581,27 +581,19 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                         ],
                       ),
                       child: Container(
-                        padding: EdgeInsets.all(8.0),
+                        padding: EdgeInsets.only(left: 7,right: 7),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SizedBox(height: 1,),
                             Row(
                               children: [
-                                Text("Balance :"),
-                                SizedBox(width: 10,),
-                                Text(snapshot.requireData!.data.toString(),style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500),),
+                                Text("Today's Balance = Rs.",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),),
+                                SizedBox(width: 7,),
+                                Text(snapshot.requireData!.data.toString(),style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: Colors.green),),
                               ],
                             ),
 
-                            Row(
-                                children: [
-                                  Text("Message :"),
-                                  SizedBox(width: 10,),
-                                  Text(snapshot.requireData!.message.toString()),
-                                ]
-                            ),
-                            SizedBox(height: 1,),
 
                           ],
                         ),
@@ -609,46 +601,6 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                     ),
                   )
 
-
-                  // Container(
-                  //
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.amber,
-                  //     borderRadius: BorderRadius.circular(10.0),
-                  //     boxShadow: [
-                  //       BoxShadow(
-                  //         color: Colors.black.withOpacity(0.2),
-                  //         spreadRadius: 2,
-                  //         blurRadius: 4,
-                  //         offset: Offset(0, 3),
-                  //       ),
-                  //     ],
-                  //   ),
-                  //   child: Container(
-                  //     padding: EdgeInsets.all(8.0),
-                  //     child: Column(
-                  //       children: [
-                  //
-                  //         Row(
-                  //           children: [
-                  //             Text("Balance :"),
-                  //             SizedBox(width: 10,),
-                  //             Text(snapshot.requireData!.data.toString()),
-                  //           ],
-                  //         ),
-                  //
-                  //         Row(
-                  //           children: [
-                  //             Text("Message :"),
-                  //             SizedBox(width: 10,),
-                  //             Text(snapshot.requireData!.message.toString()),
-                  //           ]
-                  //         ),
-                  //
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                 );
             },
             separatorBuilder: (context, index) {
@@ -696,7 +648,10 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
       );
 
       print(json.encode(response.data));
-      Navigator.pop(context);
+      //Navigator.pop(context);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>AccountdetailsScreen()));
+
+
     }
     else {
       print(response.statusMessage);

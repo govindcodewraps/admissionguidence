@@ -89,21 +89,20 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
           ),),
       ),
       body:
-      Container(
-        width: double.infinity,
+      SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.only(top:40),
+          height: MediaQuery.of(context).size.height*1,
+          width: double.infinity,
 
 
-        color: MyTheme.backgroundcolor,
-        child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          color: MyTheme.backgroundcolor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
+            children: [
 
-
-
-
-            SingleChildScrollView(
-              child: Container(
+              Container(
                 padding: EdgeInsets.fromLTRB(16, 16, 16, 20),
                 decoration: BoxDecoration(
                     color: MyTheme.WHITECOLOR,
@@ -115,8 +114,8 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                 width: 300,
 
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                 // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
                     //Text(widget.meetingid),
@@ -150,7 +149,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                         DateTime? pickedDate = await showDatePicker(
                             context: context,
                             initialDate: DateTime.now(),
-                            firstDate: DateTime(1950),
+                            firstDate: DateTime.now(),
                             lastDate: DateTime(2050));
 
                         if (pickedDate != null) {
@@ -261,7 +260,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                               // Navigator.push(context,MaterialPageRoute(builder: (context)=>Reschedule_Screen()));
                               // onPressUpdatePassword();
 
-                              //rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
+                              rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
 
                             },
                             child:Text(
@@ -279,9 +278,9 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                   ],
                 ),
               ),
-            ),
-          ],),
+            ],),
 
+        ),
       ),);
   }
 
@@ -373,8 +372,6 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
             child: Column(
               children: [
 
-
-
                 Container(
                   width: MediaQuery.of(context).size.width*1,
                   padding: EdgeInsets.only(left: 10),
@@ -399,6 +396,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
 
                     items: [
                       DropdownMenuItem<String>(
+
                         value: 'Select Time',
                         child: Text('Select Time'),
                       ),

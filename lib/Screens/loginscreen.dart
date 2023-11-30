@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../my_theme.dart';
 import 'Home_Screen.dart';
+
+String? finalEmail;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,6 +20,27 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _useridController = TextEditingController();
   TextEditingController _userpasswordController = TextEditingController();
   bool _isLoading = false;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getValidationData().whenComplete(() async {
+ Navigator.push(context, MaterialPageRoute(builder: (context)=>finalEmail == null ?LoginScreen() : HomeScreen()));
+    });
+
+    super.initState();
+  }
+
+  Future getValidationData() async{
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var obtainEmail = sharedPreferences.getString('email');
+    setState(() {
+      finalEmail =obtainEmail;
+    });
+    print("""""""""""");
+    print(finalEmail);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,13 +130,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       // ),
 
 
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          'Forget Password?',
-                          style: GoogleFonts.roboto(fontWeight: FontWeight.w500, fontSize: 16),
-                        ),
-                      ),
+                      // Align(
+                      //   alignment: Alignment.centerRight,
+                      //   child: Text(
+                      //     'Forget Password?',
+                      //     style: GoogleFonts.roboto(fontWeight: FontWeight.w500, fontSize: 16),
+                      //   ),
+                      // ),
                       SizedBox(height: 30,),
                       Align(
                         alignment: Alignment.centerRight,
@@ -131,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_useridController.text.isEmpty ||
                                     _userpasswordController.text.isEmpty) {
                                   Fluttertoast.showToast(
@@ -147,7 +171,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                   setState(() {
                                     _isLoading = true;
                                   });
+
+                                  final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                                  sharedPreferences.setString('email',_useridController.text);
+
                                   loginapi(_useridController.text.toString(), _userpasswordController.text.toString());
+
+
+
+
+
                                 }
                               },
                               child: Text(
