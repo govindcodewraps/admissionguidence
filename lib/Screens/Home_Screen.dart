@@ -38,6 +38,39 @@ class _HomeScreenState extends State<HomeScreen> {
     print(_time);
     print("time");
 
+
+// ...
+
+    void showLogoutConfirmationDialog(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Logout Confirmation"),
+            content: Text("Are you sure you want to logout?"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text("Cancel",style: TextStyle(color: Colors.grey),),
+              ),
+              TextButton(
+                onPressed: () async {
+                  // Perform logout actions
+                  final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                  sharedPreferences.remove('email');
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                },
+                child: Text("Logout",style: TextStyle(color: Colors.red),),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return WillPopScope(
       onWillPop: () async {
         if (currentBackPressTime == null ||
@@ -65,21 +98,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   right: 15,
                   top: 13,
                   child:
-                  //ElevatedButton(onPressed: (){}, child:Text("Logout",style:TextStyle(color: Colors.red),) )
                   InkWell(
-                      onTap: () async{
-                        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                        sharedPreferences.remove('email');
-                       Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
-                      },
-                      child:
-                      Column(
-                        children: [
-                          Icon(Icons.logout,color: Colors.red,),
-                          Text("Logout",style: TextStyle(color: Colors.red),),
-                        ],
-                      )
-                     // Text("Logout",style:TextStyle(color: Colors.red,fontSize: 20,fontWeight: FontWeight.w500),)
+                    onTap: () {
+                      showLogoutConfirmationDialog(context);
+                    },
+                    child: Column(
+                      children: [
+                        Icon(Icons.logout, color: Colors.red),
+                        Text("Logout", style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
                   )
 
               ),
@@ -241,6 +269,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),),
       ),
     );
-
   }
 }

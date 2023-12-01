@@ -19,11 +19,11 @@ class Reschedule_Meeting_Screen extends StatefulWidget {
   String meetingid;
   String date;
   String appointmenttime;
- // DateFormat('yyyy-MM-dd').format(pickedDate)
+  // DateFormat('yyyy-MM-dd').format(pickedDate)
   //String timeslotdate
 
 
-   Reschedule_Meeting_Screen({super.key, required this.meetingid,required this.date,required this.appointmenttime,});
+  Reschedule_Meeting_Screen({super.key, required this.meetingid,required this.date,required this.appointmenttime,});
 
   @override
   State<Reschedule_Meeting_Screen> createState() => _Reschedule_Meeting_ScreenState();
@@ -33,9 +33,9 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
   TextEditingController dateInputController = TextEditingController();
   TextEditingController remarkInputController = TextEditingController();
   var _inputdate;
- //_inputdate = _inputdate.isEmpty ? '2023-11-20' : _inputdate,
- var _inputtime;
- var _timeslotid;
+  //_inputdate = _inputdate.isEmpty ? '2023-11-20' : _inputdate,
+  var _inputtime;
+  var _timeslotid;
   String newdate =" ";
 
 
@@ -49,7 +49,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
   }
 
   String selectedValue = 'Select Time';
- // List<String> option = ['Transaction Type', 'CR', 'DR',];
+  // List<String> option = ['Transaction Type', 'CR', 'DR',];
   //Map optio={};
 
   @override
@@ -60,7 +60,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
 
   @override
   Widget build(BuildContext context) {
-   // print(option);
+    // print(option);
     print("print mapp drop down list ");
     //print(_time);
     //print(_time.format(context));
@@ -99,7 +99,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
           color: MyTheme.backgroundcolor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-          // mainAxisAlignment: MainAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
 
               Container(
@@ -115,7 +115,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
 
                 child: Column(
                   //mainAxisAlignment: MainAxisAlignment.center,
-                 // crossAxisAlignment: CrossAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
                     //Text(widget.meetingid),
@@ -128,49 +128,82 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                     SizedBox(height: 10,),
 
                     //DOB
-                    TextFormField(
+                    // TextFormField(
+                    //
+                    //   decoration:  InputDecoration(
+                    //     border: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(12),
+                    //       borderSide: BorderSide(
+                    //           width: 3, color: Colors.greenAccent), //<-- SEE HERE
+                    //     ),
+                    //     // border: InputBorder.none,
+                    //     //label: "DOB",
+                    //     labelText:"Date",
+                    //     hintText: "Date",
+                    //     suffixIcon: Icon(Icons.calendar_month,color: Colors.black,),
+                    //
+                    //   ),
+                    //   controller: dateInputController,
+                    //   readOnly: true,
+                    //   onTap: () async {
+                    //     DateTime? pickedDate = await showDatePicker(
+                    //         context: context,
+                    //         initialDate: DateTime.now(),
+                    //         firstDate: DateTime.now(),
+                    //         lastDate: DateTime(2050));
+                    //
+                    //     if (pickedDate != null) {
+                    //       dateInputController.text =
+                    //           DateFormat('yyyy-MM-dd').format(pickedDate);
+                    //     }
+                    //
+                    //     // Call the future method when both dates are selected
+                    //
+                    //     // if (dateInputController.text.isNotEmpty ? dateInputController.text == '2023-11-29' : false
+                    //     // ) {
+                    //     //   // Call the future method when both dates are selected
+                    //     //
+                    //     // }
+                    //
+                    //   },
+                    // ),
 
-                      decoration:  InputDecoration(
+
+
+
+                    TextFormField(
+                      decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                              width: 3, color: Colors.greenAccent), //<-- SEE HERE
+                              width: 3, color: Colors.greenAccent),
                         ),
-                        // border: InputBorder.none,
-                        //label: "DOB",
                         labelText:"Date",
                         hintText: "Date",
                         suffixIcon: Icon(Icons.calendar_month,color: Colors.black,),
-
                       ),
                       controller: dateInputController,
                       readOnly: true,
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2050));
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2050),
+                        );
 
                         if (pickedDate != null) {
                           dateInputController.text =
                               DateFormat('yyyy-MM-dd').format(pickedDate);
+
+                          // Fetch time slots for the selected date
+                          await fetchTimeSlots(dateInputController.text);
                         }
-
-                          // Call the future method when both dates are selected
-
-                        // if (dateInputController.text.isNotEmpty ? dateInputController.text == '2023-11-29' : false
-                        // ) {
-                        //   // Call the future method when both dates are selected
-                        //
-                        // }
-
-
-
-
-
                       },
                     ),
+
+
+
                     SizedBox(height: 30,),
                     //Time picker
 
@@ -260,7 +293,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                               // Navigator.push(context,MaterialPageRoute(builder: (context)=>Reschedule_Screen()));
                               // onPressUpdatePassword();
 
-                              rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
+                             rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
 
                             },
                             child:Text(
@@ -321,19 +354,19 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
       Navigator.pop(context);
     }
     else if(response.statusCode == 401)
-      {
-        newdate=" ";
-        print("40111");
-        Fluttertoast.showToast(
-                    msg: "Time slot is already booked. Please choose another time",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.redAccent[100],
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-                  );
-      }
+    {
+      newdate=" ";
+      print("40111");
+      Fluttertoast.showToast(
+        msg: "Time slot is already booked. Please choose another time",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.redAccent[100],
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
     else {
       print(response.reasonPhrase);
     }
@@ -343,7 +376,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
 
   Widget timeslotwidget() {
     return FutureBuilder(
-      future: timeslotlist(),
+      future: timeslotlist(dateInputController),
       builder: (context, snapshot) {
         if
         (snapshot.connectionState == ConnectionState.waiting) {
@@ -368,7 +401,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
         else
         {
           return Container(
-           // padding: EdgeInsets.only(left: 16, right: 16),
+            // padding: EdgeInsets.only(left: 16, right: 16),
             child: Column(
               children: [
 
@@ -387,7 +420,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                     onChanged: (newValue) {
                       setState(() {
                         selectedValue = newValue!;
-                       print(newValue);
+                        print(newValue);
                         _timeslotid=newValue;
                         print("time slot id print ${_timeslotid}");
                       });
@@ -411,7 +444,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                   ),
                 ),
 
-           // selectedValue= snapshot.data.data.length;
+                // selectedValue= snapshot.data.data.length;
               ],
             ),
           );
@@ -420,46 +453,57 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
     );
   }
 
-
-
-Future<TimeslotModel?> timeslotlist() async {
-  var headers = {
-    'accept': 'application/json',
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
-  };
-  var data = {
-    'time_slot': '1',
-    'date':widget.date
-    //'date': '2023-11-29'
-  };
-  var dio = Dio();
-  var response = await dio.request(
-    'https://admissionguidanceindia.com/appdata/webservice.php',
-    options: Options(
-      method: 'POST',
-      headers: headers,
-    ),
-    data: data,
-  );
-
-  if (response.statusCode == 200) {
-
-
-    var responseData = response.data is String
-        ? json.decode(response.data)
-        : response.data;
-    print("time slot list");
-    print(responseData);
-    print("time slot list");
-
-   //optionss=responseData;
-    return TimeslotModel.fromJson(responseData);
+  Future<void> fetchTimeSlots(String selectedDate) async {
+    // Call your timeslotlist API with the selected date
+    try {
+      TimeslotModel? timeslotData = await timeslotlist(selectedDate);
+      if (timeslotData != null) {
+        // Handle the fetched time slots, if needed
+      }
+    } catch (error) {
+      // Handle any errors that may occur during API call
+      print("Error fetching time slots: $error");
+    }
   }
-  else {
-    print(response.statusMessage);
+
+  Future<TimeslotModel?> timeslotlist(selectedDate) async {
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
+    };
+    var data = {
+      'time_slot': '1',
+      'date':"selectedDate"
+      //'date': '2023-11-29'
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+
+
+      var responseData = response.data is String
+          ? json.decode(response.data)
+          : response.data;
+      print("time slot list");
+      print(responseData);
+      print("time slot list");
+
+      //optionss=responseData;
+      return TimeslotModel.fromJson(responseData);
+    }
+    else {
+      print(response.statusMessage);
+    }
   }
-}
 
 }
 

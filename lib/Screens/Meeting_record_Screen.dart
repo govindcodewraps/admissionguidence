@@ -1026,6 +1026,9 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                           children: [
                                             InkWell(onTap: () {
                                               // Add your logic here
+                                              print("Filterd Meeting ID upcoming : ${snapshot.data!.data![index].id.toString()}");
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString())));
+
                                             },
                                                 child: Icon(Icons.calendar_month_outlined)),
                                             SizedBox(width: 10,),
@@ -1087,9 +1090,11 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   SizedBox(
                                     width: 2,
                                   ),
-                                  Text(appointmentsListModel
-                                      .data![index].appointmentDate
-                                      .toString()),
+                                  Text( DateFormat('yyyy-MM-dd').format(
+                                    appointmentsListModel
+                                        .data![index].appointmentDate!.toLocal(),
+                                  ),
+                                  )
                                 ],
                               ),
                               Row(
@@ -1276,6 +1281,10 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
       print("successfuly hit booking status");
       print(json.encode(response.data));
+
+
+     // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Meeting_record_screen()));
+
     }
     else {
       print(response.statusMessage);

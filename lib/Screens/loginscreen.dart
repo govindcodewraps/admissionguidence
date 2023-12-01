@@ -22,25 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    getValidationData().whenComplete(() async {
- Navigator.push(context, MaterialPageRoute(builder: (context)=>finalEmail == null ?LoginScreen() : HomeScreen()));
-    });
 
-    super.initState();
-  }
-
-  Future getValidationData() async{
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var obtainEmail = sharedPreferences.getString('email');
-    setState(() {
-      finalEmail =obtainEmail;
-    });
-    print("""""""""""");
-    print(finalEmail);
-  }
 
   @override
   Widget build(BuildContext context) {
