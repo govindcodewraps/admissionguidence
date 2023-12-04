@@ -35,6 +35,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
      accountNameNumberApi();
      paymentlistapi();
      todaybalanceApi();
+     accountNameNumberwidget();
     super.initState();
   }
   String formatAccountNumber(String accountNumber) {
@@ -192,36 +193,16 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             // Text(valu),
-              //SizedBox(height: 15,),
               Text(
-                "Amount : ",
+                "Account Number : ",
                 style: TextStyle(fontSize: 20),
               ),
               SizedBox(height: 10,),
-              TextField(
-                controller: _amountcontroller,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  labelText: "Enter Amount",
-                  filled: true,
-                  isDense: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-
-             // if(selectedValue == "CR")
-             //   Text("creadet cart"),
-             //  if(selectedValue == "DR")
-             //    Text("DR cart"),
-             //  if(selectedValue == "Transaction Type")
-             //    Text("Transaction Type"),
-
-
+              accountNameNumberwidget(),
               SizedBox(height: 15,),
+             // Text(valu),
+              //SizedBox(height: 15,),
+
               Text(
                 "Transaction Type: ",
                 style: TextStyle(fontSize: 20),
@@ -252,13 +233,37 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                   }).toList(),
                 ),
               ),
-              SizedBox(height: 15,),
+              SizedBox(height: 10,),
               Text(
-                "Account Number : ",
+                "Amount : ",
                 style: TextStyle(fontSize: 20),
               ),
-              SizedBox(height: 10,),
-              accountNameNumberwidget(),
+              SizedBox(height: 15,),
+              TextField(
+                controller: _amountcontroller,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  labelText: "Enter Amount",
+                  filled: true,
+                  isDense: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+
+             // if(selectedValue == "CR")
+             //   Text("creadet cart"),
+             //  if(selectedValue == "DR")
+             //    Text("DR cart"),
+             //  if(selectedValue == "Transaction Type")
+             //    Text("Transaction Type"),
+
+
+
+
+
             //  timeslotwidget(),
 
             ],

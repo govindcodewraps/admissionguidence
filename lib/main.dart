@@ -79,6 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 2), () {
       // Navigate to the home screen after the delay
       getValidationData().whenComplete(() async {
+       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>finalEmail == null ?LoginScreen() : HomeScreen()));
       });
     });
@@ -99,7 +100,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyTheme.backgroundcolor, // Set your desired background color
+      backgroundColor: MyTheme.WHITECOLOR, // Set your desired background color
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

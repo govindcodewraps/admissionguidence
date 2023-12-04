@@ -75,7 +75,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                   children: [
                     // Text(widget.meetingid.toString()),
                     Text(
-                      "Edit Reminder",
+                      "Add Reminder",
                       style: TextStyle(
                         color: MyTheme.backgroundcolor,
                         fontSize: 16,
