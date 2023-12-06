@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -53,139 +54,151 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
       body:
       Container(
         width: double.infinity,
-        color: MyTheme.backgroundcolor,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SingleChildScrollView(
-              child:
-              _isLoading
-                  ? CircularProgressIndicator() // Show the circular progress indicator
-                  :
-              Container(
-                padding: EdgeInsets.fromLTRB(16, 16, 16, 20),
-                decoration: BoxDecoration(
-                  color: MyTheme.WHITECOLOR,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                width: 300,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Text(widget.meetingid.toString()),
-                    Text(
-                      "Add Reminder",
-                      style: TextStyle(
-                        color: MyTheme.backgroundcolor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+        //color: MyTheme.backgroundcolor,
+        decoration: BoxDecoration(
+          color: Colors.yellow,
+
+          image: DecorationImage(
+
+            image: AssetImage('assets/background.jpg'), // Replace with your image asset path
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 4, sigmaY:4),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SingleChildScrollView(
+                child:
+                _isLoading
+                    ? CircularProgressIndicator() // Show the circular progress indicator
+                    :
+                Container(
+                  padding: EdgeInsets.fromLTRB(16, 16, 16, 20),
+                  decoration: BoxDecoration(
+                    color: MyTheme.WHITECOLOR,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  width: 300,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Text(widget.meetingid.toString()),
+                      Text(
+                        "Add Reminder",
+                        style: TextStyle(
+                          color: MyTheme.backgroundcolor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    // DOB
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            width: 3,
-                            color: Colors.greenAccent,
+                      SizedBox(height: 10),
+                      // DOB
+                      TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              width: 3,
+                              color: Colors.greenAccent,
+                            ),
+                          ),
+                          labelText: "Date",
+                          hintText: 'Date',
+                          suffixIcon: Icon(Icons.calendar_month, color: Colors.black),
+                        ),
+                        controller: dateInputController,
+                        readOnly: true,
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2050),
+                          );
+
+                          if (pickedDate != null) {
+                            dateInputController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                          }
+                        },
+                      ),
+
+                      SizedBox(height: 30),
+                      TextField(
+                        controller: remarkInputtextController,
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        labelText: "Date",
-                        hintText: 'Date',
-                        suffixIcon: Icon(Icons.calendar_month, color: Colors.black),
                       ),
-                      controller: dateInputController,
-                      readOnly: true,
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2050),
-                        );
+                      SizedBox(height: 30),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all<Color>(MyTheme.backgroundcolor),
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                ),
+                              ),
+                              onPressed: ()
+                              {
+                                if (dateInputController.text.isEmpty ||
+                                    remarkInputtextController.text.isEmpty) {
+                                  Fluttertoast.showToast(
+                                    msg: "Please fill in all fields",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0,
+                                  );
+                                } else {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+                                  addmeeting(dateInputController.text,remarkInputtextController.text);                              }
+                              },
 
-                        if (pickedDate != null) {
-                          dateInputController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                        }
-                      },
-                    ),
+                              //
+                              // {
+                              //   print("Date input ${dateInputController.text}");
+                              //   print("Remark input ${remarkInputtextController.text}");
+                              //   updatemeeting(dateInputController.text,remarkInputtextController.text,widget.meetingid);
+                              //   // Handle button press
+                              // },
 
-                    SizedBox(height: 30),
-                    TextField(
-                      controller: remarkInputtextController,
-                      maxLines: 4,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 10.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 30),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          height: 50,
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(MyTheme.backgroundcolor),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
+                              child: Text(
+                                "Save",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
-                            onPressed: ()
-                            {
-                              if (dateInputController.text.isEmpty ||
-                                  remarkInputtextController.text.isEmpty) {
-                                Fluttertoast.showToast(
-                                  msg: "Please fill in all fields",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0,
-                                );
-                              } else {
-                                setState(() {
-                                  _isLoading = true;
-                                });
-                                addmeeting(dateInputController.text,remarkInputtextController.text);                              }
-                            },
-
-                            //
-                            // {
-                            //   print("Date input ${dateInputController.text}");
-                            //   print("Remark input ${remarkInputtextController.text}");
-                            //   updatemeeting(dateInputController.text,remarkInputtextController.text,widget.meetingid);
-                            //   // Handle button press
-                            // },
-
-                            child: Text(
-                              "Save",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/Time_slot_model.dart';
 import '../my_theme.dart';
+import 'Meeting_record_Screen.dart';
 
 class Reschedule_Meeting_Screen extends StatefulWidget {
   String meetingid;
@@ -37,7 +38,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
   var _inputtime;
   var _timeslotid;
   String newdate =" ";
-
+  bool _isLoading = false;
 
   Time _time = Time(hour: 11, minute: 30, second: 20);
   bool iosStyle = true;
@@ -90,7 +91,14 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
       ),
       body:
       SingleChildScrollView(
-        child: Container(
+        child:
+        _isLoading
+            ? Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Center(child: CircularProgressIndicator()),
+            ) // Show the circular progress indicator
+            :
+        Container(
           padding: EdgeInsets.only(top:40),
           height: MediaQuery.of(context).size.height*1,
           width: double.infinity,
@@ -320,7 +328,9 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
 
 
   Future rescheduleMeetingApi(_bookingId, _date, _time, _remark)async{
-
+    setState(() {
+      _isLoading = true;
+    });
     var headers = {
       'accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -352,6 +362,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
         fontSize: 16.0,
       );
       Navigator.pop(context);
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Meeting_record_screen()));
     }
     else if(response.statusCode == 401)
     {
@@ -371,6 +382,9 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
       print(response.reasonPhrase);
     }
 
+    setState(() {
+      _isLoading = false;
+    });
   }
 
 
@@ -378,23 +392,24 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
     return FutureBuilder(
       future: timeslotlist(dateInputController),
       builder: (context, snapshot) {
-        if
-        (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-        // else if (snapshot.hasError) {
+        // if
+        // (snapshot.connectionState == ConnectionState.waiting) {
         //   return Container(
-        //     child: Center(
-        //       child: Text('Error: Internal error'),
-        //     ),
+        //     child: Center(child: CircularProgressIndicator()),
         //   );
         // }
-        else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+        // // else if (snapshot.hasError) {
+        // //   return Container(
+        // //     child: Center(
+        // //       child: Text('Error: Internal error'),
+        // //     ),
+        // //   );
+        // // }
+        // else
+          if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
           return Container(
             child: Center(
-              child: Text('No data available.'),
+              child: CircularProgressIndicator(),
             ),
           );
         }

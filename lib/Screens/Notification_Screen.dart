@@ -1,9 +1,11 @@
 
 import 'dart:convert';
+import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/NotificationListModel.dart';
+import '../my_theme.dart';
 import 'Meeting_record_Screen.dart';
 
 class Notification_Screen extends StatefulWidget {
@@ -25,15 +27,39 @@ class _Notification_ScreenState extends State<Notification_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context),
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.white, // Change the icon color here
+        ),
+        backgroundColor: MyTheme.backgroundcolor,
+        title: Text(
+          "Notification",
+          style: TextStyle(
+            color: Colors.white, // Change the text color here
+          ),
+        ),
+      ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 20,),
-              listview(),
-              SizedBox(height: 20,),
-            ],
+        child: Container(
+
+          decoration: BoxDecoration(
+            color: Colors.yellow,
+
+            image: DecorationImage(
+
+              image: AssetImage('assets/background.jpg'), // Replace with your image asset path
+              fit: BoxFit.fill,
+            ),
+          ),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 4, sigmaY:4),
+            child: Column(
+              children: [
+                SizedBox(height: 20,),
+                listview(),
+                SizedBox(height: 20,),
+              ],
+            ),
           ),
         ),
       ),
@@ -147,7 +173,7 @@ class _Notification_ScreenState extends State<Notification_Screen> {
             ? json.decode(response.data)
             : response.data;
 
-       //return PastAppointmentModel.fromJson(responseData);
+        //return PastAppointmentModel.fromJson(responseData);
         print("Notification listresponse ${responseData}");
         return NotificationListModel.fromJson(responseData);
       } else {
@@ -164,7 +190,7 @@ class _Notification_ScreenState extends State<Notification_Screen> {
       backgroundColor: Colors.white,
       leading: InkWell(
         onTap: () {
-        Navigator.pop(context);
+          Navigator.pop(context);
         },
         child: Icon(Icons.arrow_back, color: Colors.black,),
       ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:admissionguidence/my_theme.dart';
 import 'package:dio/dio.dart';
@@ -108,79 +109,91 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
 
   Widget balancewidget() {
     return
-      Padding(
-        padding: const EdgeInsets.only(left: 16,right: 16),
-        child: Column(
-        children: [
-          SizedBox(height: 10,),
-          todaybalancelistwidget(),
-          SizedBox(height: 10,),
+      Container(
+        decoration: BoxDecoration(
+         // color: Colors.yellow,
 
-          // Text("Govindd"),
-          // if(selectedtransactiontype == "CR")
-          //   Text("creadet cart"),
-          // if(selectedtransactiontype == "DR")
-          //   Text("DR cart"),
-          // if(selectedtransactiontype == "Transaction Type")
-          //   Text("Transaction Type"),
+          image: DecorationImage(
 
-
-          SizedBox(height: 10,),
-          Container(
-            padding: EdgeInsets.only(left: 10),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),  // Set the color of the border
-              borderRadius: BorderRadius.circular(12), // Set the border radius
-            ),
-            child: Row(
-           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Select Transaction Type: "),
-                SizedBox(width: 10,),
-                Row(
-                  children: [
-                    DropdownButton<String>(
-
-                      value: selectedtransactiontype,
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedtransactiontype = newValue!;
-                          transationtypevalue=newValue;
-                          print("Transation type ${newValue}");
-                        });
-                      },
-                      underline: Container(),
-                      items: optionslist.map((option) {
-                        return DropdownMenuItem<String>(
-                          value: option,
-                          child: Text(option),
-                        );
-                      }).toList(),
-                    ),
-                    SizedBox(width: 15,),
-                  ],
-                ),
-                //SizedBox(width: 1,),
-              ],
-            ),
+            image: AssetImage('assets/background.jpg'), // Replace with your image asset path
+            fit: BoxFit.fill,
           ),
-          SizedBox(height: 10,),
+        ),
+        padding:  EdgeInsets.only(left: 16,right: 16),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 4, sigmaY:4),
+          child: Column(
+          children: [
+            SizedBox(height: 10,),
+            todaybalancelistwidget(),
+            SizedBox(height: 10,),
 
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
+            // Text("Govindd"),
+            // if(selectedtransactiontype == "CR")
+            //   Text("creadet cart"),
+            // if(selectedtransactiontype == "DR")
+            //   Text("DR cart"),
+            // if(selectedtransactiontype == "Transaction Type")
+            //   Text("Transaction Type"),
+
+
+            SizedBox(height: 10,),
+            Container(
+              padding: EdgeInsets.only(left: 10),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),  // Set the color of the border
+                borderRadius: BorderRadius.circular(12), // Set the border radius
+              ),
+              child: Row(
+             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  //MMM
-                 // todaybalancelistwidget(),
-                  SizedBox(height: 10,),
-                  paymentlistwidget(),
-                  SizedBox(height: 20,),
+                  Text("Select Transaction Type: "),
+                  SizedBox(width: 10,),
+                  Row(
+                    children: [
+                      DropdownButton<String>(
+
+                        value: selectedtransactiontype,
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedtransactiontype = newValue!;
+                            transationtypevalue=newValue;
+                            print("Transation type ${newValue}");
+                          });
+                        },
+                        underline: Container(),
+                        items: optionslist.map((option) {
+                          return DropdownMenuItem<String>(
+                            value: option,
+                            child: Text(option),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(width: 15,),
+                    ],
+                  ),
+                  //SizedBox(width: 1,),
                 ],
               ),
             ),
-          ),
-        ],
+            SizedBox(height: 10,),
+
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    //MMM
+                   // todaybalancelistwidget(),
+                    SizedBox(height: 10,),
+                    paymentlistwidget(),
+                    SizedBox(height: 20,),
+                  ],
+                ),
+              ),
+            ),
+          ],
     ),
+        ),
       );
   }
 
@@ -188,85 +201,97 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     return Stack(
       children: [
         Container(
+          decoration: BoxDecoration(
+            //color: Colors.yellow,
+
+            image: DecorationImage(
+
+              image: AssetImage('assets/background.jpg'), // Replace with your image asset path
+              fit: BoxFit.fill,
+            ),
+          ),
           padding: EdgeInsets.only(left: 16, right: 16, top: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Account Number : ",
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(height: 10,),
-              accountNameNumberwidget(),
-              SizedBox(height: 15,),
-             // Text(valu),
-              //SizedBox(height: 15,),
-
-              Text(
-                "Transaction Type: ",
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(height: 10,),
-              Container(
-                padding: EdgeInsets.only(left: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),  // Set the color of the border
-                  borderRadius: BorderRadius.circular(12), // Set the border radius
+          child:BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 6, sigmaY:6),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Account Number : ",
+                  style: TextStyle(fontSize: 20),
                 ),
-                child: DropdownButton<String>(
+                SizedBox(height: 10,),
+                accountNameNumberwidget(),
+                SizedBox(height: 15,),
+               // Text(valu),
+                //SizedBox(height: 15,),
 
-                  value: selectedValue,
-                  onChanged: (newValue) {
-                    setState(() {
-                      selectedValue = newValue!;
-                      transationtype=newValue;
-                      print("Transation type ${newValue}");
-                    });
-                  },
-                  underline: Container(),
-                  items: options.map((option) {
-                    return DropdownMenuItem<String>(
-                      value: option,
-                      child: Text(option),
-                    );
-                  }).toList(),
+                Text(
+                  "Transaction Type: ",
+                  style: TextStyle(fontSize: 20),
                 ),
-              ),
-              SizedBox(height: 10,),
-              Text(
-                "Amount : ",
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(height: 15,),
-              TextField(
-                controller: _amountcontroller,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  labelText: "Enter Amount",
-                  filled: true,
-                  isDense: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                SizedBox(height: 10,),
+                Container(
+                  padding: EdgeInsets.only(left: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),  // Set the color of the border
+                    borderRadius: BorderRadius.circular(12), // Set the border radius
+                  ),
+                  child: DropdownButton<String>(
+
+                    value: selectedValue,
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedValue = newValue!;
+                        transationtype=newValue;
+                        print("Transation type ${newValue}");
+                      });
+                    },
+                    underline: Container(),
+                    items: options.map((option) {
+                      return DropdownMenuItem<String>(
+                        value: option,
+                        child: Text(option),
+                      );
+                    }).toList(),
                   ),
                 ),
-              ),
+                SizedBox(height: 10,),
+                Text(
+                  "Amount : ",
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(height: 15,),
+                TextField(
+                  controller: _amountcontroller,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    labelText: "Enter Amount",
+                    filled: true,
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
 
-             // if(selectedValue == "CR")
-             //   Text("creadet cart"),
-             //  if(selectedValue == "DR")
-             //    Text("DR cart"),
-             //  if(selectedValue == "Transaction Type")
-             //    Text("Transaction Type"),
+               // if(selectedValue == "CR")
+               //   Text("creadet cart"),
+               //  if(selectedValue == "DR")
+               //    Text("DR cart"),
+               //  if(selectedValue == "Transaction Type")
+               //    Text("Transaction Type"),
 
 
 
 
 
-            //  timeslotwidget(),
+              //  timeslotwidget(),
 
-            ],
+              ],
+            ),
           ),
         ),
         Positioned(
@@ -322,20 +347,21 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     return FutureBuilder(
       future: accountNameNumberApi(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            child: Center(child: CircularProgressIndicator()),
-          );
-        } else if (snapshot.hasError) {
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   return Container(
+        //     child: Center(child: CircularProgressIndicator()),
+        //   );
+        // } else if (snapshot.hasError) {
+        //   return Container(
+        //     child: Center(
+        //       child: Text('Error: Internal error'),
+        //     ),
+        //   );
+        // } else
+          if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
           return Container(
             child: Center(
-              child: Text('Error: Internal error'),
-            ),
-          );
-        } else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
-          return Container(
-            child: Center(
-              child: Text('No data available.'),
+              child: CircularProgressIndicator(),
             ),
           );
         } else {
@@ -435,13 +461,15 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
           return Container(
             child: Center(child: CircularProgressIndicator()),
           );
-        } else if (snapshot.hasError) {
-          return Container(
-            child: Center(
-              child: Text('Error: Internal error'),
-            ),
-          );
-        } else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+        }
+        // else if (snapshot.hasError) {
+        //   return Container(
+        //     child: Center(
+        //       child: Text('Error: Internal error'),
+        //     ),
+        //   );
+        // }
+        else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
           return Container(
             child: Center(
               child: Text('No data available.'),
@@ -460,7 +488,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.white70,
                       borderRadius: BorderRadius.circular(10.0),
                       boxShadow: [
                         BoxShadow(
@@ -483,18 +511,37 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                                 children: [
                                   Text("Transaction Type : "),
                                   SizedBox(width: 5,),
-                                  Text(snapshot.data!.data![index]
-                                      .type.toString()),
+                                  // Text(snapshot.data!.data![index]
+                                  //     .type.toString()),
+
+                                  if(snapshot.data!.data![index].type.toString() == "Cr" || snapshot.data!.data![index].type.toString() == "CR")
+                                   Text("Credit",style:TextStyle(color: Colors.black),),
+                                  if(snapshot.data!.data![index].type.toString()=="Dr" || snapshot.data!.data![index].type.toString()=="DR")
+                                  Text("Debit",style: TextStyle(color: Colors.black),),
                                 ],
                               ),
+
+                              if(snapshot.data!.data![index].type.toString() == "Cr" || snapshot.data!.data![index].type.toString() == "CR")
+                                Icon(Icons.arrow_circle_left_outlined,color: Colors.green,),
+                              if(snapshot.data!.data![index].type.toString()=="Dr" || snapshot.data!.data![index].type.toString()=="DR")
+                              //Icon(Icons.arrow_upward_outlined,color: Colors.red,),
+                              Icon(Icons.arrow_circle_right_outlined,color: Colors.red,),
+
+
+
                             ],
                           ),
 
                           Row(
                             children: [
                               Text("Amount :"),
-                              SizedBox(width: MediaQuery.of(context).size.width*0.185,),
-                              Text(snapshot.data!.data![index].amount.toString()),
+                              SizedBox(width: MediaQuery.of(context).size.width*0.180,),
+                              if(snapshot.data!.data![index].type.toString() == "Cr" || snapshot.data!.data![index].type.toString() == "CR")
+                                Text("+₹${snapshot.data!.data![index].amount.toString()}",style: TextStyle(color: Colors.green),),
+                              if(snapshot.data!.data![index].type.toString()=="Dr" || snapshot.data!.data![index].type.toString()=="DR")
+                                Text("-₹${snapshot.data!.data![index].amount.toString()}",style: TextStyle(color: Colors.red),),
+
+                             // Text("₹${snapshot.data!.data![index].amount.toString()}"),
 
                             ],
                           ),
@@ -502,14 +549,14 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                             children: [
                               Text("Old Balance:   "),
                               SizedBox(width: MediaQuery.of(context).size.width*0.1,),
-                              Text(snapshot.data!.data![index].oldBalance.toString()),
+                              Text("₹${snapshot.data!.data![index].oldBalance.toString()}"),
                             ],
                           ),
                           Row(
                             children: [
                               Text("New Balance :"),
                               SizedBox(width: MediaQuery.of(context).size.width*0.1,),
-                              Text(snapshot.data!.data![index].newBalance.toString()),
+                              Text("₹${snapshot.data!.data![index].newBalance.toString()}"),
                             ],
                           ),
 
@@ -567,14 +614,14 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                     print("govind kkk");
                   },
                   child:  Container(
-                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.15,right: MediaQuery.of(context).size.width*0.15),
-                    height: 80,
+                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.23,right: MediaQuery.of(context).size.width*0.23),
+                    height: 60,
                     //width: MediaQuery.of(context).size.width*0.1,
                     //color: Colors.red,
                     child:    Container(
 
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Colors.white70,
                         borderRadius: BorderRadius.circular(10.0),
                         boxShadow: [
                           BoxShadow(
@@ -593,9 +640,9 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                             SizedBox(height: 1,),
                             Row(
                               children: [
-                                Text("Today's Balance = Rs.",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),),
+                                Text("Balance ",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),),
                                 SizedBox(width: 7,),
-                                Text(snapshot.requireData!.data.toString(),style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: Colors.green),),
+                                Text("+₹${snapshot.requireData!.data.toString()}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: Colors.green),),
                               ],
                             ),
 

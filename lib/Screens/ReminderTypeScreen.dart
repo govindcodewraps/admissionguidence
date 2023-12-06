@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -52,217 +53,229 @@ class _ReminderTypesScreenState extends State<ReminderTypesScreen> {
 
         SafeArea(
           child: Container(
+            decoration: BoxDecoration(
+              color: Colors.yellow,
+
+              image: DecorationImage(
+
+                image: AssetImage('assets/background.jpg'), // Replace with your image asset path
+                fit: BoxFit.fill,
+              ),
+            ),
             padding:EdgeInsets.only(left: 16,right: 16,bottom: 20,top: 30),
-            child: Column(
-              children: [
+            child:BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 4, sigmaY:4),
+              child: Column(
+                children: [
 
-                Expanded(
-                  flex: 1,
-                  child: FutureBuilder(
-                    future: ReminderTypeApi(), // Use camelCase for function names
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text("Error: ${snapshot.error}"));
-                      } else if (snapshot.hasData) {
-                        var reminderTypeModel = snapshot.data as ReminderTypeModel;
+                  Expanded(
+                    flex: 1,
+                    child: FutureBuilder(
+                      future: ReminderTypeApi(), // Use camelCase for function names
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(child: Text("Error: ${snapshot.error}"));
+                        } else if (snapshot.hasData) {
+                          var reminderTypeModel = snapshot.data as ReminderTypeModel;
 
-                        return GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 8.0,
-                            mainAxisSpacing: 8.0,
-                          ),
-                          itemCount: reminderTypeModel.data!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedIdx = index;
-                                  print("IDDDDD");
-                                  Remindertypevalue=reminderTypeModel.data![index].id.toString();
-                                  print(reminderTypeModel.data![index].id.toString(),);
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: selectedIdx == index ? MyTheme.backgroundcolor : Colors.grey,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    reminderTypeModel.data![index].type.toString(),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
+                          return GridView.builder(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 8.0,
+                              mainAxisSpacing: 8.0,
+                            ),
+                            itemCount: reminderTypeModel.data!.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedIdx = index;
+                                    print("IDDDDD");
+                                    Remindertypevalue=reminderTypeModel.data![index].id.toString();
+                                    print(reminderTypeModel.data![index].id.toString(),);
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: selectedIdx == index ? MyTheme.backgroundcolor : Colors.grey,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      reminderTypeModel.data![index].type.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        );
-                      } else {
-                        return Center(child: Text("No data available"));
-                      }
-                    },
+                              );
+                            },
+                          );
+                        } else {
+                          return Center(child: Text("No data available"));
+                        }
+                      },
+                    ),
                   ),
-                ),
 
-                // Row(children: [
-                //   TextButton(
-                //     onPressed: () {
-                //       setState(() {
-                //         Remindertypevalue = ''; // You can assign any default or empty value
-                //       });
-                //       Navigator.of(context).pop(); // Close the dialog
-                //     },
-                //     child: Text('Close'),
-                //   ),
-                //   TextButton(
-                //     onPressed: () {
-                //
-                //       ReminderListvalue=widget.reminderid;
-                //
-                //       setreminderapi(ReminderListvalue,Remindertypevalue);
-                //     },
-                //     child: Text('Save'),
-                //   ),
-                // ],)
+                  // Row(children: [
+                  //   TextButton(
+                  //     onPressed: () {
+                  //       setState(() {
+                  //         Remindertypevalue = ''; // You can assign any default or empty value
+                  //       });
+                  //       Navigator.of(context).pop(); // Close the dialog
+                  //     },
+                  //     child: Text('Close'),
+                  //   ),
+                  //   TextButton(
+                  //     onPressed: () {
+                  //
+                  //       ReminderListvalue=widget.reminderid;
+                  //
+                  //       setreminderapi(ReminderListvalue,Remindertypevalue);
+                  //     },
+                  //     child: Text('Save'),
+                  //   ),
+                  // ],)
 
+                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(
+                          height: 45,
+                          width:MediaQuery.of(context).size.width*0.4,
+                          child:
+                          ElevatedButton(
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        height: 45,
-                        width:MediaQuery.of(context).size.width*0.4,
-                        child:
-                        ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
 
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
 
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12.0),
+                                        side: BorderSide(color:MyTheme.YELLOCOLOR)
+                                    )
+                                )
+                            ),
 
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      side: BorderSide(color:MyTheme.YELLOCOLOR)
-                                  )
-                              )
-                          ),
+                            onPressed: (){
+                              Navigator.of(context).pop();
+                              //onPressUpdatePassword();
+                            },
+                            child:Text(
+                              "Close",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            ),),
+                        ),
+                        SizedBox(
+                          height: 45,
+                          width:MediaQuery.of(context).size.width*0.4,
+                          child:
+                        //   ElevatedButton(
+                        //
+                        //     style: ButtonStyle(
+                        //         backgroundColor: MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
+                        //
+                        //         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        //             RoundedRectangleBorder(
+                        //
+                        //                 borderRadius: BorderRadius.circular(12.0),
+                        //                 side: BorderSide(color:MyTheme.YELLOCOLOR)
+                        //             )
+                        //         )
+                        //     ),
+                        //
+                        //     // onPressed: (){
+                        //     //
+                        //     //         ReminderListvalue=widget.reminderid;
+                        //     //         setreminderapi(ReminderListvalue,Remindertypevalue);
+                        //     // },
+                        //
+                        //     onPressed: () {
+                        //       if (!isLoading) {
+                        //         // Call your API function only if not already loading
+                        //         if (Remindertypevalue != null) {
+                        //           ReminderListvalue = widget.reminderid;
+                        //           setreminderapi(ReminderListvalue, Remindertypevalue);
+                        //         } else {
+                        //           // Show a message if reminder type is not selected
+                        //           Fluttertoast.showToast(
+                        //             msg: "Please select a reminder type",
+                        //             // Toast properties...
+                        //           );
+                        //         }
+                        //       }
+                        //     },
+                        //
+                        //     child: isLoading
+                        //         ? CircularProgressIndicator()  // Show circular progress indicator when loading
+                        //         : Text(
+                        //       "Save",
+                        //       style: TextStyle(
+                        //         color: Colors.white,
+                        //         fontSize: 16,
+                        //         fontWeight: FontWeight.w600,
+                        //       ),
+                        //     ),
+                        // ),
+                          ElevatedButton(
+                            // Existing button properties...
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
 
-                          onPressed: (){
-                            Navigator.of(context).pop();
-                            //onPressUpdatePassword();
-                          },
-                          child:Text(
-                            "Close",
-                            style: TextStyle(
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+
+                                        borderRadius: BorderRadius.circular(12.0),
+                                        side: BorderSide(color:MyTheme.YELLOCOLOR)
+                                    )
+                                )
+                            ),
+                            onPressed: () {
+                              if (!isLoading) {
+                                // Call your API function only if not already loading
+                                if (Remindertypevalue != null) {
+                                  ReminderListvalue = widget.reminderid;
+                                  setreminderapi(ReminderListvalue, Remindertypevalue);
+                                } else {
+                                  // Show a message if reminder type is not selected
+                                  Fluttertoast.showToast(
+                                    msg: "Please select a reminder type",
+                                    // Toast properties...
+                                  );
+                                }
+                              }
+                            },
+
+                            child:
+                                // ? CircularProgressIndicator()  // Show circular progress indicator when loading
+                                // :
+                             Text(
+                              "Save",
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600),
-                          ),),
-                      ),
-                      SizedBox(
-                        height: 45,
-                        width:MediaQuery.of(context).size.width*0.4,
-                        child:
-                      //   ElevatedButton(
-                      //
-                      //     style: ButtonStyle(
-                      //         backgroundColor: MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
-                      //
-                      //         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      //             RoundedRectangleBorder(
-                      //
-                      //                 borderRadius: BorderRadius.circular(12.0),
-                      //                 side: BorderSide(color:MyTheme.YELLOCOLOR)
-                      //             )
-                      //         )
-                      //     ),
-                      //
-                      //     // onPressed: (){
-                      //     //
-                      //     //         ReminderListvalue=widget.reminderid;
-                      //     //         setreminderapi(ReminderListvalue,Remindertypevalue);
-                      //     // },
-                      //
-                      //     onPressed: () {
-                      //       if (!isLoading) {
-                      //         // Call your API function only if not already loading
-                      //         if (Remindertypevalue != null) {
-                      //           ReminderListvalue = widget.reminderid;
-                      //           setreminderapi(ReminderListvalue, Remindertypevalue);
-                      //         } else {
-                      //           // Show a message if reminder type is not selected
-                      //           Fluttertoast.showToast(
-                      //             msg: "Please select a reminder type",
-                      //             // Toast properties...
-                      //           );
-                      //         }
-                      //       }
-                      //     },
-                      //
-                      //     child: isLoading
-                      //         ? CircularProgressIndicator()  // Show circular progress indicator when loading
-                      //         : Text(
-                      //       "Save",
-                      //       style: TextStyle(
-                      //         color: Colors.white,
-                      //         fontSize: 16,
-                      //         fontWeight: FontWeight.w600,
-                      //       ),
-                      //     ),
-                      // ),
-                        ElevatedButton(
-                          // Existing button properties...
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
-
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      side: BorderSide(color:MyTheme.YELLOCOLOR)
-                                  )
-                              )
-                          ),
-                          onPressed: () {
-                            if (!isLoading) {
-                              // Call your API function only if not already loading
-                              if (Remindertypevalue != null) {
-                                ReminderListvalue = widget.reminderid;
-                                setreminderapi(ReminderListvalue, Remindertypevalue);
-                              } else {
-                                // Show a message if reminder type is not selected
-                                Fluttertoast.showToast(
-                                  msg: "Please select a reminder type",
-                                  // Toast properties...
-                                );
-                              }
-                            }
-                          },
-
-                          child:
-                              // ? CircularProgressIndicator()  // Show circular progress indicator when loading
-                              // :
-                           Text(
-                            "Save",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
-                        ),
 
-                      )
+                        )
 
-                        ],)
+                          ],)
 
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -30,6 +30,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   bool isLoading = false;
   var Remindertypevalue;
   var ReminderListvalue;
+  var deletereminderid="";
   bool _isLoading = false;
 
   TextEditingController dateInputController = TextEditingController();
@@ -67,25 +68,40 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.yellow,
+
+          image: DecorationImage(
+
+            image: AssetImage('assets/background.jpg'), // Replace with your image asset path
+            fit: BoxFit.fill,
+          ),
+        ),
         child:
-        Center(
 
-          child:
-          // isLoading
-          //     ? CircularProgressIndicator() // Show the circular progress indicator
-          //     :
-          Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height*1,
-            color: MyTheme.backgroundcolor,
+
+        BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 4, sigmaY:4),
+          child: SingleChildScrollView(
             child:
-            Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                reminderlistwidget(),
+            Center(
+              child:
+              // isLoading
+              //     ? CircularProgressIndicator() // Show the circular progress indicator
+              //     :
+              Container(
+                width: double.infinity,
+                child:
+                Column(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    reminderlistwidget(),
+                   // lllist(),
 
-              ],
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -107,6 +123,87 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   }
 
 
+  Widget lllist(){
+    return
+
+      ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, int index) {
+        return
+          Container(
+            padding: EdgeInsets.only(left: 10,right: 10),
+           // height: 100,
+           // color: Colors.pink,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 20),
+                  height: 100,
+                  width: MediaQuery.of(context).size.width*0.33,
+                  decoration: BoxDecoration(
+                      color:MyTheme.backgroundcolor,
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16),topLeft: Radius.circular(16))
+                  ),
+
+                  child: Column(
+                    children: [
+                      Icon(Icons.notifications,color: Colors.white,),
+                      SizedBox(height: 10,),
+                      Text("2023-11-11",style: TextStyle(color: Colors.white),),
+                    ],
+
+
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(8),
+                  height: 100,
+                  width: MediaQuery.of(context).size.width * 0.52,
+                  color: Color(0xff68E3E3FF),
+                  child: Center(
+                    child: OverflowBox(
+                     // maxWidth: double.infinity,
+                      child: Text(
+                        maxLines: 5,
+                        "ydbcydbcc   dhybcydc",
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ),
+
+                Container(
+                  padding: EdgeInsets.only(top: 12),
+                  height: 100,
+                  decoration: BoxDecoration(
+                      color:MyTheme.WHITECOLOR,
+                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),topRight: Radius.circular(16))
+                  ),
+                  width: MediaQuery.of(context).size.width*0.1,
+                  //color: Colors.red,
+                  child: Column(
+                           children: [
+                             Icon(Icons.edit),
+                             SizedBox(height: 10,),
+                             Icon(Icons.delete),
+                           ],
+                  ),
+                ),
+              ],
+            ),
+          );
+
+      },
+      separatorBuilder: (context, index) {
+        return SizedBox(height: 16);
+      },
+      itemCount:10
+    );
+  }
+
   Widget reminderlistwidget() {
     return
       FutureBuilder(
@@ -114,7 +211,8 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-              //child: Center(child: CircularProgressIndicator()),
+              height:MediaQuery.of(context).size.height*1,
+              child: Center(child: CircularProgressIndicator()),
             );
           } else if (snapshot.hasError) {
             return Container(
@@ -126,77 +224,156 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
             return
               Container(
-                padding: EdgeInsets.fromLTRB(16, 16, 16, 20),
+                //padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                 decoration: BoxDecoration(
-                  color: MyTheme.WHITECOLOR,
+                  //color: MyTheme.WHITECOLOR,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                width: 300,
+                //width: 300,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Reminder List",
-                      style: TextStyle(
-                          color: MyTheme.backgroundcolor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
-                    ),
+                    SizedBox(height: 10,),
+                    // Text(
+                    //   "   Reminder List",
+                    //   style: TextStyle(
+                    //       //color: MyTheme.backgroundcolor,
+                    //       fontSize: 18,
+                    //       fontWeight: FontWeight.w600),
+                    // ),
                     SizedBox(height: 10),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, int index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                spreadRadius: 2,
-                                blurRadius: 4,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Container(
-                            padding: EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+
+                   ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, int index) {
+                      return
+                        Container(
+                          padding: EdgeInsets.only(left: 10,right: 10),
+                          // height: 100,
+                          // color: Colors.pink,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(top: 20),
+                                height: 100,
+                                width: MediaQuery.of(context).size.width*0.33,
+                                decoration: BoxDecoration(
+                                    color:MyTheme.backgroundcolor,
+                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16),topLeft: Radius.circular(16))
+                                ),
+
+                                child: Column(
                                   children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.circle,
-                                              size: 10,
-                                              color: Colors.orange,
-                                            ),
-                                            SizedBox(width: 10),
-                                            Text(snapshot.data!.data![index].date.toString()),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.circle,
-                                              size: 10,
-                                              color: Colors.orange,
-                                            ),
-                                            SizedBox(width: 10),
-                                            Text(snapshot.data!.data![index].remark.toString()),
-                                          ],
-                                        ),
-                                      ],
+                                    Icon(Icons.notifications,color: Colors.white,),
+                                    SizedBox(height: 10,),
+                                    //Text("2023-11-11",style: TextStyle(color: Colors.white),),
+                                    Text(snapshot.data!.data![index].date.toString(),style: TextStyle(color: Colors.white),),
+                                  ],
+
+
+                                ),
+                              ),
+                              // Container(
+                              //   padding: EdgeInsets.all(8),
+                              //   height: 100,
+                              //   width: MediaQuery.of(context).size.width * 0.52,
+                              //   color: Color(0xff68E3E3FF),
+                              //   child: Center(
+                              //     child: OverflowBox(
+                              //       // maxWidth: double.infinity,
+                              //       child: Text(
+                              //         maxLines: 5,
+                              //        "  ybyb ",
+                              //        // snapshot.data!.data![index].remark.toString(),
+                              //         overflow: TextOverflow.ellipsis,
+                              //
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                              Container(
+                                padding: EdgeInsets.all(8),
+                                height: 100,
+                                width: MediaQuery.of(context).size.width * 0.50,
+                                color: Color(0xff68E3E3FF),
+                                child: OverflowBox(
+                                  //maxWidth: double.infinity,
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      maxLines: 5,
+                                      snapshot.data!.data![index].remark.toString(),
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.left,
                                     ),
-                                    Row(
+                                  ),
+                                ),
+                              ),
+
+
+
+
+                              Container(
+
+                                height: 100,
+                                decoration: BoxDecoration(
+                                    color:MyTheme.WHITECOLOR,
+                                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),topRight: Radius.circular(16))
+                                ),
+                                width: MediaQuery.of(context).size.width*0.1,
+                                //color: Colors.red,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                        print(snapshot.data!.data![index].id.toString());
+                                        print(snapshot.data!.data![index].date.toString());
+                                        print(snapshot.data!.data![index].remark.toString());
+                                        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString())));
+                                        // Handle the "Edit Reminder" tap
+                                      },
+                                      child: Icon(Icons.edit),
+
+                                      //Text("Edit Reminder"),
+                                    ),
+                                    InkWell(
+
+                                        onTap: (){
+                                          setState(() {
+                                            Remindertypevalue = ''; // You can assign any default or empty value
+                                          });
+                                          Remindertypevalue == null ? Remindertypevalue.clear:"";
+                                          ReminderListvalue=snapshot.data!.data![index].id.toString();
+                                          //_showCustomDialog(context);
+                                          print("print reminder list id:: ${snapshot.data!.data![index].id.toString()}");
+
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ReminderTypesScreen(reminderid:snapshot.data!.data![index].id.toString() ,)));
+
+                                        },
+                                        child: Icon(Icons.autorenew_rounded)),
+
+
+                                    InkWell(
+                                        onTap: (){
+                                           var reminderid=snapshot.data!.data![index].id.toString();
+                                           print("delet id ${reminderid}");
+                                           deletereminderid=reminderid;
+                                          //
+                                          // deletreminderapi(reminderid.toString());
+
+                                           showDeleteConfirmationDialog(context);
+                                        },
+                                        child: Icon(Icons.delete)),
+
+                                /*    Row(
                                       children: [
 
                                         InkWell(
@@ -227,7 +404,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                               //_showCustomDialog(context);
                                               print("print reminder list id:: ${snapshot.data!.data![index].id.toString()}");
 
-                                           Navigator.push(context, MaterialPageRoute(builder: (context)=>ReminderTypesScreen(reminderid:snapshot.data!.data![index].id.toString() ,)));
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>ReminderTypesScreen(reminderid:snapshot.data!.data![index].id.toString() ,)));
 
                                             },
                                             child: Icon(Icons.autorenew_rounded)),
@@ -250,19 +427,21 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
 
                                       ],
-                                    ),
+                                    ),*/
+
                                   ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         );
-                      },
-                      separatorBuilder: (context, index) {
-                        return SizedBox(height: 16);
-                      },
-                      itemCount: snapshot.data!.data!.length,
-                    ),
+
+                    },
+                    separatorBuilder: (context, index) {
+                      return SizedBox(height: 16);
+                    },
+                    itemCount:snapshot.data!.data!.length,
+                ),
                   ],
                 ),
               );
@@ -276,7 +455,37 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       );
   }
 
+  void showDeleteConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Are you sure want to delete?"),
+         // content: Text("Are you sure you want to logout?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text("Cancel",style: TextStyle(color: Colors.grey),),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Perform logout actions
+               // var reminderid=snapshot.data!.data![index].id.toString();
+                print("delete reminder id  ${deletereminderid}");
 
+                deletreminderapi(deletereminderid.toString());
+                   },
+              child:
+              //Image.asset('assets/logoutbutton.jpg'),
+              Text("Delete",style: TextStyle(color: Colors.red),),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _showCustomDialog(BuildContext context) {
     showDialog(

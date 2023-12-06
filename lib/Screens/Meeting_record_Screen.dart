@@ -151,219 +151,222 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
             Expanded(
               flex: 1,
-              child: SingleChildScrollView(
-                child:
-                Column(children: [
+              child: Container(
 
-                  SizedBox(height: 20,),
+                child: SingleChildScrollView(
+                  child:
+                  Column(children: [
 
-
-                  if (buttonvalue == 0)
-                   // stembuilddd(),
-
-                  todayappointmentlist(),
+                    SizedBox(height: 20,),
 
 
+                    if (buttonvalue == 0)
+                     // stembuilddd(),
+
+                    todayappointmentlist(),
 
 
-                  if (buttonvalue == 1)
-
-                    Container(
-                      padding: EdgeInsets.only(left: 0,right: 0),
-
-                      child:   Column(
-                        children: [
 
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                children: [
-                                  Text("From Date"),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width * 0.42,
-                                    child: TextFormField(
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12),
-                                          borderSide: BorderSide(
-                                            width: 3,
-                                            color: Colors.greenAccent,
+                    if (buttonvalue == 1)
+
+                      Container(
+                        padding: EdgeInsets.only(left: 0,right: 0),
+
+                        child:   Column(
+                          children: [
+
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text("From Date"),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.42,
+                                      child: TextFormField(
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12),
+                                            borderSide: BorderSide(
+                                              width: 3,
+                                              color: Colors.greenAccent,
+                                            ),
                                           ),
+                                          labelText: "Date",
+                                          hintText: 'Date',
+                                          suffixIcon:
+                                          Icon(Icons.calendar_month, color: Colors.black),
                                         ),
-                                        labelText: "Date",
-                                        hintText: 'Date',
-                                        suffixIcon:
-                                        Icon(Icons.calendar_month, color: Colors.black),
-                                      ),
-                                      controller: dateInputController,
-                                      readOnly: true,
-                                      onTap: () async {
-                                        DateTime? pickedDate = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(1950),
-                                          lastDate: DateTime(2050),
-                                        );
+                                        controller: dateInputController,
+                                        readOnly: true,
+                                        onTap: () async {
+                                          DateTime? pickedDate = await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(1950),
+                                            lastDate: DateTime(2050),
+                                          );
 
-                                        if (pickedDate != null) {
-                                          setState(() {
-                                            dateInputController.text =
-                                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                                          });
-
-                                          if (dateInputController2.text.isNotEmpty) {
-                                            // Call the future method when both dates are selected
-                                            getAppointments(
-                                              dateInputController.text,
-                                              dateInputController2.text,
-                                            ).then((appointments) {
-                                              if (appointments != null) {
-                                                // Do something with the fetched data
-                                                print(appointments);
-                                              }
+                                          if (pickedDate != null) {
+                                            setState(() {
+                                              dateInputController.text =
+                                                  DateFormat('yyyy-MM-dd').format(pickedDate);
                                             });
+
+                                            if (dateInputController2.text.isNotEmpty) {
+                                              // Call the future method when both dates are selected
+                                              getAppointments(
+                                                dateInputController.text,
+                                                dateInputController2.text,
+                                              ).then((appointments) {
+                                                if (appointments != null) {
+                                                  // Do something with the fetched data
+                                                  print(appointments);
+                                                }
+                                              });
+                                            }
                                           }
-                                        }
-                                      },
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Column(
+                                  children: [
+                                    Text("To Date"),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.42,
+                                      child: TextFormField(
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12),
+                                            borderSide: BorderSide(
+                                              width: 3,
+                                              color: Colors.greenAccent,
+                                            ),
+                                          ),
+                                          labelText: "Date",
+                                          hintText: 'Date',
+                                          suffixIcon:
+                                          Icon(Icons.calendar_month, color: Colors.black),
+                                        ),
+                                        controller: dateInputController2,
+                                        readOnly: true,
+                                        onTap: () async {
+                                          DateTime? pickedDate = await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(1950),
+                                            lastDate: DateTime(2050),
+                                          );
+
+                                          if (pickedDate != null) {
+                                            setState(() {
+                                              dateInputController2.text =
+                                                  DateFormat('yyyy-MM-dd').format(pickedDate);
+                                            });
+
+                                            if (dateInputController.text.isNotEmpty) {
+                                              // Call the future method when both dates are selected
+                                              getAppointments(
+                                                dateInputController.text,
+                                                dateInputController2.text,
+                                              ).then((appointments) {
+                                                if (appointments != null) {
+                                                  // Do something with the fetched data
+                                                  print(appointments);
+                                                }
+                                              });
+                                            }
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+
+
+                            // ElevatedButton(onPressed: (){
+                            //   pastappointmentapi();
+                            //   todayappointmentlist();
+                            //   upcoming_appointment();
+                            //   // appointmentslistwidget();
+                            //   time_slot();
+                            //
+                            //   print("Govindddddddd ");
+                            //
+                            // }, child: Text("Buttton")
+                            //
+                            // ),
+
+                            // Use FutureBuilder to handle the async operation
+
+                            SizedBox(height: 20,),
+
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              elevation: 2,
+                              color: Colors.white,// Add elevation if you want a shadow effect
+                              child: ExpansionTile(
+                                title: Text('Past Meetings'),
+                                children: <Widget>[
+                                  ListTile(
+                                    title: Column(
+                                      children: [
+                                        pastappointmentlist(),
+                                        SizedBox(height: 20,),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                width: 10,
+                            ),
+
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
-                              Column(
-                                children: [
-                                  Text("To Date"),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width * 0.42,
-                                    child: TextFormField(
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12),
-                                          borderSide: BorderSide(
-                                            width: 3,
-                                            color: Colors.greenAccent,
-                                          ),
-                                        ),
-                                        labelText: "Date",
-                                        hintText: 'Date',
-                                        suffixIcon:
-                                        Icon(Icons.calendar_month, color: Colors.black),
-                                      ),
-                                      controller: dateInputController2,
-                                      readOnly: true,
-                                      onTap: () async {
-                                        DateTime? pickedDate = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(1950),
-                                          lastDate: DateTime(2050),
-                                        );
-
-                                        if (pickedDate != null) {
-                                          setState(() {
-                                            dateInputController2.text =
-                                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                                          });
-
-                                          if (dateInputController.text.isNotEmpty) {
-                                            // Call the future method when both dates are selected
-                                            getAppointments(
-                                              dateInputController.text,
-                                              dateInputController2.text,
-                                            ).then((appointments) {
-                                              if (appointments != null) {
-                                                // Do something with the fetched data
-                                                print(appointments);
-                                              }
-                                            });
-                                          }
-                                        }
-                                      },
+                              elevation: 2,
+                              color: Colors.white,// Add elevation if you want a shadow effect
+                              child: ExpansionTile(
+                                title: Text('Upcoming Meetings'),
+                                children: <Widget>[
+                                  ListTile(
+                                    title: Column(
+                                      children: [
+                                        upcomingappointmentlist(),
+                                        SizedBox(height: 20,),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-
-
-                          // ElevatedButton(onPressed: (){
-                          //   pastappointmentapi();
-                          //   todayappointmentlist();
-                          //   upcoming_appointment();
-                          //   // appointmentslistwidget();
-                          //   time_slot();
-                          //
-                          //   print("Govindddddddd ");
-                          //
-                          // }, child: Text("Buttton")
-                          //
-                          // ),
-
-                          // Use FutureBuilder to handle the async operation
-
-                          SizedBox(height: 20,),
-
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
                             ),
-                            elevation: 2,
-                            color: Colors.white,// Add elevation if you want a shadow effect
-                            child: ExpansionTile(
-                              title: Text('Past Meetings'),
-                              children: <Widget>[
-                                ListTile(
-                                  title: Column(
-                                    children: [
-                                      pastappointmentlist(),
-                                      SizedBox(height: 20,),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            elevation: 2,
-                            color: Colors.white,// Add elevation if you want a shadow effect
-                            child: ExpansionTile(
-                              title: Text('Upcoming Meetings'),
-                              children: <Widget>[
-                                ListTile(
-                                  title: Column(
-                                    children: [
-                                      upcomingappointmentlist(),
-                                      SizedBox(height: 20,),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 10,),
-                          appointmentslist(),
+                            SizedBox(height: 10,),
+                            appointmentslist(),
 
 
 
 
 
-                          SizedBox(height: 20,),
+                            SizedBox(height: 20,),
 
 
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
 
-                ],),
+                  ],),
+                ),
               ),
             )
           ],
@@ -440,6 +443,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
             print("object");
 
             return Container(
+
               padding: EdgeInsets.only(left: 16, right: 16),
               child: Column(
                 children: [
@@ -476,8 +480,15 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text("Time slot:"),
+                                        Text("Date :"),
                                         SizedBox(width: 5,),
+                                        Text(
+                                          DateFormat('yyyy-MM-dd').format(
+                                            snapshot.data!.data![index].appointmentDate!.toLocal(),
+                                          ),
+                                        ),
+                                        SizedBox(width: 5,),
+
                                         Text(snapshot.data!.data![index]
                                             .appointmentTime.toString()),
                                       ],
@@ -527,17 +538,17 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    Text("Date :"),
-                                    SizedBox(width: 10,),
-                                    Text(
-                                      DateFormat('yyyy-MM-dd').format(
-                                        snapshot.data!.data![index].appointmentDate!.toLocal(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                // Row(
+                                //   children: [
+                                //     Text("Date :"),
+                                //     SizedBox(width: 10,),
+                                //     Text(
+                                //       DateFormat('yyyy-MM-dd').format(
+                                //         snapshot.data!.data![index].appointmentDate!.toLocal(),
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
                                 Row(
                                   children: [
                                     Text("Name :"),
@@ -547,7 +558,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                 ),
                                 Row(
                                   children: [
-                                    Text("Email:"),
+                                    Text("Contact:"),
                                     SizedBox(width: 2,),
                                     Text(snapshot.data!.data![index].email.toString()),
                                   ],
@@ -638,7 +649,11 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text("Time slot:"),
+                                      Text("Date:"),
+                                      SizedBox(width: 5,),
+                                      Text(snapshot.data!.data![index]
+                                          .appointmentDate
+                                          .toString()),
                                       SizedBox(width: 5,),
                                       Text(snapshot.data!.data![index]
                                           .appointmentTime
@@ -652,15 +667,15 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   ),
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  Text("Date :"),
-                                  SizedBox(width: 10,),
-                                  Text(snapshot.data!.data![index]
-                                      .appointmentDate
-                                      .toString()),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Text("Date :"),
+                              //     SizedBox(width: 10,),
+                              //     Text(snapshot.data!.data![index]
+                              //         .appointmentDate
+                              //         .toString()),
+                              //   ],
+                              // ),
                               Row(
                                 children: [
                                   Text("Name :"),
@@ -670,18 +685,18 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                               ),
                               Row(
                                 children: [
-                                  Text("Email:"),
+                                  Text("Contact:"),
                                   SizedBox(width: 2,),
                                   Text(snapshot.data!.data![index].email.toString()),
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  Text("Contact :"),
-                                  SizedBox(width: 10,),
-                                  Text("+91 98765432121"),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Text("Contact :"),
+                              //     SizedBox(width: 10,),
+                              //     Text("+91 98765432121"),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),
@@ -728,6 +743,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
             print("object");
 
             return Container(
+              //color: Colors.red,
               //padding: EdgeInsets.only(left: 16, right: 16),
               child: Column(
                 children: [
@@ -749,7 +765,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                           ],
                         ),
                         child: Container(
-                          padding: EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(6.0),
                           child: Column(
                             children: [
                               Row(
@@ -758,7 +774,13 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text("Time slot:"),
+                                      Text("Date:"),
+                                      SizedBox(width: 5,),
+                                      Text(
+                                        DateFormat('yyyy-MM-dd').format(
+                                          snapshot.data!.data![index].appointmentDate!.toLocal(),
+                                        ),
+                                      ),
                                       SizedBox(width: 5,),
                                       Text(snapshot.data!.data![index]
                                           .appointmentTime
@@ -813,17 +835,17 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  Text("Date :"),
-                                  SizedBox(width: 10,),
-                                  Text(
-                                    DateFormat('yyyy-MM-dd').format(
-                                      snapshot.data!.data![index].appointmentDate!.toLocal(),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Text("Date :"),
+                              //     SizedBox(width: 10,),
+                              //     Text(
+                              //       DateFormat('yyyy-MM-dd').format(
+                              //         snapshot.data!.data![index].appointmentDate!.toLocal(),
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                               Row(
                                 children: [
                                   Text("Name :"),
@@ -833,18 +855,18 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                               ),
                               Row(
                                 children: [
-                                  Text("Email:"),
+                                  Text("Contact:"),
                                   SizedBox(width: 2,),
                                   Text(snapshot.data!.data![index].email.toString()),
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  Text("Contact :"),
-                                  SizedBox(width: 10,),
-                                  Text("+91 98765432121"),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Text("Contact :"),
+                              //     SizedBox(width: 10,),
+                              //     Text("+91 98765432121"),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),
@@ -1075,7 +1097,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
                               Row(
                                 children: [
-                                  Text("Email:"),
+                                  Text("Contact:"),
                                   SizedBox(
                                     width: 2,
                                   ),

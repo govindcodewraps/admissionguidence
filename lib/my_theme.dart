@@ -8,4 +8,5 @@ class MyTheme{
   static Color red = Color(0xff671632);
   static Color WHITECOLOR = Color(0xffffffff);
   static Color YELLOCOLOR = Color(0xffDD9933);
+  static Color BLACK = Color(0xff000000);
 }
