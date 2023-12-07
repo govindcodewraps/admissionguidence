@@ -203,6 +203,9 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       itemCount:10
     );
   }
+  String enumToString(enumItem) {
+    return enumItem.toString().split('.').last;
+  }
 
   Widget reminderlistwidget() {
     return
@@ -273,8 +276,6 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                     //Text("2023-11-11",style: TextStyle(color: Colors.white),),
                                     Text(snapshot.data!.data![index].date.toString(),style: TextStyle(color: Colors.white),),
                                   ],
-
-
                                 ),
                               ),
                               // Container(
@@ -295,24 +296,54 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                               //     ),
                               //   ),
                               // ),
-                              Container(
-                                padding: EdgeInsets.all(8),
-                                height: 100,
-                                width: MediaQuery.of(context).size.width * 0.50,
-                                color: Color(0xff68E3E3FF),
-                                child: OverflowBox(
-                                  //maxWidth: double.infinity,
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      maxLines: 5,
-                                      snapshot.data!.data![index].remark.toString(),
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.left,
+                              Column(
+                                children: [
+
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+                                    height: 80,
+                                    width: MediaQuery.of(context).size.width * 0.50,
+                                    color: Color(0xff68E3E3FF),
+                                    child: OverflowBox(
+                                      //maxWidth: double.infinity,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          maxLines: 2,
+                                          snapshot.data!.data![index].remark.toString(),
+                                          //enumToString(snapshot.data!.data![index].reminderType.toString()),
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+
+                                  Container(
+                                      height: 20,
+                                      width: MediaQuery.of(context).size.width * 0.50,
+                                      color: Color(0xff68E3E3FF),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text("Reminder Type :"),
+                                             // SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+                                              Text(
+                                                snapshot.data!.data![index].reminderType != null && snapshot.data!.data![index].reminderType.toString().isNotEmpty
+                                                    ? snapshot.data!.data![index].reminderType.toString().split('.').last
+                                                    : 'No Remark',
+                                              ),
+
+
+
+                                            ],
+                                          ),
+                                        ],
+                                      )),
+                                ],
                               ),
+                              //Text(enumToString(snapshot.data!.data![index].reminderType.toString()),),
 
 
 
@@ -344,21 +375,21 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
                                       //Text("Edit Reminder"),
                                     ),
-                                    InkWell(
-
-                                        onTap: (){
-                                          setState(() {
-                                            Remindertypevalue = ''; // You can assign any default or empty value
-                                          });
-                                          Remindertypevalue == null ? Remindertypevalue.clear:"";
-                                          ReminderListvalue=snapshot.data!.data![index].id.toString();
-                                          //_showCustomDialog(context);
-                                          print("print reminder list id:: ${snapshot.data!.data![index].id.toString()}");
-
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ReminderTypesScreen(reminderid:snapshot.data!.data![index].id.toString() ,)));
-
-                                        },
-                                        child: Icon(Icons.autorenew_rounded)),
+                                    // InkWell(
+                                    //
+                                    //     onTap: (){
+                                    //       setState(() {
+                                    //         Remindertypevalue = ''; // You can assign any default or empty value
+                                    //       });
+                                    //       Remindertypevalue == null ? Remindertypevalue.clear:"";
+                                    //       ReminderListvalue=snapshot.data!.data![index].id.toString();
+                                    //       //_showCustomDialog(context);
+                                    //       print("print reminder list id:: ${snapshot.data!.data![index].id.toString()}");
+                                    //
+                                    //       Navigator.push(context, MaterialPageRoute(builder: (context)=>ReminderTypesScreen(reminderid:snapshot.data!.data![index].id.toString() ,)));
+                                    //
+                                    //     },
+                                    //     child: Icon(Icons.autorenew_rounded)),
 
 
                                     InkWell(

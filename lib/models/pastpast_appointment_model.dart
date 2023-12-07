@@ -34,6 +34,8 @@ class Datum {
   String? email;
   String? name;
   String? appointmentTime;
+  String? status;
+  String? remark;
 
   Datum({
     this.id,
@@ -41,6 +43,8 @@ class Datum {
     this.email,
     this.name,
     this.appointmentTime,
+    this.status,
+    this.remark,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -49,6 +53,8 @@ class Datum {
     email: json["email"],
     name: json["name"],
     appointmentTime: json["appointment_time"],
+    status: json["status"],
+    remark: json["remark"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -57,5 +63,7 @@ class Datum {
     "email": email,
     "name": name,
     "appointment_time": appointmentTime,
+    "status": status,
+    "remark": remark,
   };
 }

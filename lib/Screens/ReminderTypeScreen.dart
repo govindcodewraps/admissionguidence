@@ -33,6 +33,22 @@ class _ReminderTypesScreenState extends State<ReminderTypesScreen> {
 
     super.initState();
   }
+  String capitalizeEveryWord(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    List<String> words = input.split(' ');
+    words = words.map((word) {
+      if (word.isNotEmpty) {
+        return word[0].toUpperCase() + word.substring(1);
+      } else {
+        return word;
+      }
+    }).toList();
+    return words.join(' ');
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return
@@ -99,17 +115,18 @@ class _ReminderTypesScreenState extends State<ReminderTypesScreen> {
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: selectedIdx == index ? MyTheme.backgroundcolor : Colors.grey,
+                                    color: selectedIdx == index ? MyTheme.backgroundcolor : Colors.white,
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Center(
-                                    child: Text(
-                                      reminderTypeModel.data![index].type.toString(),
+                                    child:Text(
+                                      capitalizeEveryWord(reminderTypeModel.data![index].type.toString()),
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
+
                                   ),
                                 ),
                               );
@@ -154,13 +171,13 @@ class _ReminderTypesScreenState extends State<ReminderTypesScreen> {
                           ElevatedButton(
 
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
+                                backgroundColor: MaterialStateProperty.all<Color>(MyTheme.WHITECOLOR),
 
                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
 
                                         borderRadius: BorderRadius.circular(12.0),
-                                        side: BorderSide(color:MyTheme.YELLOCOLOR)
+                                        side: BorderSide(color:MyTheme.WHITECOLOR)
                                     )
                                 )
                             ),
@@ -172,7 +189,7 @@ class _ReminderTypesScreenState extends State<ReminderTypesScreen> {
                             child:Text(
                               "Close",
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600),
                             ),),
@@ -181,63 +198,16 @@ class _ReminderTypesScreenState extends State<ReminderTypesScreen> {
                           height: 45,
                           width:MediaQuery.of(context).size.width*0.4,
                           child:
-                        //   ElevatedButton(
-                        //
-                        //     style: ButtonStyle(
-                        //         backgroundColor: MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
-                        //
-                        //         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        //             RoundedRectangleBorder(
-                        //
-                        //                 borderRadius: BorderRadius.circular(12.0),
-                        //                 side: BorderSide(color:MyTheme.YELLOCOLOR)
-                        //             )
-                        //         )
-                        //     ),
-                        //
-                        //     // onPressed: (){
-                        //     //
-                        //     //         ReminderListvalue=widget.reminderid;
-                        //     //         setreminderapi(ReminderListvalue,Remindertypevalue);
-                        //     // },
-                        //
-                        //     onPressed: () {
-                        //       if (!isLoading) {
-                        //         // Call your API function only if not already loading
-                        //         if (Remindertypevalue != null) {
-                        //           ReminderListvalue = widget.reminderid;
-                        //           setreminderapi(ReminderListvalue, Remindertypevalue);
-                        //         } else {
-                        //           // Show a message if reminder type is not selected
-                        //           Fluttertoast.showToast(
-                        //             msg: "Please select a reminder type",
-                        //             // Toast properties...
-                        //           );
-                        //         }
-                        //       }
-                        //     },
-                        //
-                        //     child: isLoading
-                        //         ? CircularProgressIndicator()  // Show circular progress indicator when loading
-                        //         : Text(
-                        //       "Save",
-                        //       style: TextStyle(
-                        //         color: Colors.white,
-                        //         fontSize: 16,
-                        //         fontWeight: FontWeight.w600,
-                        //       ),
-                        //     ),
-                        // ),
                           ElevatedButton(
                             // Existing button properties...
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
+                                backgroundColor: MaterialStateProperty.all<Color>(MyTheme.WHITECOLOR),
 
                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
 
                                         borderRadius: BorderRadius.circular(12.0),
-                                        side: BorderSide(color:MyTheme.YELLOCOLOR)
+                                        side: BorderSide(color:MyTheme.WHITECOLOR)
                                     )
                                 )
                             ),
@@ -263,7 +233,7 @@ class _ReminderTypesScreenState extends State<ReminderTypesScreen> {
                              Text(
                               "Save",
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),

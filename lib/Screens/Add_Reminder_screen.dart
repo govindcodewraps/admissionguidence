@@ -8,6 +8,7 @@ import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
+import '../models/ReminderTypeModel.dart';
 import '../my_theme.dart';
 
 class AddReminderScreen extends StatefulWidget {
@@ -21,6 +22,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
   TextEditingController dateInputController = TextEditingController();
   TextEditingController remarkInputtextController = TextEditingController();
   bool _isLoading = false;
+  String accountselectedValue = 'Select Reminder Type';
+  var remindertypeid='';
 
 
  //TextEditingController dateInputController = TextEditingController();
@@ -86,6 +89,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Text(widget.meetingid.toString()),
+
                       Text(
                         "Add Reminder",
                         style: TextStyle(
@@ -94,6 +98,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
+                      SizedBox(height: 10),
+                      reminderTypewidget(),
                       SizedBox(height: 10),
                       // DOB
                       TextFormField(
@@ -170,7 +176,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                                   setState(() {
                                     _isLoading = true;
                                   });
-                                  addmeeting(dateInputController.text,remarkInputtextController.text);                              }
+                                  addmeeting(dateInputController.text,remarkInputtextController.text,remindertypeid);                              }
                               },
 
                               //
@@ -204,7 +210,116 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
     );
   }
 
-  Future<void> addmeeting(date,remark) async{
+
+  Widget reminderTypewidget() {
+    return FutureBuilder(
+      future: remindertypeAPI(),
+      builder: (context, snapshot) {
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   return Container(
+        //     child: Center(child: CircularProgressIndicator()),
+        //   );
+        // } else if (snapshot.hasError) {
+        //   return Container(
+        //     child: Center(
+        //       child: Text('Error: Internal error'),
+        //     ),
+        //   );
+        // } else
+        if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else {
+          return Container(
+            // padding: EdgeInsets.only(left: 16, right: 16),
+            child: Column(
+              children: [
+
+                Container(
+                  width: MediaQuery.of(context).size.width*0.8,
+                  padding: EdgeInsets.only(left: 16,right: 11),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),  // Set the color of the border
+                    borderRadius: BorderRadius.circular(12), // Set the border radius
+                  ),
+                  child:
+
+                  DropdownButton<String>(
+                    value: accountselectedValue,
+                    onChanged: (newValue) {
+                      setState(() {
+                        accountselectedValue = newValue!;
+                        remindertypeid=newValue;
+                        print("Account Number ${newValue}");
+                        print("Account Number id ${remindertypeid}");
+                      });
+                    },
+                    underline: Container(),
+                    items: [
+                      DropdownMenuItem<String>(
+                        value: 'Select Reminder Type',
+                        child: Text('Select Reminder Type'),
+                      ),
+                      ...snapshot.data!.data!.map((datum) {
+                        return DropdownMenuItem<String>(
+                          value: datum.id!,
+                          child: Text("${(datum.type!)}"),
+                        );
+                      }).toList(),
+                    ],
+                  ),
+
+                ),
+
+                // selectedValue= snapshot.data.data.length;
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+  Future<ReminderTypeModel?> remindertypeAPI() async {
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
+    };
+    var data = {
+      'reminder_type': '1',
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+
+
+      var responseData = response.data is String
+          ? json.decode(response.data)
+          : response.data;
+      print("time slot list");
+      print(responseData);
+      print("time slot list");
+      //optionss=responseData;
+      return ReminderTypeModel.fromJson(responseData);
+    }
+    else {
+      print(response.statusMessage);
+    }
+  }
+
+
+  Future<void> addmeeting(date,remark,remindertype) async{
     setState(() {
       _isLoading = true;
     });
@@ -217,7 +332,10 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
     var data = {
       'reminder_add': '1',
       'date': date,
-      'remark': remark
+      'remark': remark,
+      'reminder_type': remindertype
+
+
     };
     var dio = Dio();
     var response = await dio.request(

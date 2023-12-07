@@ -1,22 +1,13 @@
 import 'dart:convert';
 import 'dart:ui';
-
-import 'package:admissionguidence/Screens/stembuilder.dart';
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
-import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../Logindesign.dart';
-import '../models/TotalAppintmentModel.dart';
 import '../my_theme.dart';
 import 'Account_Details/AccountScreen.dart';
 import 'Meeting_record_Screen.dart';
 import 'Reminder_Screen.dart';
-import 'RescheduleScreen.dart';
 import 'loginscreen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -154,12 +145,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     //crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
-
-
-
                       Container(
-                        padding: EdgeInsets.fromLTRB(16, 20, 16, 0),
+                        padding: EdgeInsets.fromLTRB(16, 10, 16, 0),
                         decoration: BoxDecoration(
                           // color: MyTheme.WHITECOLOR,
                             borderRadius:BorderRadius.circular(12)
@@ -173,81 +160,118 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           //crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width*0.6,
-                              padding: EdgeInsets.all(7),
-                              decoration: BoxDecoration(
-                                color: MyTheme.WHITECOLOR,
-                                borderRadius: BorderRadius.circular(12),
-
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.3),
-                                    spreadRadius: 2,
-                                    blurRadius: 4,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child:Center(child:
-                              Text("Total Appointments : ${_appointmentscount}"),
-
-                              ),
-                            ),
-                            SizedBox(height: 20,),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  padding: EdgeInsets.all(7),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
+                                ClipOval(
+                                  child: Container(
+                                    height: 102,
+                                    width: 102,
+                                    padding: EdgeInsets.all(7),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(1),
 
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 3),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.3),
+                                          spreadRadius: 2,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child:Center(
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 10,),
+                                          Text("Today",style:TextStyle(color: Colors.black),),
+                                          Text("Appointments",style:TextStyle(color: Colors.black),),
+
+                                          Text("${_appointmentscount}",style:TextStyle(fontSize: 30),),
+                                            ],
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                  child:Row(
-                                    children: [
-                                      Text("Pending ${_percntagecount}% Meeting",style:TextStyle(color: Colors.black),)
-                                    ],
+                                ),
+                                SizedBox(width: 10,),
+
+                                ClipOval(
+                                  child: Container(
+                                    height: 108,
+                                    width: 102,
+                                    padding: EdgeInsets.all(7),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(1),
+
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.3),
+                                          spreadRadius: 2,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child:Center(
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 10,),
+                                          Text("Today\nPending",style:TextStyle(color: Colors.black),),
+                                          Text("Appointments",style:TextStyle(color: Colors.black),),
+
+                                          Text("${_percntagecount}%",style:TextStyle(fontSize: 30),),
+                                          //SizedBox(height: 1,),
+                                           ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox(width: 10,),
+
+                                ClipOval(
+                                  child: Container(
+                                    height: 102,
+                                    width: 102,
+                                    padding: EdgeInsets.all(7),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(1),
+
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.3),
+                                          spreadRadius: 2,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child:Center(
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 10,),
+                                          Text("Total",style:TextStyle(color: Colors.black),),
+                                          Text("Reminder ",style:TextStyle(color: Colors.black),),
+
+                                          Text("${_remindercount}",style:TextStyle(fontSize: 30),),
+                                          ],
+                                      ),
+                                    ),
                                   ),
                                 ),
 
 
-                                SizedBox(width: 10,),
-                                Container(
-                                  padding: EdgeInsets.all(7),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.3),
-                                        spreadRadius: 2,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child:Row(
-                                    children: [
-                                      Text("Total Reminder : ${_remindercount}")
-                                    ],
-                                  ),
-                                )
-
 
                               ],),
-                            SizedBox(height: 30,),
+
+
+
+
+                            SizedBox(height: 100,),
 
                             Align(
                               alignment: Alignment.centerRight,
@@ -275,7 +299,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                     onPressed: (){
                                       Navigator.push(context,MaterialPageRoute(builder: (context)=>Meeting_record_screen()));
-
+                                      setState(() {
+                                        totalAppointmentAPI();
+                                        totalpercentageAPI();
+                                        totalReminderAPI();
+                                      });
                                       // onPressUpdatePassword();
                                     },
                                     child: Text(
@@ -289,7 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 30,),
+                            SizedBox(height: 50,),
 
                             Align(
                               alignment: Alignment.centerRight,
@@ -320,6 +348,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
                                       Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
                                       // onPressUpdatePassword();
+                                      setState(() {
+                                        totalAppointmentAPI();
+                                        totalpercentageAPI();
+                                        totalReminderAPI();
+                                      });
                                     },
                                     child:Text(
                                       "REMINDERS",
@@ -332,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 30,),
+                            SizedBox(height: 50,),
 
                             Align(
                               alignment: Alignment.centerRight,
@@ -361,6 +394,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
                                       Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountdetailsScreen()));
                                       // onPressUpdatePassword();
+                                      setState(() {
+                                        totalAppointmentAPI();
+                                        totalpercentageAPI();
+                                        totalReminderAPI();
+                                      });
                                     },
                                     child:Text(
                                       "TRANSACTION",
@@ -373,6 +411,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             ),
+                            SizedBox(height: 40,),
 
                           ],
                         ),

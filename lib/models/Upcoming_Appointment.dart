@@ -32,9 +32,10 @@ class Datum {
   String? id;
   DateTime? appointmentDate;
   String? email;
-  String? name;
+  Name? name;
   String? appointmentTime;
   String? status;
+  String? remark;
 
   Datum({
     this.id,
@@ -43,23 +44,46 @@ class Datum {
     this.name,
     this.appointmentTime,
     this.status,
+    this.remark,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
     appointmentDate: json["appointment_date"] == null ? null : DateTime.parse(json["appointment_date"]),
     email: json["email"],
-    name: json["name"],
+    name: nameValues.map[json["name"]]!,
     appointmentTime: json["appointment_time"],
     status: json["status"],
+    remark: json["remark"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "appointment_date": "${appointmentDate!.year.toString().padLeft(4, '0')}-${appointmentDate!.month.toString().padLeft(2, '0')}-${appointmentDate!.day.toString().padLeft(2, '0')}",
     "email": email,
-    "name": name,
+    "name": nameValues.reverse[name],
     "appointment_time": appointmentTime,
     "status": status,
+    "remark": remark,
   };
+}
+
+enum Name {
+  GOVIND_KUMAR
+}
+
+final nameValues = EnumValues({
+  "Govind kumar": Name.GOVIND_KUMAR
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

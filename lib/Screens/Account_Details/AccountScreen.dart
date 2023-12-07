@@ -18,6 +18,7 @@ class AccountdetailsScreen extends StatefulWidget {
 
 class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
   TextEditingController _amountcontroller = TextEditingController();
+  TextEditingController _remarkcontroller = TextEditingController();
   var valu;
   String selectedValue = 'Transaction Type';
   List<String> options = ['Transaction Type', 'CR', 'DR',];
@@ -235,7 +236,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                 Container(
                   padding: EdgeInsets.only(left: 10),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),  // Set the color of the border
+                    border: Border.all(color: Colors.black),  // Set the color of the border
                     borderRadius: BorderRadius.circular(12), // Set the border radius
                   ),
                   child: DropdownButton<String>(
@@ -272,6 +273,28 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                     filled: true,
                     isDense: true,
                     border: OutlineInputBorder(
+
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 10,),
+                Text(
+                  "Remark : ",
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(height: 15,),
+                TextField(
+                  controller: _remarkcontroller,
+                  //keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    labelText: "Type Remark",
+                    filled: true,
+                    isDense: true,
+                    border: OutlineInputBorder(
+
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
@@ -322,7 +345,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                 print("account number name ${accountNumber}");
                 print("account type      ${transationtype}");
 
-                addpaymentapi(_amountcontroller.text,transationtype,accountNumber);
+                addpaymentapi(_amountcontroller.text,transationtype,accountNumber,_remarkcontroller.text);
                 //_amount,_type,_bankid
                 // Add the logic for the button press here
               },
@@ -374,7 +397,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                   //width: MediaQuery.of(context).size.width*0.5,
                   padding: EdgeInsets.only(left: 16,right: 11),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),  // Set the color of the border
+                    border: Border.all(color: Colors.black),  // Set the color of the border
                     borderRadius: BorderRadius.circular(12), // Set the border radius
                   ),
                   child:
@@ -568,6 +591,19 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                             ],
                           ),
 
+                          // Row(
+                          //   children: [
+                          //     Text("Remark :"),
+                          //     SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+                          //     Text(
+                          //       snapshot.data!.data![index].remark?.toString()?.isNotEmpty == true
+                          //           ? snapshot.data!.data![index].remark.toString()
+                          //           : 'No Remark',
+                          //     ),
+                          //
+                          //   ],
+                          // ),
+
                         ],
                       ),
                     ),
@@ -665,7 +701,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     );
   }
 
-  Future addpaymentapi(_amount,_type,_bankid) async{
+  Future addpaymentapi(_amount,_type,_bankid,remark) async{
     var headers = {
       'accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -675,7 +711,9 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
       'add_payment': '1',
       'amount': _amount,
       'type': _type,
-      'bank_id': _bankid
+      'bank_id': _bankid,
+      'remark': remark
+
 
     };
     var dio = Dio();

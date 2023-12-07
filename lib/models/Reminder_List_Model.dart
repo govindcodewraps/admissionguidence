@@ -33,12 +33,14 @@ class Datum {
   String? date;
   String? remark;
   String? status;
+  ReminderType? reminderType;
 
   Datum({
     this.id,
     this.date,
     this.remark,
     this.status,
+    this.reminderType,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -46,6 +48,7 @@ class Datum {
     date: json["date"],
     remark: json["remark"],
     status: json["status"],
+    reminderType: reminderTypeValues.map[json["reminder_type"]]!,
   );
 
   Map<String, dynamic> toJson() => {
@@ -53,5 +56,34 @@ class Datum {
     "date": date,
     "remark": remark,
     "status": status,
+    "reminder_type": reminderTypeValues.reverse[reminderType],
   };
+}
+
+enum ReminderType {
+  EMPTY,
+  MONTHLY,
+  WEEKLY,
+  WEEK_DAYS,
+  YEARLY
+}
+
+final reminderTypeValues = EnumValues({
+  "": ReminderType.EMPTY,
+  "monthly": ReminderType.MONTHLY,
+  "weekly": ReminderType.WEEKLY,
+  "week days": ReminderType.WEEK_DAYS,
+  "yearly": ReminderType.YEARLY
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

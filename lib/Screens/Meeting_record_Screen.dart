@@ -14,6 +14,7 @@ import '../models/Time_slot_model.dart';
 import '../models/Todays_Appointment_model.dart';
 import '../models/Upcoming_Appointment.dart';
 import '../models/pastpast_appointment_model.dart';
+import 'Home_Screen.dart';
 import 'Notification_Screen.dart';
 import 'RescheduleMeetingScreen.dart';
 import 'RescheduleScreen.dart';
@@ -563,13 +564,17 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                     Text(snapshot.data!.data![index].email.toString()),
                                   ],
                                 ),
-                                // Row(
-                                //   children: [
-                                //     Text("Contact :"),
-                                //     SizedBox(width: 10,),
-                                //     Text("+91 98765432121"),
-                                //   ],
-                                // ),
+                                Row(
+                                  children: [
+                                    Text("Remark :"),
+                                    SizedBox(width: 10,),
+                                    Text(
+                                      snapshot.data!.data![index].remark?.toString()?.isNotEmpty == true
+                                          ? snapshot.data!.data![index].remark.toString()
+                                          : 'No Remark',
+                                    ),
+                                  ],
+                                ),
 
 
                               ],
@@ -690,13 +695,17 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   Text(snapshot.data!.data![index].email.toString()),
                                 ],
                               ),
-                              // Row(
-                              //   children: [
-                              //     Text("Contact :"),
-                              //     SizedBox(width: 10,),
-                              //     Text("+91 98765432121"),
-                              //   ],
-                              // ),
+                              Row(
+                                children: [
+                                  Text("Remark :"),
+                                  SizedBox(width: 10,),
+                                  Text(
+                                    snapshot.data!.data![index].remark?.toString()?.isNotEmpty == true
+                                        ? snapshot.data!.data![index].remark.toString()
+                                        : 'No Remark',
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -860,13 +869,17 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   Text(snapshot.data!.data![index].email.toString()),
                                 ],
                               ),
-                              // Row(
-                              //   children: [
-                              //     Text("Contact :"),
-                              //     SizedBox(width: 10,),
-                              //     Text("+91 98765432121"),
-                              //   ],
-                              // ),
+                              Row(
+                                children: [
+                                  Text("Remark :"),
+                                  SizedBox(width: 10,),
+                                  Text(
+                                    snapshot.data!.data![index].remark?.toString()?.isNotEmpty == true
+                                        ? snapshot.data!.data![index].remark.toString()
+                                        : 'No Remark',
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -1128,6 +1141,19 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   Text(appointmentsListModel
                                       .data![index].appointmentTime
                                       .toString()),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text("Remark:"),
+                                  SizedBox(
+                                    width: 2,
+                                  ),
+                                  Text(
+                                    snapshot.data!.data![index].remark?.toString()?.isNotEmpty == true
+                                        ? snapshot.data!.data![index].remark.toString()
+                                        : 'No Remark',
+                                  ),
                                 ],
                               ),
                             ],

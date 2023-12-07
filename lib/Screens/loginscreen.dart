@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../my_theme.dart';
 import 'Home_Screen.dart';
+import 'commanwebview.dart';
 
 String? finalEmail;
 
@@ -78,14 +80,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text("Welcome Back !",style:TextStyle(fontSize: 25,fontWeight: FontWeight.w600,color: MyTheme.backgroundcolor),),
                             //SizedBox(height: 20,),
                             SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                            Text("Email", style: GoogleFonts.roboto(fontWeight: FontWeight.w500, fontSize: 16,),),
+                            Text("User Name", style: GoogleFonts.roboto(fontWeight: FontWeight.w500, fontSize: 16,),),
 
                             TextField(
                               controller: _useridController,
 
                               cursorColor: MyTheme.backgroundcolor,
                               decoration: InputDecoration(
-                                hintText: "Email",
+                                hintText: "User Name",
                                 hintStyle: TextStyle(color: MyTheme.backgroundcolor.withOpacity(0.5)), // Adjust the opacity as needed
                               ),
                             ),
@@ -125,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(height: MediaQuery.of(context).size.height * 0.04),
 
                             Padding(
-                              padding: const EdgeInsets.only(top: 0.0, left: 0),
+                              padding:  EdgeInsets.only(top: 0.0, left: 0),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -145,7 +147,158 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   SizedBox(width: 8,),
-                                  Flexible(child: Text("I hereby agree to the Terms and Conditions and Privacy Policy.")),
+                                  // RichText(
+                                  //   text: TextSpan(
+                                  //     text: 'Hello ',
+                                  //     style: DefaultTextStyle.of(context).style,
+                                  //     children: <TextSpan>[
+                                  //       TextSpan(
+                                  //         text: 'world',
+                                  //         style: TextStyle(
+                                  //           fontWeight: FontWeight.bold,
+                                  //           color: Colors.blue,
+                                  //           fontSize: 20,
+                                  //         ),
+                                  //       ),
+                                  //       TextSpan(
+                                  //         text: '!',
+                                  //         style: TextStyle(
+                                  //           fontStyle: FontStyle.italic,
+                                  //           color: Colors.green,
+                                  //         ),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
+                                  // Flexible(child: Text("I hereby agree to the Terms and Conditions and Privacy Policy.")),
+                                  Flexible(child:
+                                  RichText(
+                                    text: TextSpan(
+                                    //  text: 'I hereby agree to the ',
+                                      //style: DefaultTextStyle.of(context).style,
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: 'I hereby agree to the ',
+                                          style: TextStyle(
+                                            //fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            //fontSize: 20,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CommonWebviewScreen(
+                                                            page_name:
+                                                            "Terms Conditions",
+                                                            url:
+                                                            //"https://umonm.com/",
+                                                            "https://admissionguidanceindia.com/about-us",
+                                                          )));
+                                            },
+                                          text: 'Terms  Conditions ',
+                                          style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: '& ',
+                                          style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+
+                                        TextSpan(
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CommonWebviewScreen(
+                                                            page_name:
+                                                            "Privacy Policy",
+                                                            url:
+                                                            //"https://umonm.com/",
+                                                            "https://admissionguidanceindia.com/about-us",
+                                                          )));
+                                            },
+
+                                          text: 'Privacy Policy',
+                                          style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  ),
+
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(left: 8.0),
+                                  //   child: Container(
+                                  //     width: DeviceInfo(context).width - 130,
+                                  //     child: RichText(
+                                  //         maxLines: 2,
+                                  //         text: TextSpan(
+                                  //             style: TextStyle(
+                                  //                 color: MyTheme.font_grey, fontSize: 12),
+                                  //             children: [
+                                  //               TextSpan(
+                                  //                 text: "I agree to the",
+                                  //               ),
+                                  //               TextSpan(
+                                  //                 recognizer: TapGestureRecognizer()
+                                  //                   ..onTap = () {
+                                  //                     Navigator.push(
+                                  //                         context,
+                                  //                         MaterialPageRoute(
+                                  //                             builder: (context) =>
+                                  //                                 CommonWebviewScreen(
+                                  //                                   page_name:
+                                  //                                   "Terms Conditions",
+                                  //                                   url:
+                                  //                                   //"https://umonm.com/",
+                                  //                                   "${AppConfig.RAW_BASE_URL}/mobile-page/terms",
+                                  //                                 )));
+                                  //                   },
+                                  //                 style:
+                                  //                 TextStyle(color: MyTheme.accent_color),
+                                  //                 text: " Terms Conditions",
+                                  //               ),
+                                  //               TextSpan(
+                                  //                 text: " &",
+                                  //               ),
+                                  //               TextSpan(
+                                  //                 recognizer: TapGestureRecognizer()
+                                  //                   ..onTap = () {
+                                  //                     Navigator.push(
+                                  //                         context,
+                                  //                         MaterialPageRoute(
+                                  //                             builder: (context) =>
+                                  //                                 CommonWebviewScreen(
+                                  //                                   page_name:
+                                  //                                   "Privacy Policy",
+                                  //                                   url:
+                                  //                                   "${AppConfig.RAW_BASE_URL}/mobile-page/privacy-policy",
+                                  //                                 )));
+                                  //                   },
+                                  //                 text: " Privacy Policy",
+                                  //                 style:
+                                  //                 TextStyle(color: MyTheme.accent_color),
+                                  //               )
+                                  //             ])),
+                                  //   ),
+                                  // ),
+
+
                                 ],
                               ),
                             ),

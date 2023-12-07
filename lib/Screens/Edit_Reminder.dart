@@ -238,6 +238,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
+import '../models/ReminderTypeModel.dart';
 import '../my_theme.dart';
 import 'Reminder_Screen.dart';
 
@@ -254,6 +255,8 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
   TextEditingController dateInputController = TextEditingController();
   TextEditingController remarkInputtextController = TextEditingController();
   bool _isLoading = false;
+  String accountselectedValue = 'Select Reminder Type';
+  var remindertypeid='';
 
   @override
   Widget build(BuildContext context) {
@@ -274,7 +277,7 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
         width: double.infinity,
         //color: MyTheme.backgroundcolor,
         decoration: BoxDecoration(
-          color: Colors.yellow,
+          //color: Colors.yellow,
 
           image: DecorationImage(
 
@@ -307,6 +310,8 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
+                      SizedBox(height: 10),
+                      reminderTypewidget(),
                       SizedBox(height: 10),
                       // DOB
                       TextFormField(
@@ -391,7 +396,7 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                                         ),
                                       ),
                                     );
-                                    await updatemeeting(dateInputController.text, remarkInputtextController.text, widget.meetingid);
+                                    await updatemeeting(dateInputController.text, remarkInputtextController.text, widget.meetingid,remindertypeid);
                                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                   }
                                 },
@@ -419,7 +424,116 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
     );
   }
 
-  Future<void> updatemeeting(date, remark, id) async {
+  Widget reminderTypewidget() {
+    return FutureBuilder(
+      future: remindertypeAPI(),
+      builder: (context, snapshot) {
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   return Container(
+        //     child: Center(child: CircularProgressIndicator()),
+        //   );
+        // } else if (snapshot.hasError) {
+        //   return Container(
+        //     child: Center(
+        //       child: Text('Error: Internal error'),
+        //     ),
+        //   );
+        // } else
+        if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else {
+          return Container(
+            // padding: EdgeInsets.only(left: 16, right: 16),
+            child: Column(
+              children: [
+
+                Container(
+                  width: MediaQuery.of(context).size.width*0.8,
+                  padding: EdgeInsets.only(left: 16,right: 11),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),  // Set the color of the border
+                    borderRadius: BorderRadius.circular(12), // Set the border radius
+                  ),
+                  child:
+
+                  DropdownButton<String>(
+                    value: accountselectedValue,
+                    onChanged: (newValue) {
+                      setState(() {
+                        accountselectedValue = newValue!;
+                        remindertypeid=newValue;
+                        print("Account Number ${newValue}");
+                        print("Account Number id ${remindertypeid}");
+                      });
+                    },
+                    underline: Container(),
+                    items: [
+                      DropdownMenuItem<String>(
+                        value: 'Select Reminder Type',
+                        child: Text('Select Reminder Type'),
+                      ),
+                      ...snapshot.data!.data!.map((datum) {
+                        return DropdownMenuItem<String>(
+                          value: datum.id!,
+                          child: Text("${(datum.type!)}"),
+                        );
+                      }).toList(),
+                    ],
+                  ),
+
+                ),
+
+                // selectedValue= snapshot.data.data.length;
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+  Future<ReminderTypeModel?> remindertypeAPI() async {
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
+    };
+    var data = {
+      'reminder_type': '1',
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+
+
+      var responseData = response.data is String
+          ? json.decode(response.data)
+          : response.data;
+      print("time slot list");
+      print(responseData);
+      print("time slot list");
+      //optionss=responseData;
+      return ReminderTypeModel.fromJson(responseData);
+    }
+    else {
+      print(response.statusMessage);
+    }
+  }
+
+
+
+  Future<void> updatemeeting(date, remark, id,reminderType) async {
     var headers = {
       'accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -429,7 +543,8 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
       'reminder_update': '1',
       'date': date,
       'remark': remark,
-      'id': id
+      'id': id,
+      'type_id':reminderType
     };
     var dio = Dio();
     var response = await dio.request(

@@ -35,6 +35,7 @@ class Datum {
   String? name;
   String? appointmentTime;
   String? status;
+  dynamic remark;
 
   Datum({
     this.id,
@@ -43,6 +44,7 @@ class Datum {
     this.name,
     this.appointmentTime,
     this.status,
+    this.remark,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -52,6 +54,7 @@ class Datum {
     name: json["name"],
     appointmentTime: json["appointment_time"],
     status: json["status"],
+    remark: json["remark"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -61,5 +64,6 @@ class Datum {
     "name": name,
     "appointment_time": appointmentTime,
     "status": status,
+    "remark": remark,
   };
 }
