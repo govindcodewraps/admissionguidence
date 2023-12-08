@@ -430,6 +430,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                   child:
 
                   DropdownButton<String>(
+                    isExpanded: true,
 
                     value: selectedValue,
                     onChanged: (newValue) {

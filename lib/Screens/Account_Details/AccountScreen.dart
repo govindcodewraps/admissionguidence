@@ -54,6 +54,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     }
   }
 
+  bool showMore = false;
 
   @override
   Widget build(BuildContext context) {
@@ -234,12 +235,14 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                 ),
                 SizedBox(height: 10,),
                 Container(
+                  width: MediaQuery.of(context).size.width*0.98,
                   padding: EdgeInsets.only(left: 10),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),  // Set the color of the border
                     borderRadius: BorderRadius.circular(12), // Set the border radius
                   ),
                   child: DropdownButton<String>(
+                    isExpanded: true,
 
                     value: selectedValue,
                     onChanged: (newValue) {
@@ -394,6 +397,8 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
               children: [
 
                 Container(
+                  width: MediaQuery.of(context).size.width*0.98,
+
                   //width: MediaQuery.of(context).size.width*0.5,
                   padding: EdgeInsets.only(left: 16,right: 11),
                   decoration: BoxDecoration(
@@ -403,6 +408,8 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                   child:
 
                   DropdownButton<String>(
+                    isExpanded: true,
+
                     value: accountselectedValue,
                     onChanged: (newValue) {
                       setState(() {
@@ -412,6 +419,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                       });
                     },
                     underline: Container(),
+
                     items: [
                       DropdownMenuItem<String>(
                         value: 'Select Account Number',
@@ -478,6 +486,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
 
   Widget paymentlistwidget() {
     return FutureBuilder(
+
       future: paymentlistapi(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -499,15 +508,20 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
             ),
           );
         } else {
+
           return  ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
+            reverse: true,
             itemBuilder: (context, int index) {
               return
 
                 InkWell(
                   onTap: (){
                     print("govind kkk");
+                    print("Remark: ${snapshot.data!.data![33].amount}");
+                    print("Remark: ${snapshot.data!.data![33].remark}");
+
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -526,27 +540,28 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                       padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
+
                           Row(
                             mainAxisAlignment:
                             MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 children: [
-                                  Text("Transaction Type : "),
+                                  Text("Transaction Type  "),
                                   SizedBox(width: 5,),
                                   // Text(snapshot.data!.data![index]
                                   //     .type.toString()),
-
-                                  if(snapshot.data!.data![index].type.toString() == "Cr" || snapshot.data!.data![index].type.toString() == "CR")
+                                 // Text(snapshot.data!.data![index].type.toString(),style:TextStyle(color: Colors.black),),
+                                  if(snapshot.data!.data![index].type.toString() == "Type.TYPE_CR" || snapshot.data!.data![index].type.toString() == "Type.CR")
                                    Text("Credit",style:TextStyle(color: Colors.black),),
-                                  if(snapshot.data!.data![index].type.toString()=="Dr" || snapshot.data!.data![index].type.toString()=="DR")
+                                  if(snapshot.data!.data![index].type.toString()=="Type.TYPE_DR" ||snapshot.data!.data![index].type.toString()=="Type.DR")
                                   Text("Debit",style: TextStyle(color: Colors.black),),
                                 ],
                               ),
 
-                              if(snapshot.data!.data![index].type.toString() == "Cr" || snapshot.data!.data![index].type.toString() == "CR")
+                              if(snapshot.data!.data![index].type.toString() == "Type.TYPE_CR" || snapshot.data!.data![index].type.toString() == "Type.CR")
                                 Icon(Icons.arrow_circle_left_outlined,color: Colors.green,),
-                              if(snapshot.data!.data![index].type.toString()=="Dr" || snapshot.data!.data![index].type.toString()=="DR")
+                              if(snapshot.data!.data![index].type.toString()=="Type.TYPE_DR" || snapshot.data!.data![index].type.toString()=="Type.DR")
                               //Icon(Icons.arrow_upward_outlined,color: Colors.red,),
                               Icon(Icons.arrow_circle_right_outlined,color: Colors.red,),
 
@@ -557,11 +572,11 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
 
                           Row(
                             children: [
-                              Text("Amount :"),
+                              Text("Amount "),
                               SizedBox(width: MediaQuery.of(context).size.width*0.180,),
-                              if(snapshot.data!.data![index].type.toString() == "Cr" || snapshot.data!.data![index].type.toString() == "CR")
+                              if(snapshot.data!.data![index].type.toString() == "Type.TYPE_CR" || snapshot.data!.data![index].type.toString() == "Type.CR")
                                 Text("+₹${snapshot.data!.data![index].amount.toString()}",style: TextStyle(color: Colors.green),),
-                              if(snapshot.data!.data![index].type.toString()=="Dr" || snapshot.data!.data![index].type.toString()=="DR")
+                              if(snapshot.data!.data![index].type.toString()=="Type.TYPE_DR" || snapshot.data!.data![index].type.toString()=="Type.DR")
                                 Text("-₹${snapshot.data!.data![index].amount.toString()}",style: TextStyle(color: Colors.red),),
 
                              // Text("₹${snapshot.data!.data![index].amount.toString()}"),
@@ -570,14 +585,14 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                           ),
                           Row(
                             children: [
-                              Text("Old Balance:   "),
+                              Text("Old Balance   "),
                               SizedBox(width: MediaQuery.of(context).size.width*0.1,),
                               Text("₹${snapshot.data!.data![index].oldBalance.toString()}"),
                             ],
                           ),
                           Row(
                             children: [
-                              Text("New Balance :"),
+                              Text("New Balance "),
                               SizedBox(width: MediaQuery.of(context).size.width*0.1,),
                               Text("₹${snapshot.data!.data![index].newBalance.toString()}"),
                             ],
@@ -585,22 +600,62 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
 
                           Row(
                             children: [
-                              Text("Bank Name :   "),
+                              Text("Bank Name   "),
                               SizedBox(width: MediaQuery.of(context).size.width*0.1,),
-                              Flexible(child: Text(snapshot.data!.data![index].bankName.toString())),
+                              Flexible(child:
+                             // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
+                              Text("${formatAccountNumber(snapshot.data!.data![index].bankName.toString().split('.').last)}"),),
+                             // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
                             ],
                           ),
 
                           // Row(
                           //   children: [
-                          //     Text("Remark :"),
-                          //     SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+                          //     Text("Remark "),
+                          //     SizedBox(width: MediaQuery.of(context).size.width * 0.1,),
                           //     Text(
-                          //       snapshot.data!.data![index].remark?.toString()?.isNotEmpty == true
-                          //           ? snapshot.data!.data![index].remark.toString()
+                          //       snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                          //           ? snapshot.data!.data![index].remark!
                           //           : 'No Remark',
                           //     ),
-                          //
+                          //   ],
+                          // ),
+
+
+                     /*     Text(
+                            snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                ? snapshot.data!.data![index].remark!
+                                : 'No Remark',
+                            maxLines: showMore ? null : 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 8),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                showMore = !showMore;
+                              });
+                            },
+                            child: Text(
+                              showMore ? 'View Less' : 'Show More',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),*/
+
+
+                          // Row(
+                          //   children: [
+                          //     Text("Remark :"),
+                          //     SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+                          //     Text(snapshot.data!.data![index].remark.toString()),
+                          //     // Text(
+                          //     //   snapshot.data!.data![index].remark?.toString()?.isNotEmpty == true
+                          //     //       ? snapshot.data!.data![index].remark.toString()
+                          //     //       : 'No Remark',
+                          //     // ),
                           //   ],
                           // ),
 
@@ -651,14 +706,14 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                   },
                   child:  Container(
                     padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.23,right: MediaQuery.of(context).size.width*0.23),
-                    height: 60,
+                    height: 100,
                     //width: MediaQuery.of(context).size.width*0.1,
                     //color: Colors.red,
                     child:    Container(
 
                       decoration: BoxDecoration(
                         color: Colors.white70,
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(12.0),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.2),
@@ -669,16 +724,19 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                         ],
                       ),
                       child: Container(
-                        padding: EdgeInsets.only(left: 7,right: 7),
+                        padding: EdgeInsets.only(left: 7,right: 7,top: 20),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(height: 1,),
+                            Text("Balance ",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
+
+                            SizedBox(height: 10,),
                             Row(
                               children: [
-                                Text("Balance ",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),),
-                                SizedBox(width: 7,),
-                                Text("+₹${snapshot.requireData!.data.toString()}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: Colors.green),),
+                                Text(""),
+                                SizedBox(width:40,),
+                                Text("+₹${snapshot.requireData!.data.toString()}",style: TextStyle(fontSize: 23,fontWeight: FontWeight.w500,color: Colors.green),),
                               ],
                             ),
 

@@ -9,7 +9,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import '../models/ReminderTypeModel.dart';
+import '../models/Time_slot_model.dart';
 import '../my_theme.dart';
+import 'Reminder_Screen.dart';
 
 class AddReminderScreen extends StatefulWidget {
   const AddReminderScreen({super.key});
@@ -24,7 +26,9 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
   bool _isLoading = false;
   String accountselectedValue = 'Select Reminder Type';
   var remindertypeid='';
-
+  String selectedValue = 'Select Time';
+  var _timeslotid;
+  var selecttime;
 
  //TextEditingController dateInputController = TextEditingController();
   Time _time = Time(hour: 11, minute: 30, second: 20);
@@ -36,11 +40,15 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
   void onTimeChanged(Time newTime) {
     setState(() {
       _time = newTime;
+      selecttime=_time.format(context);
+      print("Timmmmee ${selecttime}");
+
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print("Date inputtt ${dateInputController.text.toString()}");
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
@@ -102,6 +110,9 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                       reminderTypewidget(),
                       SizedBox(height: 10),
                       // DOB
+
+                      //Text("Timee"),
+
                       TextFormField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -126,10 +137,54 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                           );
 
                           if (pickedDate != null) {
-                            dateInputController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                            dateInputController.text =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
+
+                            // Fetch time slots for the selected date
+                            await fetchTimeSlots(dateInputController.text);
                           }
                         },
                       ),
+                      SizedBox(height: 10),
+
+
+                      //time slot start
+                      TextFormField(
+
+                        decoration:  InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                                width: 3, color: Colors.greenAccent), //<-- SEE HERE
+                          ),
+                          // border: InputBorder.none,
+                          //label: "DOB",
+                          labelText: _time.format(context),
+                          hintText: _time.format(context),
+                          suffixIcon: Icon(Icons.watch_later_outlined,color: Colors.black,),
+
+                        ),
+                         // controller: dateInputController,
+                        readOnly: true,
+                        onTap: () async {
+
+                          //print("Time select  ${_time.format(context)}");
+                          print("Time selectaa  ${selecttime}");
+                          Navigator.of(context).push(
+                            showPicker(
+                              context: context,
+                              value: _time,
+                              sunrise: TimeOfDay(hour: 6, minute: 0), // optional
+                              sunset: TimeOfDay(hour: 18, minute: 0), // optional
+                              duskSpanInMinutes: 120, // optional
+                              onChange: onTimeChanged,
+                            ),
+                          );
+                        },
+                      ),
+                      //time slot end
+
+                      //timeslotwidget(),
 
                       SizedBox(height: 30),
                       TextField(
@@ -176,7 +231,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                                   setState(() {
                                     _isLoading = true;
                                   });
-                                  addmeeting(dateInputController.text,remarkInputtextController.text,remindertypeid);                              }
+                                 // _timeslotid
+                                  addmeeting(dateInputController.text,remarkInputtextController.text,remindertypeid,selecttime);                              }
                               },
 
                               //
@@ -208,6 +264,142 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
         ),
       ),
     );
+  }
+
+
+
+
+  Widget timeslotwidget() {
+    return FutureBuilder(
+      future: timeslotlist(dateInputController),
+      builder: (context, snapshot) {
+        // if
+        // (snapshot.connectionState == ConnectionState.waiting) {
+        //   return Container(
+        //     child: Center(child: CircularProgressIndicator()),
+        //   );
+        // }
+        // // else if (snapshot.hasError) {
+        // //   return Container(
+        // //     child: Center(
+        // //       child: Text('Error: Internal error'),
+        // //     ),
+        // //   );
+        // // }
+        // else
+        if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        else
+        {
+          return Container(
+            // padding: EdgeInsets.only(left: 16, right: 16),
+            child: Column(
+              children: [
+
+                Container(
+                  width: MediaQuery.of(context).size.width*1,
+                  padding: EdgeInsets.only(left: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),  // Set the color of the border
+                    borderRadius: BorderRadius.circular(12), // Set the border radius
+                  ),
+                  child:
+
+                  DropdownButton<String>(
+                    isExpanded: true,
+
+                    value: selectedValue,
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedValue = newValue!;
+                        print(newValue);
+                        _timeslotid=newValue;
+                        print("time slot id print ${_timeslotid}");
+                      });
+                    },
+                    underline: Container(),
+
+                    items: [
+                      DropdownMenuItem<String>(
+
+                        value: 'Select Time',
+                        child: Text('Select Time'),
+                      ),
+                      ...snapshot.data!.data!.map((datum) {
+                        return DropdownMenuItem<String>(
+                          value: datum.id!,
+                          child: Text("${datum.slotFrom!}-${datum.slotTo!}"),
+                        );
+                      }).toList(),
+                    ],
+
+                  ),
+                ),
+
+                // selectedValue= snapshot.data.data.length;
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> fetchTimeSlots(String selectedDate) async {
+    // Call your timeslotlist API with the selected date
+    try {
+      TimeslotModel? timeslotData = await timeslotlist(selectedDate);
+      if (timeslotData != null) {
+        // Handle the fetched time slots, if needed
+      }
+    } catch (error) {
+      // Handle any errors that may occur during API call
+      print("Error fetching time slots: $error");
+    }
+  }
+
+  Future<TimeslotModel?> timeslotlist(selectedDate) async {
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
+    };
+    var data = {
+      'time_slot': '1',
+      'date':selectedDate
+      //'date': '2023-11-29'
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+
+
+      var responseData = response.data is String
+          ? json.decode(response.data)
+          : response.data;
+      print("time slot list");
+      print(responseData);
+      print("time slot list");
+
+      //optionss=responseData;
+      return TimeslotModel.fromJson(responseData);
+    }
+    else {
+      print(response.statusMessage);
+    }
   }
 
 
@@ -248,6 +440,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                   child:
 
                   DropdownButton<String>(
+                    isExpanded: true,
+
                     value: accountselectedValue,
                     onChanged: (newValue) {
                       setState(() {
@@ -319,7 +513,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
   }
 
 
-  Future<void> addmeeting(date,remark,remindertype) async{
+  Future<void> addmeeting(date,remark,remindertype,timeinput) async{
     setState(() {
       _isLoading = true;
     });
@@ -333,7 +527,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
       'reminder_add': '1',
       'date': date,
       'remark': remark,
-      'reminder_type': remindertype
+      'reminder_type': remindertype,
+      'time':timeinput
 
 
     };
@@ -360,6 +555,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
       );
 
       Navigator.pop(context);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Reminder_Screen()));
     }
     else {
       print(response.statusMessage);

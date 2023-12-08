@@ -233,12 +233,15 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
+import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import '../models/ReminderTypeModel.dart';
+import '../models/Time_slot_model.dart';
 import '../my_theme.dart';
 import 'Reminder_Screen.dart';
 
@@ -257,6 +260,19 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
   bool _isLoading = false;
   String accountselectedValue = 'Select Reminder Type';
   var remindertypeid='';
+  String selectedValue = 'Select Time';
+  var _timeslotid;
+  var selecttime;
+
+  Time _time = Time(hour: 11, minute: 30, second: 20);
+  void onTimeChanged(Time newTime) {
+    setState(() {
+      _time = newTime;
+      selecttime=_time.format(context);
+      print("Timmmmee ${selecttime}");
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -342,6 +358,43 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                           }
                         },
                       ),
+                      SizedBox(height: 10,),
+
+
+                      //time slot start
+                      TextFormField(
+
+                        decoration:  InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                                width: 3, color: Colors.greenAccent), //<-- SEE HERE
+                          ),
+                          // border: InputBorder.none,
+                          //label: "DOB",
+                          labelText: _time.format(context),
+                          hintText: _time.format(context),
+                          suffixIcon: Icon(Icons.watch_later_outlined,color: Colors.black,),
+
+                        ),
+                        //  controller: dateInputController,
+                        readOnly: true,
+                        onTap: () async {
+                          Navigator.of(context).push(
+                            showPicker(
+                              context: context,
+                              value: _time,
+                              sunrise: TimeOfDay(hour: 6, minute: 0), // optional
+                              sunset: TimeOfDay(hour: 18, minute: 0), // optional
+                              duskSpanInMinutes: 120, // optional
+                              onChange: onTimeChanged,
+                            ),
+                          );
+                        },
+                      ),
+                      //time slot end
+
+                      // timeslotwidget(),
 
                       SizedBox(height: 30),
                       TextField(
@@ -396,7 +449,7 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                                         ),
                                       ),
                                     );
-                                    await updatemeeting(dateInputController.text, remarkInputtextController.text, widget.meetingid,remindertypeid);
+                                    await updatemeeting(dateInputController.text, remarkInputtextController.text, widget.meetingid,remindertypeid,selecttime);
                                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                   }
                                 },
@@ -423,6 +476,138 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
       ),
     );
   }
+
+
+  Widget timeslotwidget() {
+    return FutureBuilder(
+      future: timeslotlist(dateInputController),
+      builder: (context, snapshot) {
+        // if
+        // (snapshot.connectionState == ConnectionState.waiting) {
+        //   return Container(
+        //     child: Center(child: CircularProgressIndicator()),
+        //   );
+        // }
+        // // else if (snapshot.hasError) {
+        // //   return Container(
+        // //     child: Center(
+        // //       child: Text('Error: Internal error'),
+        // //     ),
+        // //   );
+        // // }
+        // else
+        if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        else
+        {
+          return Container(
+            // padding: EdgeInsets.only(left: 16, right: 16),
+            child: Column(
+              children: [
+
+                Container(
+                  width: MediaQuery.of(context).size.width*1,
+                  padding: EdgeInsets.only(left: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),  // Set the color of the border
+                    borderRadius: BorderRadius.circular(12), // Set the border radius
+                  ),
+                  child:
+
+                  DropdownButton<String>(
+
+                    value: selectedValue,
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedValue = newValue!;
+                        print(newValue);
+                        _timeslotid=newValue;
+                        print("time slot id print ${_timeslotid}");
+                      });
+                    },
+                    underline: Container(),
+
+                    items: [
+                      DropdownMenuItem<String>(
+
+                        value: 'Select Time',
+                        child: Text('Select Time'),
+                      ),
+                      ...snapshot.data!.data!.map((datum) {
+                        return DropdownMenuItem<String>(
+                          value: datum.id!,
+                          child: Text("${datum.slotFrom!}-${datum.slotTo!}"),
+                        );
+                      }).toList(),
+                    ],
+
+                  ),
+                ),
+
+                // selectedValue= snapshot.data.data.length;
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+  Future<void> fetchTimeSlots(String selectedDate) async {
+    // Call your timeslotlist API with the selected date
+    try {
+      TimeslotModel? timeslotData = await timeslotlist(selectedDate);
+      if (timeslotData != null) {
+        // Handle the fetched time slots, if needed
+      }
+    } catch (error) {
+      // Handle any errors that may occur during API call
+      print("Error fetching time slots: $error");
+    }
+  }
+  Future<TimeslotModel?> timeslotlist(selectedDate) async {
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
+    };
+    var data = {
+      'time_slot': '1',
+      'date':selectedDate
+      //'date': '2023-11-29'
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+
+
+      var responseData = response.data is String
+          ? json.decode(response.data)
+          : response.data;
+      print("time slot list");
+      print(responseData);
+      print("time slot list");
+
+      //optionss=responseData;
+      return TimeslotModel.fromJson(responseData);
+    }
+    else {
+      print(response.statusMessage);
+    }
+  }
+
 
   Widget reminderTypewidget() {
     return FutureBuilder(
@@ -461,6 +646,8 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                   child:
 
                   DropdownButton<String>(
+                    isExpanded: true,
+
                     value: accountselectedValue,
                     onChanged: (newValue) {
                       setState(() {
@@ -530,10 +717,7 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
       print(response.statusMessage);
     }
   }
-
-
-
-  Future<void> updatemeeting(date, remark, id,reminderType) async {
+  Future<void> updatemeeting(date, remark, id,reminderType,timeinput) async {
     var headers = {
       'accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -544,7 +728,10 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
       'date': date,
       'remark': remark,
       'id': id,
-      'type_id':reminderType
+      'type_id':reminderType,
+      'time':timeinput
+
+
     };
     var dio = Dio();
     var response = await dio.request(

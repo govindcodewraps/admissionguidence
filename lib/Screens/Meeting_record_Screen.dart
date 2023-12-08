@@ -59,7 +59,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
     super.setState(fn);
   }
-
+  bool showMore = false;
   @override
   Widget build(BuildContext context) {
 
@@ -80,6 +80,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                       InkWell(
                           onTap:(){
                             Navigator.pop(context);
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
                           },
                           child: Icon(Icons.arrow_back, color: Colors.white)),
                       SizedBox(width: 10),
@@ -568,10 +569,30 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   children: [
                                     Text("Remark :"),
                                     SizedBox(width: 10,),
-                                    Text(
-                                      snapshot.data!.data![index].remark?.toString()?.isNotEmpty == true
-                                          ? snapshot.data!.data![index].remark.toString()
-                                          : 'No Remark',
+                                    Flexible(
+                                      child: Text(
+                                        snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                            ? snapshot.data!.data![index].remark!
+                                            : 'No Remark',
+
+
+                                        //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
+                                        maxLines: !showMore ? null : 4,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          showMore = !showMore;
+                                        });
+                                      },
+                                      child:   Icon(
+                                        !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                                        color: MyTheme.backgroundcolor,
+                                      ),
+
                                     ),
                                   ],
                                 ),
@@ -699,10 +720,30 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                 children: [
                                   Text("Remark :"),
                                   SizedBox(width: 10,),
-                                  Text(
-                                    snapshot.data!.data![index].remark?.toString()?.isNotEmpty == true
-                                        ? snapshot.data!.data![index].remark.toString()
-                                        : 'No Remark',
+                                  Flexible(
+                                    child: Text(
+                                      snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                          ? snapshot.data!.data![index].remark!
+                                          : 'No Remark',
+
+
+                                      //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
+                                      maxLines: !showMore ? null : 4,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        showMore = !showMore;
+                                      });
+                                    },
+                                    child:   Icon(
+                                      !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                                      color: MyTheme.backgroundcolor,
+                                    ),
+
                                   ),
                                 ],
                               ),
@@ -873,13 +914,34 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                 children: [
                                   Text("Remark :"),
                                   SizedBox(width: 10,),
-                                  Text(
-                                    snapshot.data!.data![index].remark?.toString()?.isNotEmpty == true
-                                        ? snapshot.data!.data![index].remark.toString()
-                                        : 'No Remark',
+                                  Flexible(
+                                    child: Text(
+                                      snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                          ? snapshot.data!.data![index].remark!
+                                          : 'No Remark',
+
+
+                                    //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
+                                      maxLines: !showMore ? null : 4,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        showMore = !showMore;
+                                      });
+                                    },
+                                    child:   Icon(
+                                      !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                                      color: MyTheme.backgroundcolor,
+                                    ),
+
                                   ),
                                 ],
                               ),
+
                             ],
                           ),
                         ),
@@ -1145,14 +1207,32 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                               ),
                               Row(
                                 children: [
-                                  Text("Remark:"),
-                                  SizedBox(
-                                    width: 2,
+                                  Text("Remark :"),
+                                  SizedBox(width: 10,),
+                                  Flexible(
+                                    child: Text(
+                                      snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                          ? snapshot.data!.data![index].remark!
+                                          : 'No Remark',
+
+
+                                      //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
+                                      maxLines: !showMore ? null : 4,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                  Text(
-                                    snapshot.data!.data![index].remark?.toString()?.isNotEmpty == true
-                                        ? snapshot.data!.data![index].remark.toString()
-                                        : 'No Remark',
+                                  SizedBox(height: 8),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        showMore = !showMore;
+                                      });
+                                    },
+                                    child:   Icon(
+                                      !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                                      color: MyTheme.backgroundcolor,
+                                    ),
+
                                   ),
                                 ],
                               ),
