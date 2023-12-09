@@ -36,6 +36,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
   bool _isApproving = false;
   bool _isCanceling = false;
 
+  var mettingiddelete;
+
   int buttonvalue = 0; // Set an initial value
 
   @override
@@ -524,10 +526,15 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                             SizedBox(width: 10,),
                                             InkWell(
                                               onTap: () {
-                                                _updateBookingStatus(
-                                                  snapshot.data!.data![index].id.toString(),
-                                                  Canceled,
-                                                );
+
+                                                mettingiddelete = snapshot.data!.data![index].id.toString();
+                                                showDeleteConfirmationDialogtoday(context);
+
+
+                                                // _updateBookingStatus(
+                                                //   snapshot.data!.data![index].id.toString(),
+                                                //   Canceled,
+                                                // );
                                               },
                                               child: Icon(Icons.cancel_outlined),
                                             ),
@@ -875,10 +882,13 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                             SizedBox(width: 10,),
                                             InkWell(
                                               onTap: () {
-                                                _updateBookingStatus(
-                                                  snapshot.data!.data![index].id.toString(),
-                                                  Canceled,
-                                                );
+                                                // _updateBookingStatus(
+                                                //   snapshot.data!.data![index].id.toString(),
+                                                //   Canceled,
+                                                // );
+
+                                               mettingiddelete = snapshot.data!.data![index].id.toString();
+                                                showDeleteConfirmationDialog(context);
                                               },
                                               child: Icon(Icons.cancel_outlined),
                                             ),
@@ -978,6 +988,125 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       },
     );
   }
+
+  void showDeleteConfirmationDialogfilterd(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Are you sure want to delete?"),
+          // content: Text("Are you sure you want to logout?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text("Cancel",style: TextStyle(color: Colors.grey),),
+            ),
+            TextButton(
+              onPressed: () async {
+                bookin_status(
+                    mettingiddelete,
+                    Canceled);
+
+                // _updateBookingStatus(
+                //   mettingiddelete,
+                //   Canceled,
+                // );
+                Fluttertoast.showToast(
+                    msg: "Meeting Canceled",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+                Navigator.of(context).pop();
+              },
+              child:
+              //Image.asset('assets/logoutbutton.jpg'),
+              Text("Delete",style: TextStyle(color: Colors.red),),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showDeleteConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Are you sure want to delete?"),
+          // content: Text("Are you sure you want to logout?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text("Cancel",style: TextStyle(color: Colors.grey),),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Perform logout actions
+                // var reminderid=snapshot.data!.data![index].id.toString();
+                // print("delete reminder id  ${deletereminderid}");
+                //
+                // deletreminderapi(deletereminderid.toString());
+
+
+                _updateBookingStatus(
+                  mettingiddelete,
+                  Canceled,
+                );
+                Navigator.of(context).pop();
+              },
+              child:
+              //Image.asset('assets/logoutbutton.jpg'),
+              Text("Delete",style: TextStyle(color: Colors.red),),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void showDeleteConfirmationDialogtoday(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Are you sure want to delete?"),
+          // content: Text("Are you sure you want to logout?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text("Cancel",style: TextStyle(color: Colors.grey),),
+            ),
+            TextButton(
+              onPressed: () async {
+
+
+
+                _updateBookingStatus(
+                  mettingiddelete,
+                  Canceled,
+                );
+                Navigator.of(context).pop();
+              },
+              child:
+              //Image.asset('assets/logoutbutton.jpg'),
+              Text("Delete",style: TextStyle(color: Colors.red),),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<UpcommingAppointmentModel> upcoming_appointment() async {
     var headers = {
       'accept': 'application/json',
@@ -1161,16 +1290,16 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                             SizedBox(width: 10,),
                                             InkWell(
                                                 onTap: (){
-                                                  bookin_status(snapshot.data!.data![index].id.toString(),Canceled);
-                                                  Fluttertoast.showToast(
-                                                      msg: "Meeting Canceled",
-                                                      toastLength: Toast.LENGTH_SHORT,
-                                                      gravity: ToastGravity.CENTER,
-                                                      timeInSecForIosWeb: 1,
-                                                      backgroundColor: Colors.red,
-                                                      textColor: Colors.white,
-                                                      fontSize: 16.0
-                                                  );
+                                                  // bookin_status(
+                                                  //     snapshot.data!.data![index].id.toString(),
+                                                  //     Canceled);
+
+                                                  mettingiddelete = snapshot.data!.data![index].id.toString();
+                                                  showDeleteConfirmationDialogfilterd(context);
+
+
+
+
                                                 },
                                                 child: Icon(Icons.cancel_outlined)),
                                           ],
@@ -1298,7 +1427,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         print(json.encode(response.data));
         print(response.data);
         print("print response");
-
+       // setState(() {});
         // Check if the response is a string, then decode it to a Map
         var responseData = response.data is String
             ? json.decode(response.data)
@@ -1340,7 +1469,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         print(json.encode(response.data));
         print(response.data);
         print("print response");
-
+        setState(() {});
         // Check if the response is a string, then decode it to a Map
         var responseData = response.data is String
             ? json.decode(response.data)
@@ -1382,7 +1511,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         print(json.encode(response.data));
         print(response.data);
         print("print time slot response");
-
+        setState(() {});
         // Check if the response is a string, then decode it to a Map
         var responseData = response.data is String
             ? json.decode(response.data)
@@ -1425,7 +1554,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       print("successfuly hit booking status");
       print(json.encode(response.data));
 
-
+      setState(() {});
      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Meeting_record_screen()));
 
     }
@@ -1471,7 +1600,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
     if (response.statusCode == 200) {
       print("Notification count response: ${response.data}");
-
+      setState(() {});
       // Decode the JSON string to a Map
       Map<String, dynamic> responseData = json.decode(response.data);
 
