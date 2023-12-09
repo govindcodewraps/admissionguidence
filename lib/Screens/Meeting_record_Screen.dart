@@ -66,314 +66,320 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
   Widget build(BuildContext context) {
 
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.only(left: 10,right: 10),
-              height: 120,
-              color: MyTheme.backgroundcolor,
-              child: Column(
-                children: [
-                  SizedBox(height: 10,),
-                  Row(
-                    children: [
-                      InkWell(
-                          onTap:(){
-                            Navigator.pop(context);
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
-                          },
-                          child: Icon(Icons.arrow_back, color: Colors.white)),
-                      SizedBox(width: 10),
-                      Text(
-                        "Meetings",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Spacer(),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, true);
+        return true;
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(left: 10,right: 10),
+                height: 120,
+                color: MyTheme.backgroundcolor,
+                child: Column(
+                  children: [
+                    SizedBox(height: 10,),
+                    Row(
+                      children: [
+                        InkWell(
+                            onTap:(){
+                              Navigator.pop(context, true);
+                              //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                            },
+                            child: Icon(Icons.arrow_back, color: Colors.white)),
+                        SizedBox(width: 10),
+                        Text(
+                          "Meetings",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Spacer(),
 
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Notification_Screen()));
-                        },
-                        child: Stack(
-                          children: [
-                            Icon(Icons.notifications,color: Colors.white,),
-                            Positioned(
-                              top: 0,
-                              right: 0,
-                              child: Container(
-                                padding: EdgeInsets.all(1),
-                                decoration: BoxDecoration(
-                                  color:Colors.green,
-                                  borderRadius: BorderRadius.circular(50), // Set a circular border radius
-                                ),
-                                child: Text(
-                                  " ${_nitificationcount} ",
-                                  style: TextStyle(
-                                    fontSize: 8,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Notification_Screen()));
+                          },
+                          child: Stack(
+                            children: [
+                              Icon(Icons.notifications,color: Colors.white,),
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: Container(
+                                  padding: EdgeInsets.all(1),
+                                  decoration: BoxDecoration(
+                                    color:Colors.green,
+                                    borderRadius: BorderRadius.circular(50), // Set a circular border radius
+                                  ),
+                                  child: Text(
+                                    " ${_nitificationcount} ",
+                                    style: TextStyle(
+                                      fontSize: 8,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
 
 
-                    ],
-                  ),
-                  SizedBox(height: 20,),
-
-                  ToggleSwitch(
-                    minWidth: 190.0,
-                    cornerRadius: 20.0,
-                    activeBgColors: [
-                      [Colors.green[800]!],
-                      [Colors.red[800]!]
-                    ],
-                    activeFgColor: Colors.white,
-                    inactiveBgColor: Colors.grey,
-                    inactiveFgColor: Colors.white,
-                    initialLabelIndex: buttonvalue,
-                    totalSwitches: 2,
-                    labels: ['Today Meetings','Meetings Record'],
-                    // labels: ['Meetings Record', 'Today Meetings'],
-                    radiusStyle: true,
-                    onToggle: (index) {
-                      setState(() {
-                        buttonvalue = index!;
-                      });
-                      print('switched to: $index');
-                    },
-                  ),
-                ],
-              ),
-            ),
-
-            Expanded(
-              flex: 1,
-              child: Container(
-
-                child: SingleChildScrollView(
-                  child:
-                  Column(children: [
-
+                      ],
+                    ),
                     SizedBox(height: 20,),
 
-
-                    if (buttonvalue == 0)
-                     // stembuilddd(),
-
-                    todayappointmentlist(),
-
-
-
-
-                    if (buttonvalue == 1)
-
-                      Container(
-                        padding: EdgeInsets.only(left: 0,right: 0),
-
-                        child:   Column(
-                          children: [
-
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text("From Date"),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.42,
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(12),
-                                            borderSide: BorderSide(
-                                              width: 3,
-                                              color: Colors.greenAccent,
-                                            ),
-                                          ),
-                                          labelText: "Date",
-                                          hintText: 'Date',
-                                          suffixIcon:
-                                          Icon(Icons.calendar_month, color: Colors.black),
-                                        ),
-                                        controller: dateInputController,
-                                        readOnly: true,
-                                        onTap: () async {
-                                          DateTime? pickedDate = await showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime(1950),
-                                            lastDate: DateTime(2050),
-                                          );
-
-                                          if (pickedDate != null) {
-                                            setState(() {
-                                              dateInputController.text =
-                                                  DateFormat('yyyy-MM-dd').format(pickedDate);
-                                            });
-
-                                            if (dateInputController2.text.isNotEmpty) {
-                                              // Call the future method when both dates are selected
-                                              getAppointments(
-                                                dateInputController.text,
-                                                dateInputController2.text,
-                                              ).then((appointments) {
-                                                if (appointments != null) {
-                                                  // Do something with the fetched data
-                                                  print(appointments);
-                                                }
-                                              });
-                                            }
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  children: [
-                                    Text("To Date"),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.42,
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(12),
-                                            borderSide: BorderSide(
-                                              width: 3,
-                                              color: Colors.greenAccent,
-                                            ),
-                                          ),
-                                          labelText: "Date",
-                                          hintText: 'Date',
-                                          suffixIcon:
-                                          Icon(Icons.calendar_month, color: Colors.black),
-                                        ),
-                                        controller: dateInputController2,
-                                        readOnly: true,
-                                        onTap: () async {
-                                          DateTime? pickedDate = await showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime(1950),
-                                            lastDate: DateTime(2050),
-                                          );
-
-                                          if (pickedDate != null) {
-                                            setState(() {
-                                              dateInputController2.text =
-                                                  DateFormat('yyyy-MM-dd').format(pickedDate);
-                                            });
-
-                                            if (dateInputController.text.isNotEmpty) {
-                                              // Call the future method when both dates are selected
-                                              getAppointments(
-                                                dateInputController.text,
-                                                dateInputController2.text,
-                                              ).then((appointments) {
-                                                if (appointments != null) {
-                                                  // Do something with the fetched data
-                                                  print(appointments);
-                                                }
-                                              });
-                                            }
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-
-
-                            // ElevatedButton(onPressed: (){
-                            //   pastappointmentapi();
-                            //   todayappointmentlist();
-                            //   upcoming_appointment();
-                            //   // appointmentslistwidget();
-                            //   time_slot();
-                            //
-                            //   print("Govindddddddd ");
-                            //
-                            // }, child: Text("Buttton")
-                            //
-                            // ),
-
-                            // Use FutureBuilder to handle the async operation
-
-                            SizedBox(height: 20,),
-
-                            Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              elevation: 2,
-                              color: Colors.white,// Add elevation if you want a shadow effect
-                              child: ExpansionTile(
-                                title: Text('Past Meetings'),
-                                children: <Widget>[
-                                  ListTile(
-                                    title: Column(
-                                      children: [
-                                        pastappointmentlist(),
-                                        SizedBox(height: 20,),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              elevation: 2,
-                              color: Colors.white,// Add elevation if you want a shadow effect
-                              child: ExpansionTile(
-                                title: Text('Upcoming Meetings'),
-                                children: <Widget>[
-                                  ListTile(
-                                    title: Column(
-                                      children: [
-                                        upcomingappointmentlist(),
-                                        SizedBox(height: 20,),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 10,),
-                            appointmentslist(),
-
-
-
-
-
-                            SizedBox(height: 20,),
-
-
-                          ],
-                        ),
-                      ),
-
-                  ],),
+                    ToggleSwitch(
+                      minWidth: 190.0,
+                      cornerRadius: 20.0,
+                      activeBgColors: [
+                        [Colors.green[800]!],
+                        [Colors.red[800]!]
+                      ],
+                      activeFgColor: Colors.white,
+                      inactiveBgColor: Colors.grey,
+                      inactiveFgColor: Colors.white,
+                      initialLabelIndex: buttonvalue,
+                      totalSwitches: 2,
+                      labels: ['Today Meetings','Meetings Record'],
+                      // labels: ['Meetings Record', 'Today Meetings'],
+                      radiusStyle: true,
+                      onToggle: (index) {
+                        setState(() {
+                          buttonvalue = index!;
+                        });
+                        print('switched to: $index');
+                      },
+                    ),
+                  ],
                 ),
               ),
-            )
-          ],
+
+              Expanded(
+                flex: 1,
+                child: Container(
+
+                  child: SingleChildScrollView(
+                    child:
+                    Column(children: [
+
+                      SizedBox(height: 20,),
+
+
+                      if (buttonvalue == 0)
+                       // stembuilddd(),
+
+                      todayappointmentlist(),
+
+
+
+
+                      if (buttonvalue == 1)
+
+                        Container(
+                          padding: EdgeInsets.only(left: 0,right: 0),
+
+                          child:   Column(
+                            children: [
+
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text("From Date"),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.42,
+                                        child: TextFormField(
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(12),
+                                              borderSide: BorderSide(
+                                                width: 3,
+                                                color: Colors.greenAccent,
+                                              ),
+                                            ),
+                                            labelText: "Date",
+                                            hintText: 'Date',
+                                            suffixIcon:
+                                            Icon(Icons.calendar_month, color: Colors.black),
+                                          ),
+                                          controller: dateInputController,
+                                          readOnly: true,
+                                          onTap: () async {
+                                            DateTime? pickedDate = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(1950),
+                                              lastDate: DateTime(2050),
+                                            );
+
+                                            if (pickedDate != null) {
+                                              setState(() {
+                                                dateInputController.text =
+                                                    DateFormat('yyyy-MM-dd').format(pickedDate);
+                                              });
+
+                                              if (dateInputController2.text.isNotEmpty) {
+                                                // Call the future method when both dates are selected
+                                                getAppointments(
+                                                  dateInputController.text,
+                                                  dateInputController2.text,
+                                                ).then((appointments) {
+                                                  if (appointments != null) {
+                                                    // Do something with the fetched data
+                                                    print(appointments);
+                                                  }
+                                                });
+                                              }
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text("To Date"),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.42,
+                                        child: TextFormField(
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(12),
+                                              borderSide: BorderSide(
+                                                width: 3,
+                                                color: Colors.greenAccent,
+                                              ),
+                                            ),
+                                            labelText: "Date",
+                                            hintText: 'Date',
+                                            suffixIcon:
+                                            Icon(Icons.calendar_month, color: Colors.black),
+                                          ),
+                                          controller: dateInputController2,
+                                          readOnly: true,
+                                          onTap: () async {
+                                            DateTime? pickedDate = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(1950),
+                                              lastDate: DateTime(2050),
+                                            );
+
+                                            if (pickedDate != null) {
+                                              setState(() {
+                                                dateInputController2.text =
+                                                    DateFormat('yyyy-MM-dd').format(pickedDate);
+                                              });
+
+                                              if (dateInputController.text.isNotEmpty) {
+                                                // Call the future method when both dates are selected
+                                                getAppointments(
+                                                  dateInputController.text,
+                                                  dateInputController2.text,
+                                                ).then((appointments) {
+                                                  if (appointments != null) {
+                                                    // Do something with the fetched data
+                                                    print(appointments);
+                                                  }
+                                                });
+                                              }
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+
+
+                              // ElevatedButton(onPressed: (){
+                              //   pastappointmentapi();
+                              //   todayappointmentlist();
+                              //   upcoming_appointment();
+                              //   // appointmentslistwidget();
+                              //   time_slot();
+                              //
+                              //   print("Govindddddddd ");
+                              //
+                              // }, child: Text("Buttton")
+                              //
+                              // ),
+
+                              // Use FutureBuilder to handle the async operation
+
+                              SizedBox(height: 20,),
+
+                              Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                elevation: 2,
+                                color: Colors.white,// Add elevation if you want a shadow effect
+                                child: ExpansionTile(
+                                  title: Text('Past Meetings'),
+                                  children: <Widget>[
+                                    ListTile(
+                                      title: Column(
+                                        children: [
+                                          pastappointmentlist(),
+                                          SizedBox(height: 20,),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                elevation: 2,
+                                color: Colors.white,// Add elevation if you want a shadow effect
+                                child: ExpansionTile(
+                                  title: Text('Upcoming Meetings'),
+                                  children: <Widget>[
+                                    ListTile(
+                                      title: Column(
+                                        children: [
+                                          upcomingappointmentlist(),
+                                          SizedBox(height: 20,),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 10,),
+                              appointmentslist(),
+
+
+
+
+
+                              SizedBox(height: 20,),
+
+
+                            ],
+                          ),
+                        ),
+
+                    ],),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -374,12 +374,14 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                     InkWell(
                                       onTap: () {
                                         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                                        print(snapshot.data!.data![index].id.toString());
-                                        print(snapshot.data!.data![index].date.toString());
-                                        print(snapshot.data!.data![index].remark.toString());
+                                        print("id ${snapshot.data!.data![index].id.toString()}");
+                                        print("date ${snapshot.data!.data![index].date.toString()}");
+                                        print("remark ${snapshot.data!.data![index].remark.toString()}");
+                                        print("time ${snapshot.data!.data![index].time.toString()}");
+                                        print("Reminder type ${snapshot.data!.data![index].reminderType.toString()}");
                                         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString())));
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString(),reminderType: snapshot.data!.data![index].reminderType.toString(),datew: snapshot.data!.data![index].date.toString(),timew:snapshot.data!.data![index].time.toString() ,remarkw: snapshot.data!.data![index].remark.toString(),)));
                                         // Handle the "Edit Reminder" tap
                                       },
                                       child: Icon(Icons.edit),

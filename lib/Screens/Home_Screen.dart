@@ -414,12 +414,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
 
                                 onPressed: (){
-                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>Meeting_record_screen()));
-                                  setState(() {
-                                    totalAppointmentAPI();
-                                    totalpercentageAPI();
-                                    totalReminderAPI();
+                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>Meeting_record_screen())).then((value){ if(value != null && value)
+                                    {
+
+                                      setState(() {
+                                        totalAppointmentAPI();
+                                        totalpercentageAPI();
+                                        totalReminderAPI();
+                                      });
+
+                                    };
                                   });
+                                  
+                                  // setState(() {
+                                  //   totalAppointmentAPI();
+                                  //   totalpercentageAPI();
+                                  //   totalReminderAPI();
+                                  // });
                                   // onPressUpdatePassword();
                                 },
                                 child: Text(
@@ -508,7 +519,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                 onPressed: (){
                                   //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
-                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountdetailsScreen()));
+                                 // Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountdetailsScreen()));
                                   // onPressUpdatePassword();
                                   setState(() {
                                     totalAppointmentAPI();

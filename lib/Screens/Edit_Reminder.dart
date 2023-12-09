@@ -246,9 +246,9 @@ import '../my_theme.dart';
 import 'Reminder_Screen.dart';
 
 class EditReminderScreen extends StatefulWidget {
-  final String meetingid;
+  final String meetingid,reminderType,datew,timew,remarkw;
 
-  EditReminderScreen({super.key, required this.meetingid});
+  EditReminderScreen({super.key, required this.meetingid, required this.reminderType, required this.datew, required this.timew, required this.remarkw,});
 
   @override
   State<EditReminderScreen> createState() => _EditReminderScreenState();
@@ -262,7 +262,8 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
   var remindertypeid='';
   String selectedValue = 'Select Time';
   var _timeslotid;
-  var selecttime;
+  var selecttime='';
+
 
   Time _time = Time(hour: 11, minute: 30, second: 20);
   void onTimeChanged(Time newTime) {
@@ -276,6 +277,12 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    var _dateee =widget.datew;
+    var _timee =widget.timew.isEmpty ? "11:30 AM" : widget.timew;
+    var _remarkk =widget.remarkw;
+    var _remindertypee =widget.reminderType;
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
@@ -321,6 +328,14 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
+
+                        // Text(widget.reminderType),
+                        // Text(widget.datew),
+                        // Text(widget.timew),
+                        // Text(widget.remarkw),
+
+
                         Text(
                           "Edit Reminder",
                           style: TextStyle(
@@ -343,8 +358,8 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                                 color: Colors.greenAccent,
                               ),
                             ),
-                            labelText: "Date",
-                            hintText: 'Date',
+                            labelText: "${widget.datew}",
+                            hintText: "${widget.datew}",
                             suffixIcon: Icon(Icons.calendar_month, color: Colors.black),
                           ),
                           controller: dateInputController,
@@ -360,6 +375,8 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                             if (pickedDate != null) {
                               dateInputController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                             }
+
+
                           },
                         ),
                         SizedBox(height: 10,),
@@ -376,8 +393,12 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                             ),
                             // border: InputBorder.none,
                             //label: "DOB",
-                            labelText: _time.format(context),
-                            hintText: _time.format(context),
+
+                            // labelText: "${widget.timew.isEmpty ? _time.format(context):widget.timew}",
+                            // hintText: _time.format(context),
+                             // selecttime
+                            labelText: selecttime.isEmpty? widget.timew:selecttime,
+                            hintText: selecttime.isEmpty? widget.timew:selecttime,
                             suffixIcon: Icon(Icons.watch_later_outlined,color: Colors.black,),
 
                           ),
@@ -402,9 +423,11 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
 
                         SizedBox(height: 25),
                         TextField(
+
                           controller: remarkInputtextController,
                           maxLines: 3,
                           decoration: InputDecoration(
+                              hintText:"${widget.remarkw}",
                             contentPadding: EdgeInsets.symmetric(vertical: 10.0),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -430,10 +453,9 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                                     ),
                                   ),
                                   onPressed: () async {
-                                    if (dateInputController.text.isEmpty ||
-                                        remarkInputtextController.text.isEmpty) {
+                                    if (remindertypeid.isEmpty) {
                                       Fluttertoast.showToast(
-                                        msg: "Please fill in all fields",
+                                        msg: "Please select Reminder Type",
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.CENTER,
                                         timeInSecForIosWeb: 1,
@@ -453,7 +475,20 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                                           ),
                                         ),
                                       );
-                                      await updatemeeting(dateInputController.text, remarkInputtextController.text, widget.meetingid,remindertypeid,selecttime);
+
+
+
+                                     String DATE = dateInputController.text.toString().isEmpty ? _dateee : dateInputController.text.toString();
+                                     String TIME = selecttime.toString().isEmpty ? _timee.toString() : selecttime.toString();
+                                     String REMARK = remarkInputtextController.text.toString().isEmpty ? _remarkk : remarkInputtextController.text.toString();
+                                     String REMINDERTYPE = remindertypeid.isEmpty ? _remindertypee : remindertypeid;
+
+                                     print("DATEEE ${DATE}");
+                                     print("REMARK ${REMARK}");
+                                     print("TIMEa ${TIME}");
+
+                                      await updatemeeting(DATE,REMARK, widget.meetingid,remindertypeid,TIME);
+                                     // await updatemeeting(dateInputController.text, remarkInputtextController.text, widget.meetingid,remindertypeid,selecttime);
                                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                     }
                                   },

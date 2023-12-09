@@ -385,62 +385,66 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
         //     ),
         //   );
         // } else
-          if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
-          return Container(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          if (snapshot.hasData) {
+            return Container(
+              // padding: EdgeInsets.only(left: 16, right: 16),
+              child: Column(
+                children: [
+
+                  Container(
+                    width: MediaQuery.of(context).size.width*0.98,
+
+                    //width: MediaQuery.of(context).size.width*0.5,
+                    padding: EdgeInsets.only(left: 16,right: 11),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),  // Set the color of the border
+                      borderRadius: BorderRadius.circular(12), // Set the border radius
+                    ),
+                    child:
+
+                    DropdownButton<String>(
+                      isExpanded: true,
+
+                      value: accountselectedValue,
+                      onChanged: (newValue) {
+                        setState(() {
+                          accountselectedValue = newValue!;
+                          accountNumber=newValue;
+                          print("Account Number ${newValue}");
+                        });
+                      },
+                      underline: Container(),
+
+                      items: [
+                        DropdownMenuItem<String>(
+                          value: 'Select Account Number',
+                          child: Text('Select Account Number'),
+                        ),
+                        ...snapshot.data!.data!.map((datum) {
+                          return DropdownMenuItem<String>(
+                            value: datum.id!,
+                            child: Text("${formatAccountNumber(datum.type!)}"),
+                          );
+                        }).toList(),
+                      ],
+                    ),
+
+                  ),
+
+                  // selectedValue= snapshot.data.data.length;
+                ],
+              ),
+            );
+
+
+
+
         } else {
-          return Container(
-            // padding: EdgeInsets.only(left: 16, right: 16),
-            child: Column(
-              children: [
-
-                Container(
-                  width: MediaQuery.of(context).size.width*0.98,
-
-                  //width: MediaQuery.of(context).size.width*0.5,
-                  padding: EdgeInsets.only(left: 16,right: 11),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),  // Set the color of the border
-                    borderRadius: BorderRadius.circular(12), // Set the border radius
-                  ),
-                  child:
-
-                  DropdownButton<String>(
-                    isExpanded: true,
-
-                    value: accountselectedValue,
-                    onChanged: (newValue) {
-                      setState(() {
-                        accountselectedValue = newValue!;
-                        accountNumber=newValue;
-                        print("Account Number ${newValue}");
-                      });
-                    },
-                    underline: Container(),
-
-                    items: [
-                      DropdownMenuItem<String>(
-                        value: 'Select Account Number',
-                        child: Text('Select Account Number'),
-                      ),
-                      ...snapshot.data!.data!.map((datum) {
-                        return DropdownMenuItem<String>(
-                          value: datum.id!,
-                          child: Text("${formatAccountNumber(datum.type!)}"),
-                        );
-                      }).toList(),
-                    ],
-                  ),
-
-                ),
-
-                // selectedValue= snapshot.data.data.length;
-              ],
-            ),
-          );
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
         }
       },
     );
@@ -678,89 +682,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     );
   }
 
-  Widget todaybalancelistwidget() {
-    return FutureBuilder(
-      future: todaybalanceApi(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-              child: CircularProgressIndicator()
-          );
-        } else if (snapshot.hasError) {
-          return Text('Error: Internal error');
-        }
-        // else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
-        //   return Container(
-        //     child: Center(
-        //       child: Text('No data available.'),
-        //     ),
-        //   );
-        // }
-        else {
-          return  ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, int index) {
-              return
 
-                InkWell(
-                  onTap: (){
-                    print("govind kkk");
-                  },
-                  child:  Container(
-                    padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.10,right: MediaQuery.of(context).size.width*0.10),
-                    height: 100,
-                    //width: MediaQuery.of(context).size.width*0.1,
-                    //color: Colors.red,
-                    child:    Container(
-
-                      decoration: BoxDecoration(
-                        color: Colors.white70,
-                        borderRadius: BorderRadius.circular(12.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 4,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Container(
-                        padding: EdgeInsets.only(left: 7,right: 7,top: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text("Balance ",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
-
-                            SizedBox(height: 10,),
-                            Row(
-                              children: [
-                                Text(""),
-                                SizedBox(width:10,),
-                                Text("+₹${snapshot.requireData!.data.toString()}",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600,color: Colors.green),),
-                              ],
-                            ),
-
-
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-
-                );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(height: 16);
-            },
-            itemCount:1,
-          );
-        }
-      },
-    );
-  }
 
   Future addpaymentapi(_amount,_type,_bankid,remark) async{
     var headers = {
@@ -806,6 +728,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     }
     else {
       print(response.statusMessage);
+      print("Error");
     }
   }
 
@@ -845,6 +768,90 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
       print(response.statusMessage);
     }
 
+  }
+
+  Widget todaybalancelistwidget() {
+    return FutureBuilder(
+      future: todaybalanceApi(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: CircularProgressIndicator()
+          );
+        } else if (snapshot.hasError) {
+          return Text('Error: Internal error');
+        }
+        // else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+        //   return Container(
+        //     child: Center(
+        //       child: Text('No data available.'),
+        //     ),
+        //   );
+        // }
+        else {
+          return  ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, int index) {
+              return
+
+                InkWell(
+                    onTap: (){
+                      print("govind kkk");
+                    },
+                    child:  Container(
+                      padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.10,right: MediaQuery.of(context).size.width*0.10),
+                      height: 100,
+                      //width: MediaQuery.of(context).size.width*0.1,
+                      //color: Colors.red,
+                      child:    Container(
+
+                        decoration: BoxDecoration(
+                          color: Colors.white70,
+                          borderRadius: BorderRadius.circular(12.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              spreadRadius: 2,
+                              blurRadius: 4,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.only(left: 7,right: 7,top: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text("Balance ",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
+
+                              SizedBox(height: 10,),
+                              Row(
+                                children: [
+                                  Text(""),
+                                  SizedBox(width:10,),
+                                  Text("+₹${snapshot.requireData!.data.toString()}",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600,color: Colors.green),),
+                                ],
+                              ),
+
+
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+
+                );
+            },
+            separatorBuilder: (context, index) {
+              return SizedBox(height: 16);
+            },
+            itemCount:1,
+          );
+        }
+      },
+    );
   }
 
   Future<TodayBalanceModel?> todaybalanceApi() async{
