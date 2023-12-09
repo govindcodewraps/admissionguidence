@@ -9,10 +9,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../models/AppointmentsList_Model.dart';
+import '../models/Notification_Model.dart';
 import '../models/Time_slot_model.dart';
 import '../models/Todays_Appointment_model.dart';
 import '../models/Upcoming_Appointment.dart';
 import '../models/pastpast_appointment_model.dart';
+import 'Home_Screen.dart';
+import 'Notification_Screen.dart';
+import 'RescheduleMeetingScreen.dart';
 import 'RescheduleScreen.dart';
 
 class Meeting_record_screen extends StatefulWidget {
@@ -28,10 +32,9 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
   String Approved ="1";
   String Canceled ="2";
+  String _nitificationcount="0";
   bool _isApproving = false;
   bool _isCanceling = false;
-
-
 
   int buttonvalue = 0; // Set an initial value
 
@@ -39,13 +42,11 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    notificationCountApi();
     pastappointmentapi();
     todayappointmentlist();
     upcoming_appointment();
-   // appointmentslistwidget();
     time_slot();
-
-    print("sidhu ");
   }
 
   @override
@@ -58,7 +59,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
     super.setState(fn);
   }
-
+  //bool showMore = false;
   @override
   Widget build(BuildContext context) {
 
@@ -68,6 +69,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         child: Column(
           children: [
             Container(
+              padding: EdgeInsets.only(left: 10,right: 10),
               height: 120,
               color: MyTheme.backgroundcolor,
               child: Column(
@@ -78,13 +80,47 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                       InkWell(
                           onTap:(){
                             Navigator.pop(context);
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
                           },
                           child: Icon(Icons.arrow_back, color: Colors.white)),
                       SizedBox(width: 10),
                       Text(
                         "Meetings",
                         style: TextStyle(color: Colors.white),
-                      )
+                      ),
+                      Spacer(),
+
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Notification_Screen()));
+                        },
+                        child: Stack(
+                          children: [
+                            Icon(Icons.notifications,color: Colors.white,),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: Container(
+                                padding: EdgeInsets.all(1),
+                                decoration: BoxDecoration(
+                                  color:Colors.green,
+                                  borderRadius: BorderRadius.circular(50), // Set a circular border radius
+                                ),
+                                child: Text(
+                                  " ${_nitificationcount} ",
+                                  style: TextStyle(
+                                    fontSize: 8,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+
                     ],
                   ),
                   SizedBox(height: 20,),
@@ -117,224 +153,224 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
             Expanded(
               flex: 1,
-              child: SingleChildScrollView(
-                child:
-                Column(children: [
+              child: Container(
 
-                  SizedBox(height: 20,),
+                child: SingleChildScrollView(
+                  child:
+                  Column(children: [
 
-
-                  if (buttonvalue == 0)
-                   // stembuilddd(),
-
-                  todayappointmentlist(),
+                    SizedBox(height: 20,),
 
 
+                    if (buttonvalue == 0)
+                     // stembuilddd(),
+
+                    todayappointmentlist(),
 
 
-                  if (buttonvalue == 1)
-
-                    Container(
-                      padding: EdgeInsets.only(left: 0,right: 0),
-
-                      child:   Column(
-                        children: [
 
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                children: [
-                                  Text("From Date"),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width * 0.42,
-                                    child: TextFormField(
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12),
-                                          borderSide: BorderSide(
-                                            width: 3,
-                                            color: Colors.greenAccent,
+                    if (buttonvalue == 1)
+
+                      Container(
+                        padding: EdgeInsets.only(left: 0,right: 0),
+
+                        child:   Column(
+                          children: [
+
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text("From Date"),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.42,
+                                      child: TextFormField(
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12),
+                                            borderSide: BorderSide(
+                                              width: 3,
+                                              color: Colors.greenAccent,
+                                            ),
                                           ),
+                                          labelText: "Date",
+                                          hintText: 'Date',
+                                          suffixIcon:
+                                          Icon(Icons.calendar_month, color: Colors.black),
                                         ),
-                                        labelText: "Date",
-                                        hintText: 'Date',
-                                        suffixIcon:
-                                        Icon(Icons.calendar_month, color: Colors.black),
-                                      ),
-                                      controller: dateInputController,
-                                      readOnly: true,
-                                      onTap: () async {
-                                        DateTime? pickedDate = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(1950),
-                                          lastDate: DateTime(2050),
-                                        );
+                                        controller: dateInputController,
+                                        readOnly: true,
+                                        onTap: () async {
+                                          DateTime? pickedDate = await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(1950),
+                                            lastDate: DateTime(2050),
+                                          );
 
-                                        if (pickedDate != null) {
-                                          setState(() {
-                                            dateInputController.text =
-                                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                                          });
-
-                                          if (dateInputController2.text.isNotEmpty) {
-                                            // Call the future method when both dates are selected
-                                            getAppointments(
-                                              dateInputController.text,
-                                              dateInputController2.text,
-                                            ).then((appointments) {
-                                              if (appointments != null) {
-                                                // Do something with the fetched data
-                                                print(appointments);
-                                              }
+                                          if (pickedDate != null) {
+                                            setState(() {
+                                              dateInputController.text =
+                                                  DateFormat('yyyy-MM-dd').format(pickedDate);
                                             });
+
+                                            if (dateInputController2.text.isNotEmpty) {
+                                              // Call the future method when both dates are selected
+                                              getAppointments(
+                                                dateInputController.text,
+                                                dateInputController2.text,
+                                              ).then((appointments) {
+                                                if (appointments != null) {
+                                                  // Do something with the fetched data
+                                                  print(appointments);
+                                                }
+                                              });
+                                            }
                                           }
-                                        }
-                                      },
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Column(
+                                  children: [
+                                    Text("To Date"),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.42,
+                                      child: TextFormField(
+                                        decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12),
+                                            borderSide: BorderSide(
+                                              width: 3,
+                                              color: Colors.greenAccent,
+                                            ),
+                                          ),
+                                          labelText: "Date",
+                                          hintText: 'Date',
+                                          suffixIcon:
+                                          Icon(Icons.calendar_month, color: Colors.black),
+                                        ),
+                                        controller: dateInputController2,
+                                        readOnly: true,
+                                        onTap: () async {
+                                          DateTime? pickedDate = await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(1950),
+                                            lastDate: DateTime(2050),
+                                          );
+
+                                          if (pickedDate != null) {
+                                            setState(() {
+                                              dateInputController2.text =
+                                                  DateFormat('yyyy-MM-dd').format(pickedDate);
+                                            });
+
+                                            if (dateInputController.text.isNotEmpty) {
+                                              // Call the future method when both dates are selected
+                                              getAppointments(
+                                                dateInputController.text,
+                                                dateInputController2.text,
+                                              ).then((appointments) {
+                                                if (appointments != null) {
+                                                  // Do something with the fetched data
+                                                  print(appointments);
+                                                }
+                                              });
+                                            }
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+
+
+                            // ElevatedButton(onPressed: (){
+                            //   pastappointmentapi();
+                            //   todayappointmentlist();
+                            //   upcoming_appointment();
+                            //   // appointmentslistwidget();
+                            //   time_slot();
+                            //
+                            //   print("Govindddddddd ");
+                            //
+                            // }, child: Text("Buttton")
+                            //
+                            // ),
+
+                            // Use FutureBuilder to handle the async operation
+
+                            SizedBox(height: 20,),
+
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              elevation: 2,
+                              color: Colors.white,// Add elevation if you want a shadow effect
+                              child: ExpansionTile(
+                                title: Text('Past Meetings'),
+                                children: <Widget>[
+                                  ListTile(
+                                    title: Column(
+                                      children: [
+                                        pastappointmentlist(),
+                                        SizedBox(height: 20,),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                width: 10,
+                            ),
+
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
-                              Column(
-                                children: [
-                                  Text("To Date"),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width * 0.42,
-                                    child: TextFormField(
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12),
-                                          borderSide: BorderSide(
-                                            width: 3,
-                                            color: Colors.greenAccent,
-                                          ),
-                                        ),
-                                        labelText: "Date",
-                                        hintText: 'Date',
-                                        suffixIcon:
-                                        Icon(Icons.calendar_month, color: Colors.black),
-                                      ),
-                                      controller: dateInputController2,
-                                      readOnly: true,
-                                      onTap: () async {
-                                        DateTime? pickedDate = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(1950),
-                                          lastDate: DateTime(2050),
-                                        );
-
-                                        if (pickedDate != null) {
-                                          setState(() {
-                                            dateInputController2.text =
-                                                DateFormat('yyyy-MM-dd').format(pickedDate);
-                                          });
-
-                                          if (dateInputController.text.isNotEmpty) {
-                                            // Call the future method when both dates are selected
-                                            getAppointments(
-                                              dateInputController.text,
-                                              dateInputController2.text,
-                                            ).then((appointments) {
-                                              if (appointments != null) {
-                                                // Do something with the fetched data
-                                                print(appointments);
-                                              }
-                                            });
-                                          }
-                                        }
-                                      },
+                              elevation: 2,
+                              color: Colors.white,// Add elevation if you want a shadow effect
+                              child: ExpansionTile(
+                                title: Text('Upcoming Meetings'),
+                                children: <Widget>[
+                                  ListTile(
+                                    title: Column(
+                                      children: [
+                                        upcomingappointmentlist(),
+                                        SizedBox(height: 20,),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-
-
-                          // ElevatedButton(onPressed: (){
-                          //   pastappointmentapi();
-                          //   todayappointmentlist();
-                          //   upcoming_appointment();
-                          //   // appointmentslistwidget();
-                          //   time_slot();
-                          //
-                          //   print("Govindddddddd ");
-                          //
-                          // }, child: Text("Buttton")
-                          //
-                          // ),
-
-                          // Use FutureBuilder to handle the async operation
-
-                          SizedBox(height: 20,),
-
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
                             ),
-                            elevation: 2,
-                            color: Colors.white,// Add elevation if you want a shadow effect
-                            child: ExpansionTile(
-                              title: Text('Past Meetings'),
-                              children: <Widget>[
-                                ListTile(
-                                  title: Column(
-                                    children: [
-                                      pastappointmentlist(),
-                                      SizedBox(height: 20,),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            elevation: 2,
-                            color: Colors.white,// Add elevation if you want a shadow effect
-                            child: ExpansionTile(
-                              title: Text('Upcoming Meetings'),
-                              children: <Widget>[
-                                ListTile(
-                                  title: Column(
-                                    children: [
-                                      upcomingappointmentlist(),
-                                      SizedBox(height: 20,),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 10,),
-                          appointmentslist(),
+                            SizedBox(height: 10,),
+                            appointmentslist(),
 
 
 
 
 
-                          SizedBox(height: 20,),
+                            SizedBox(height: 20,),
 
 
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
 
-                ],),
+                  ],),
+                ),
               ),
             )
-
-
-
           ],
         ),
       ),
@@ -342,6 +378,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
   }
 
   Widget mettingsrecoredwidget(){
+
     return
 
       Column(
@@ -388,28 +425,29 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         ],
       );
   }
-
   Widget todayappointmentlist() {
-    bool isExpanded = false;
     return FutureBuilder(
       future: todayappointmentapi(),
       builder: (context, snapshot) {
         print("object");
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            child: Center(child: CircularProgressIndicator()),
-          );
-        } else if (snapshot.hasError) {
-          return Container(
-            child: Center(child: Text("No more Meetings")),
-          );
-        } else if (snapshot.hasData) {
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   return Container(
+        //     child: Center(child: CircularProgressIndicator()),
+        //   );
+        // } else if (snapshot.hasError) {
+        //   return Container(
+        //     child: Center(child: Text("No more Meetings")),
+        //   );
+        // } else
+          if (snapshot.hasData) {
+            bool showMore = false;
           if (snapshot.data != null && snapshot.data!.data != null) {
             print(snapshot.data!.data!.length);
             print("object");
 
             return Container(
+
               padding: EdgeInsets.only(left: 16, right: 16),
               child: Column(
                 children: [
@@ -446,8 +484,15 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text("Time slot:"),
+                                        Text("Date :"),
                                         SizedBox(width: 5,),
+                                        Text(
+                                          DateFormat('yyyy-MM-dd').format(
+                                            snapshot.data!.data![index].appointmentDate!.toLocal(),
+                                          ),
+                                        ),
+                                        SizedBox(width: 5,),
+
                                         Text(snapshot.data!.data![index]
                                             .appointmentTime.toString()),
                                       ],
@@ -461,6 +506,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                             InkWell(
                                               onTap: () {
                                                 // Add your logic here
+                                                print("Meeting ID: ${snapshot.data!.data![index].id.toString()}");
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString())));
                                               },
                                               child: Icon(Icons.calendar_month_outlined),
                                             ),
@@ -495,17 +542,17 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    Text("Date :"),
-                                    SizedBox(width: 10,),
-                                    Text(
-                                      DateFormat('yyyy-MM-dd').format(
-                                        snapshot.data!.data![index].appointmentDate!.toLocal(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                // Row(
+                                //   children: [
+                                //     Text("Date :"),
+                                //     SizedBox(width: 10,),
+                                //     Text(
+                                //       DateFormat('yyyy-MM-dd').format(
+                                //         snapshot.data!.data![index].appointmentDate!.toLocal(),
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
                                 Row(
                                   children: [
                                     Text("Name :"),
@@ -515,49 +562,44 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                 ),
                                 Row(
                                   children: [
-                                    Text("Email:"),
+                                    Text("Contact:"),
                                     SizedBox(width: 2,),
                                     Text(snapshot.data!.data![index].email.toString()),
                                   ],
                                 ),
                                 Row(
                                   children: [
-                                    Text("Contact :"),
+                                    Text("Remark :"),
                                     SizedBox(width: 10,),
-                                    Text("+91 98765432121"),
+                                    Flexible(
+                                      child: Text(
+                                        snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                            ? snapshot.data!.data![index].remark!
+                                            : 'No Remark',
+
+
+                                        //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
+                                        maxLines: !showMore ? null : 4,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          showMore = !showMore;
+                                        });
+                                      },
+                                      child:   Icon(
+                                        !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                                        color: MyTheme.backgroundcolor,
+                                      ),
+
+                                    ),
                                   ],
                                 ),
 
-                                Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  elevation: 2,
-                                  color: Colors.white,
-                                  child: Material( // Wrap with Material or GestureDetector
-                                    color: Colors.transparent,
-                                    child: InkWell(
-                                      onTap: () {
-                                        // Add your code here to be executed when the Card is tapped
-                                        print('hello');
-                                      },
-                                      child: ExpansionTile(
-                                        title: Text('Reschedule List'),
-                                        children: <Widget>[
-                                          ListTile(
-                                            title: Column(
-                                              children: [
-                                                Text("  "),
-                                                // upcomingappointmentlist(),
-                                                SizedBox(height: 20,),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
+
                               ],
                             ),
                           ),
@@ -585,22 +627,24 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       },
     );
   }
-
   Widget pastappointmentlist() {
+    bool showMore = false;
     return FutureBuilder(
       future: pastappointmentapi(),
       builder: (context, snapshot) {
         print("object");
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            child: Center(child: CircularProgressIndicator()),
-          );
-        } else if (snapshot.hasError) {
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   return Container(
+        //     child: Center(child: CircularProgressIndicator()),
+        //   );
+        // } else
+          if (snapshot.hasError) {
           return Container(
             child: Center(child: Text("No more Meetings")),
           );
-        } else if (snapshot.hasData) {
+        } else
+          if (snapshot.hasData) {
           if (snapshot.data != null && snapshot.data!.data != null) {
             print(snapshot.data!.data!.length);
             print("object");
@@ -636,7 +680,11 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text("Time slot:"),
+                                      Text("Date:"),
+                                      SizedBox(width: 5,),
+                                      Text(snapshot.data!.data![index]
+                                          .appointmentDate
+                                          .toString()),
                                       SizedBox(width: 5,),
                                       Text(snapshot.data!.data![index]
                                           .appointmentTime
@@ -650,15 +698,15 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   ),
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  Text("Date :"),
-                                  SizedBox(width: 10,),
-                                  Text(snapshot.data!.data![index]
-                                      .appointmentDate
-                                      .toString()),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Text("Date :"),
+                              //     SizedBox(width: 10,),
+                              //     Text(snapshot.data!.data![index]
+                              //         .appointmentDate
+                              //         .toString()),
+                              //   ],
+                              // ),
                               Row(
                                 children: [
                                   Text("Name :"),
@@ -668,16 +716,40 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                               ),
                               Row(
                                 children: [
-                                  Text("Email:"),
+                                  Text("Contact:"),
                                   SizedBox(width: 2,),
                                   Text(snapshot.data!.data![index].email.toString()),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text("Contact :"),
+                                  Text("Remark :"),
                                   SizedBox(width: 10,),
-                                  Text("+91 98765432121"),
+                                  Flexible(
+                                    child: Text(
+                                      snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                          ? snapshot.data!.data![index].remark!
+                                          : 'No Remark',
+
+
+                                      //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
+                                      maxLines: !showMore ? null : 4,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        showMore = !showMore;
+                                      });
+                                    },
+                                    child:   Icon(
+                                      !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                                      color: MyTheme.backgroundcolor,
+                                    ),
+
+                                  ),
                                 ],
                               ),
                             ],
@@ -706,31 +778,36 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       },
     );
   }
-
   Widget upcomingappointmentlist() {
+    bool showMore = false;
     return FutureBuilder(
+
       future: upcoming_appointment(),
       builder: (context, snapshot) {
         print("object");
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            child: Center(child: CircularProgressIndicator()),
-          );
-        } else if (snapshot.hasError) {
-          return Container(
-            child: Center(child: Text("No more Meetings")),
-          );
-        } else if (snapshot.hasData) {
-          if (snapshot.data != null && snapshot.data!.data != null) {
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   return Container(
+        //     child: Center(child: CircularProgressIndicator()),
+        //   );
+        // } else if (snapshot.hasError) {
+        //   return Container(
+        //     child: Center(child: Text("No more Meetings")),
+        //   );
+        // } else
+
+          if (snapshot.hasData) {
+            if (snapshot.data != null && snapshot.data!.data != null) {
             print(snapshot.data!.data!.length);
             print("object");
 
             return Container(
+              //color: Colors.red,
               //padding: EdgeInsets.only(left: 16, right: 16),
               child: Column(
                 children: [
                   ListView.separated(
+
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, int index) {
@@ -748,7 +825,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                           ],
                         ),
                         child: Container(
-                          padding: EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(6.0),
                           child: Column(
                             children: [
                               Row(
@@ -757,7 +834,13 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text("Time slot:"),
+                                      Text("Date:"),
+                                      SizedBox(width: 5,),
+                                      Text(
+                                        DateFormat('yyyy-MM-dd').format(
+                                          snapshot.data!.data![index].appointmentDate!.toLocal(),
+                                        ),
+                                      ),
                                       SizedBox(width: 5,),
                                       Text(snapshot.data!.data![index]
                                           .appointmentTime
@@ -772,8 +855,10 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                           children: [
                                             InkWell(
                                               onTap: () {
-                                                print("meeting id ${snapshot.data!.data![index].id.toString()}");
                                                 // Add your logic here
+                                                print("Meeting ID upcoming : ${snapshot.data!.data![index].id.toString()}");
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString())));
+
                                               },
                                               child: Icon(Icons.calendar_month_outlined),
                                             ),
@@ -810,38 +895,63 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  Text("Date :"),
-                                  SizedBox(width: 10,),
-                                  Text(
-                                    DateFormat('yyyy-MM-dd').format(
-                                      snapshot.data!.data![index].appointmentDate!.toLocal(),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Text("Date :"),
+                              //     SizedBox(width: 10,),
+                              //     Text(
+                              //       DateFormat('yyyy-MM-dd').format(
+                              //         snapshot.data!.data![index].appointmentDate!.toLocal(),
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                               Row(
                                 children: [
                                   Text("Name :"),
-                                  Text(snapshot.data!.data![index].name.toString()),
+                                  Text(snapshot.data!.data![index].name.toString().split('.').last),
                                   SizedBox(width: 10,),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text("Email:"),
+                                  Text("Contact:"),
                                   SizedBox(width: 2,),
                                   Text(snapshot.data!.data![index].email.toString()),
                                 ],
                               ),
                               Row(
                                 children: [
-                                  Text("Contact :"),
+                                  Text("Remark :"),
                                   SizedBox(width: 10,),
-                                  Text("+91 98765432121"),
+                                  Flexible(
+                                    child: Text(
+                                      snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                          ? snapshot.data!.data![index].remark!
+                                          : 'No Remark',
+
+
+                                    //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
+                                      maxLines: !showMore ? null : 4,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        showMore = !showMore;
+                                      });
+                                    },
+                                    child:   Icon(
+                                      !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                                      color: MyTheme.backgroundcolor,
+                                    ),
+
+                                  ),
                                 ],
                               ),
+
                             ],
                           ),
                         ),
@@ -909,7 +1019,6 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       throw Exception('Failed to load data');
     }
   }
-
   Future<AppointmentsListModel?> getAppointments(String startDate, String endDate) async {
     var headers = {
       'accept': 'application/json',
@@ -956,22 +1065,25 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       throw Exception('Error fetching appointments');
     }
   }
-
   Widget appointmentslist() {
+
     return
       FutureBuilder(
+
         future: getAppointments(
           dateInputController.text,
           dateInputController2.text,
         ),
         builder: (context, snapshot) {
+          bool showMore = false;
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
               child: Center(child: CircularProgressIndicator()),
             );
-          } else if (snapshot.hasError) {
+          } else
+            if (snapshot.hasError) {
             return Container(
-              child: Center(child: Text("No More Data")),
+              child: Center(child: Text("No Meeting ")),
             );
           } else if (snapshot.hasData) {
             var appointmentsListModel =
@@ -981,9 +1093,11 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
               padding: EdgeInsets.only(left: 16, right: 16),
               child: Column(
                 children: [
-                  Text("Filter Result"),
-                  SizedBox(height: 15,),
+                  SizedBox(height: 10,),
+                  Text("Filterd Meeting List",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),),
+                  SizedBox(height: 10,),
                   ListView.separated(
+
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, int index) {
@@ -1024,6 +1138,9 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                           children: [
                                             InkWell(onTap: () {
                                               // Add your logic here
+                                              print("Filterd Meeting ID upcoming : ${snapshot.data!.data![index].id.toString()}");
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString())));
+
                                             },
                                                 child: Icon(Icons.calendar_month_outlined)),
                                             SizedBox(width: 10,),
@@ -1070,7 +1187,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
                               Row(
                                 children: [
-                                  Text("Email:"),
+                                  Text("Contact:"),
                                   SizedBox(
                                     width: 2,
                                   ),
@@ -1085,11 +1202,11 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   SizedBox(
                                     width: 2,
                                   ),
-                                  Text(
-                                    DateFormat('yyyy-MM-dd').format(
-                                      snapshot.data!.data![index].appointmentDate!.toLocal(),
-                                    ),
+                                  Text( DateFormat('yyyy-MM-dd').format(
+                                    appointmentsListModel
+                                        .data![index].appointmentDate!.toLocal(),
                                   ),
+                                  )
                                 ],
                               ),
                               Row(
@@ -1101,6 +1218,37 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   Text(appointmentsListModel
                                       .data![index].appointmentTime
                                       .toString()),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text("Remark :"),
+                                  SizedBox(width: 10,),
+                                  Flexible(
+                                    child: Text(
+                                      snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                          ? snapshot.data!.data![index].remark!
+                                          : 'No Remark',
+
+
+                                      //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
+                                      maxLines: !showMore ? null : 4,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        showMore = !showMore;
+                                      });
+                                    },
+                                    child:   Icon(
+                                      !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                                      color: MyTheme.backgroundcolor,
+                                    ),
+
+                                  ),
                                 ],
                               ),
                             ],
@@ -1124,7 +1272,6 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         },
       );
   }
-
 
   Future<TodaysAppointmentModel> todayappointmentapi() async {
     var headers = {
@@ -1210,9 +1357,6 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
     }
   }
 
-
-
-
   Future<TimeslotModel> time_slot() async {
     var headers = {
       'accept': 'application/json',
@@ -1280,6 +1424,10 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
       print("successfuly hit booking status");
       print(json.encode(response.data));
+
+
+     // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Meeting_record_screen()));
+
     }
     else {
       print(response.statusMessage);
@@ -1302,5 +1450,46 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
     setState(() {});
   }
 
+  Future<int?> notificationCountApi() async {
+    var headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=8e9fa73e42b049d31d22a09758fdccf0'
+    };
+    var data = {
+      'getnotificationCount': '1'
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
 
+    if (response.statusCode == 200) {
+      print("Notification count response: ${response.data}");
+
+      // Decode the JSON string to a Map
+      Map<String, dynamic> responseData = json.decode(response.data);
+
+      // Check if 'data' field is present in the response
+      if (responseData.containsKey('data')) {
+        var dataValue = responseData['data'];
+
+        print("Data value: $dataValue");
+        _nitificationcount=dataValue.toString();
+        print("_nitificationcount: $_nitificationcount");
+        return dataValue;
+      } else {
+        print("Error: 'data' field not found in the response");
+        return null; // or throw an exception
+      }
+    } else {
+      print("Error: ${response.statusMessage}");
+      return null; // or throw an exception
+    }
+  }
 }
