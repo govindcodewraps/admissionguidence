@@ -35,7 +35,7 @@ class Datum {
   String? name;
   String? appointmentTime;
   String? status;
-  dynamic remark;
+  String? remark;
 
   Datum({
     this.id,

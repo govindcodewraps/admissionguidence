@@ -32,7 +32,7 @@ class Datum {
   String? id;
   DateTime? appointmentDate;
   String? email;
-  Name? name;
+  String? name;
   String? appointmentTime;
   String? status;
   String? remark;
@@ -51,7 +51,7 @@ class Datum {
     id: json["id"],
     appointmentDate: json["appointment_date"] == null ? null : DateTime.parse(json["appointment_date"]),
     email: json["email"],
-    name: nameValues.map[json["name"]]!,
+    name: json["name"],
     appointmentTime: json["appointment_time"],
     status: json["status"],
     remark: json["remark"],
@@ -61,29 +61,9 @@ class Datum {
     "id": id,
     "appointment_date": "${appointmentDate!.year.toString().padLeft(4, '0')}-${appointmentDate!.month.toString().padLeft(2, '0')}-${appointmentDate!.day.toString().padLeft(2, '0')}",
     "email": email,
-    "name": nameValues.reverse[name],
+    "name": name,
     "appointment_time": appointmentTime,
     "status": status,
     "remark": remark,
   };
-}
-
-enum Name {
-  GOVIND_KUMAR
-}
-
-final nameValues = EnumValues({
-  "Govind kumar": Name.GOVIND_KUMAR
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

@@ -246,9 +246,9 @@ import '../my_theme.dart';
 import 'Reminder_Screen.dart';
 
 class EditReminderScreen extends StatefulWidget {
-  final String meetingid;
+  final String meetingid,reminderType,datew,timew,remarkw;
 
-  EditReminderScreen({super.key, required this.meetingid});
+  EditReminderScreen({super.key, required this.meetingid, required this.reminderType, required this.datew, required this.timew, required this.remarkw,});
 
   @override
   State<EditReminderScreen> createState() => _EditReminderScreenState();
@@ -262,7 +262,8 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
   var remindertypeid='';
   String selectedValue = 'Select Time';
   var _timeslotid;
-  var selecttime;
+  var selecttime='';
+
 
   Time _time = Time(hour: 11, minute: 30, second: 20);
   void onTimeChanged(Time newTime) {
@@ -276,6 +277,12 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    var _dateee =widget.datew;
+    var _timee =widget.timew.isEmpty ? "11:30 AM" : widget.timew;
+    var _remarkk =widget.remarkw;
+    var _remindertypee =widget.reminderType;
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
@@ -306,167 +313,200 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(16, 16, 16, 20),
-                  decoration: BoxDecoration(
-                    color: MyTheme.WHITECOLOR,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  width: 300,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Edit Reminder",
-                        style: TextStyle(
-                          color: MyTheme.backgroundcolor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+              SizedBox(height: 88,),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    //height: 88,
+                    padding: EdgeInsets.fromLTRB(16, 16, 16, 20),
+                    decoration: BoxDecoration(
+                      color: MyTheme.WHITECOLOR,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    width: 300,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+
+                        // Text(widget.reminderType),
+                        // Text(widget.datew),
+                        // Text(widget.timew),
+                        // Text(widget.remarkw),
+
+
+                        Text(
+                          "Edit Reminder",
+                          style: TextStyle(
+                            color: MyTheme.backgroundcolor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                      reminderTypewidget(),
-                      SizedBox(height: 10),
-                      // DOB
-                      TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              width: 3,
-                              color: Colors.greenAccent,
+                        SizedBox(height: 10),
+                        reminderTypewidget(),
+
+                        SizedBox(height: 10),
+                        // DOB
+                        TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                width: 3,
+                                color: Colors.greenAccent,
+                              ),
                             ),
+                            labelText: "${widget.datew}",
+                            hintText: "${widget.datew}",
+                            suffixIcon: Icon(Icons.calendar_month, color: Colors.black),
                           ),
-                          labelText: "Date",
-                          hintText: 'Date',
-                          suffixIcon: Icon(Icons.calendar_month, color: Colors.black),
-                        ),
-                        controller: dateInputController,
-                        readOnly: true,
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2050),
-                          );
-
-                          if (pickedDate != null) {
-                            dateInputController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                          }
-                        },
-                      ),
-                      SizedBox(height: 10,),
-
-
-                      //time slot start
-                      TextFormField(
-
-                        decoration:  InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                                width: 3, color: Colors.greenAccent), //<-- SEE HERE
-                          ),
-                          // border: InputBorder.none,
-                          //label: "DOB",
-                          labelText: _time.format(context),
-                          hintText: _time.format(context),
-                          suffixIcon: Icon(Icons.watch_later_outlined,color: Colors.black,),
-
-                        ),
-                        //  controller: dateInputController,
-                        readOnly: true,
-                        onTap: () async {
-                          Navigator.of(context).push(
-                            showPicker(
+                          controller: dateInputController,
+                          readOnly: true,
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
                               context: context,
-                              value: _time,
-                              sunrise: TimeOfDay(hour: 6, minute: 0), // optional
-                              sunset: TimeOfDay(hour: 18, minute: 0), // optional
-                              duskSpanInMinutes: 120, // optional
-                              onChange: onTimeChanged,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime(2050),
+                            );
+
+                            if (pickedDate != null) {
+                              dateInputController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                            }
+
+
+                          },
+                        ),
+                        SizedBox(height: 10,),
+
+
+                        //time slot start
+                        TextFormField(
+
+                          decoration:  InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                  width: 3, color: Colors.greenAccent), //<-- SEE HERE
                             ),
-                          );
-                        },
-                      ),
-                      //time slot end
+                            // border: InputBorder.none,
+                            //label: "DOB",
 
-                      // timeslotwidget(),
+                            // labelText: "${widget.timew.isEmpty ? _time.format(context):widget.timew}",
+                            // hintText: _time.format(context),
+                             // selecttime
+                            labelText: selecttime.isEmpty? widget.timew:selecttime,
+                            hintText: selecttime.isEmpty? widget.timew:selecttime,
+                            suffixIcon: Icon(Icons.watch_later_outlined,color: Colors.black,),
 
-                      SizedBox(height: 30),
-                      TextField(
-                        controller: remarkInputtextController,
-                        maxLines: 4,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 10.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          //  controller: dateInputController,
+                          readOnly: true,
+                          onTap: () async {
+                            Navigator.of(context).push(
+                              showPicker(
+                                context: context,
+                                value: _time,
+                                sunrise: TimeOfDay(hour: 6, minute: 0), // optional
+                                sunset: TimeOfDay(hour: 18, minute: 0), // optional
+                                duskSpanInMinutes: 120, // optional
+                                onChange: onTimeChanged,
+                              ),
+                            );
+                          },
+                        ),
+                        //time slot end
+
+                        // timeslotwidget(),
+
+                        SizedBox(height: 25),
+                        TextField(
+
+                          controller: remarkInputtextController,
+                          maxLines: 3,
+                          decoration: InputDecoration(
+                              hintText:"${widget.remarkw}",
+                            contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 30),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Builder(
-                            builder: (context) => SizedBox(
-                              height: 50,
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(MyTheme.backgroundcolor),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
+                        SizedBox(height: 30),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Builder(
+                              builder: (context) => SizedBox(
+                                height: 45,
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(MyTheme.backgroundcolor),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12.0),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                onPressed: () async {
-                                  if (dateInputController.text.isEmpty ||
-                                      remarkInputtextController.text.isEmpty) {
-                                    Fluttertoast.showToast(
-                                      msg: "Please fill in all fields",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.CENTER,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.red,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0,
-                                    );
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Row(
-                                          children: [
-                                            CircularProgressIndicator(),
-                                            SizedBox(width: 20),
-                                            Text("Saving..."),
-                                          ],
+                                  onPressed: () async {
+                                    if (remindertypeid.isEmpty) {
+                                      Fluttertoast.showToast(
+                                        msg: "Please select Reminder Type",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0,
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Row(
+                                            children: [
+                                              CircularProgressIndicator(),
+                                              SizedBox(width: 20),
+                                              Text("Saving..."),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                    await updatemeeting(dateInputController.text, remarkInputtextController.text, widget.meetingid,remindertypeid,selecttime);
-                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                                  }
-                                },
-                                child: Text(
-                                  "Save",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                                      );
+
+
+
+                                     String DATE = dateInputController.text.toString().isEmpty ? _dateee : dateInputController.text.toString();
+                                     String TIME = selecttime.toString().isEmpty ? _timee.toString() : selecttime.toString();
+                                     String REMARK = remarkInputtextController.text.toString().isEmpty ? _remarkk : remarkInputtextController.text.toString();
+                                     String REMINDERTYPE = remindertypeid.isEmpty ? _remindertypee : remindertypeid;
+
+                                     print("DATEEE ${DATE}");
+                                     print("REMARK ${REMARK}");
+                                     print("TIMEa ${TIME}");
+
+                                      await updatemeeting(DATE,REMARK, widget.meetingid,remindertypeid,TIME);
+                                     // await updatemeeting(dateInputController.text, remarkInputtextController.text, widget.meetingid,remindertypeid,selecttime);
+                                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                    }
+                                  },
+                                  child: Text(
+                                    "Save",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

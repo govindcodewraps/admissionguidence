@@ -119,56 +119,28 @@ class _HomeScreenState extends State<HomeScreen> {
             filter: ImageFilter.blur(sigmaX: 4, sigmaY:4),
             child:Center(
               child: Column(
-                //crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment. end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  //SizedBox(height:1,),
-                  Row(
+                  Padding(
+                    padding: const EdgeInsets.only(top: 11),
+                    child: InkWell(
+                      onTap: () {
+                        showLogoutConfirmationDialog(context);
+                      },
+                      child: Column(
+                        children: [
+                          //Icon(Icons.logout, color: Colors.red),
+                          ClipOval(
 
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: InkWell(
-                        onTap: () {
-                          showLogoutConfirmationDialog(context);
-                        },
-                        child: Column(
-                          children: [
-                            //Icon(Icons.logout, color: Colors.red),
-                            ClipOval(
-
-                                child: Image.asset('assets/logoutbutton.jpg',height: 50,)),
-                            // Text("Logout", style: TextStyle(color: Colors.red)),
-                          ],
-                        ),
+                              child: Image.asset('assets/logoutbutton.jpg',height: 50,)),
+                          // Text("Logout", style: TextStyle(color: Colors.red)),
+                        ],
                       ),
-                    )
-                  ],),
-                  // Positioned(
-                  //     right: 1,
-                  //     top: 13,
-                  //     child:
-                  //     InkWell(
-                  //       onTap: () {
-                  //         showLogoutConfirmationDialog(context);
-                  //       },
-                  //       child: Column(
-                  //         children: [
-                  //           //Icon(Icons.logout, color: Colors.red),
-                  //           ClipOval(
-                  //
-                  //               child: Image.asset('assets/logoutbutton.jpg',height: 50,)),
-                  //           // Text("Logout", style: TextStyle(color: Colors.red)),
-                  //         ],
-                  //       ),
-                  //     )
-                  //
-                  // ),
+                    ),
+                  ),
                   Container(
-                    padding: EdgeInsets.fromLTRB(16, 100, 16, 30),
+                    padding: EdgeInsets.fromLTRB(16, 10, 16, 0),
                     decoration: BoxDecoration(
                       // color: MyTheme.WHITECOLOR,
                         borderRadius:BorderRadius.circular(12)
@@ -415,7 +387,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: Column(
                       children: [
-                        SizedBox(height: 40,),
+                        SizedBox(height: 60,),
 
                         Align(
                           alignment: Alignment.centerRight,
@@ -442,12 +414,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
 
                                 onPressed: (){
-                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>Meeting_record_screen()));
-                                  setState(() {
-                                    totalAppointmentAPI();
-                                    totalpercentageAPI();
-                                    totalReminderAPI();
+                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>Meeting_record_screen())).then((value){ if(value != null && value)
+                                    {
+
+                                      setState(() {
+                                        totalAppointmentAPI();
+                                        totalpercentageAPI();
+                                        totalReminderAPI();
+                                      });
+
+                                    };
                                   });
+                                  
+                                  // setState(() {
+                                  //   totalAppointmentAPI();
+                                  //   totalpercentageAPI();
+                                  //   totalReminderAPI();
+                                  // });
                                   // onPressUpdatePassword();
                                 },
                                 child: Text(
@@ -461,7 +444,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 30,),
+                        SizedBox(height: 40,),
 
                         Align(
                           alignment: Alignment.centerRight,
@@ -492,11 +475,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
                                   Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
                                   // onPressUpdatePassword();
-                                  setState(() {
-                                    totalAppointmentAPI();
-                                    totalpercentageAPI();
-                                    totalReminderAPI();
-                                  });
+
                                 },
                                 child:Text(
                                   "REMINDERS",
@@ -509,7 +488,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 30,),
+                        SizedBox(height: 40,),
 
                         Align(
                           alignment: Alignment.centerRight,
@@ -536,13 +515,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                 onPressed: (){
                                   //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
-                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountdetailsScreen()));
                                   // onPressUpdatePassword();
-                                  setState(() {
-                                    totalAppointmentAPI();
-                                    totalpercentageAPI();
-                                    totalReminderAPI();
-                                  });
+
+                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountdetailsScreen()));
+
                                 },
                                 child:Text(
                                   "TRANSACTION",
@@ -555,7 +531,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 1,),
+                        SizedBox(height: 40,),
                       ],
                     ),
                   ),

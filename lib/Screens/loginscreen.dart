@@ -36,7 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
             SingleChildScrollView(
               child:
 
-
               Container(
 
                 decoration: BoxDecoration(
@@ -55,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        height: MediaQuery.of(context).size.height*0.4,
+                        height: MediaQuery.of(context).size.height*0.387,
                         child: SizedBox(
                             child: Image.asset("assets/logo.png",)),
                         // height: 200,

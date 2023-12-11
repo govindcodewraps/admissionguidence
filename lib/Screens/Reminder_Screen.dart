@@ -47,7 +47,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   @override
   void initState() {
     // TODO: implement initState
-    reminderlistapi();
+    reminderListApi();
     ReminderTypeApi();
 
     super.initState();
@@ -210,7 +210,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   Widget reminderlistwidget() {
     return
       FutureBuilder(
-        future: reminderlistapi(),
+        future: reminderListApi(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
@@ -340,7 +340,9 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                             ],
                                           ),
                                         ],
+
                                       )),
+
                                 ],
                               ),
                               //Text(enumToString(snapshot.data!.data![index].reminderType.toString()),),
@@ -363,12 +365,14 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                     InkWell(
                                       onTap: () {
                                         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                                        print(snapshot.data!.data![index].id.toString());
-                                        print(snapshot.data!.data![index].date.toString());
-                                        print(snapshot.data!.data![index].remark.toString());
+                                        print("id ${snapshot.data!.data![index].id.toString()}");
+                                        print("date ${snapshot.data!.data![index].date.toString()}");
+                                        print("remark ${snapshot.data!.data![index].remark.toString()}");
+                                        print("time ${snapshot.data!.data![index].time.toString()}");
+                                        print("Reminder type ${snapshot.data!.data![index].reminderType.toString()}");
                                         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString())));
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString(),reminderType: snapshot.data!.data![index].reminderType.toString(),datew: snapshot.data!.data![index].date.toString(),timew:snapshot.data!.data![index].time.toString() ,remarkw: snapshot.data!.data![index].remark.toString(),)));
                                         // Handle the "Edit Reminder" tap
                                       },
                                       child: Icon(Icons.edit),
@@ -473,6 +477,8 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                     },
                     itemCount:snapshot.data!.data!.length,
                 ),
+                    SizedBox(height: 80,),
+
                   ],
                 ),
               );
@@ -706,7 +712,7 @@ Future deletreminderapi(reminderid,) async{
       textColor: Colors.white,
       fontSize: 16.0,
     );
-   // Navigator.pop(context);
+    Navigator.pop(context);
     Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
   }
   else {
@@ -717,7 +723,52 @@ Future deletreminderapi(reminderid,) async{
   });
 }
 
-  Future<ReminderListModel> reminderlistapi() async {
+  // Future<ReminderListModel> reminderlistapill() async {
+  //   var headers = {
+  //     'accept': 'application/json',
+  //     'Content-Type': 'application/x-www-form-urlencoded',
+  //     'Cookie': 'PHPSESSID=8e2678e66318bb5eea7c33540ca4eb4f'
+  //   };
+  //   var data = {
+  //     'reminder_list': '1'
+  //   };
+  //   var dio = Dio();
+  //
+  //   try {
+  //     var response = await dio.request(
+  //       'https://admissionguidanceindia.com/appdata/webservice.php',
+  //       options: Options(
+  //         method: 'POST',
+  //         headers: headers,
+  //       ),
+  //       data: data,
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       print(json.encode(response.data));
+  //       print(response.data);
+  //       print("reminder_list response print ");
+  //
+  //       // Check if the response is a string, then decode it to a Map
+  //       var responseData = response.data is String
+  //           ? json.decode(response.data)
+  //           : response.data;
+  //
+  //       return ReminderListModel.fromJson(responseData);
+  //     } else {
+  //       print(response.statusMessage);
+  //       throw Exception('Failed to load data');
+  //     }
+  //   } catch (error) {
+  //     print(error.toString());
+  //     throw Exception('Failed to load data');
+  //   }
+  // }
+
+
+
+
+  Future<ReminderListModel?> reminderListApi() async {
     var headers = {
       'accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -729,10 +780,9 @@ Future deletreminderapi(reminderid,) async{
     var dio = Dio();
 
     try {
-      var response = await dio.request(
+      var response = await dio.post(
         'https://admissionguidanceindia.com/appdata/webservice.php',
         options: Options(
-          method: 'POST',
           headers: headers,
         ),
         data: data,
@@ -741,7 +791,7 @@ Future deletreminderapi(reminderid,) async{
       if (response.statusCode == 200) {
         print(json.encode(response.data));
         print(response.data);
-        print("reminder_list response print ");
+        print("Reminder list response printed ");
 
         // Check if the response is a string, then decode it to a Map
         var responseData = response.data is String
@@ -758,6 +808,11 @@ Future deletreminderapi(reminderid,) async{
       throw Exception('Failed to load data');
     }
   }
+
+
+
+
+
 
   Future<ReminderTypeModel?> ReminderTypeApi() async {
     var headers = {
