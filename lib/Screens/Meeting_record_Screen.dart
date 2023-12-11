@@ -183,7 +183,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                         Container(
                           padding: EdgeInsets.only(left: 0,right: 0),
 
-                          child:   Column(
+                          child:  Column(
                             children: [
 
 
@@ -792,6 +792,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       },
     );
   }
+
   Widget upcomingappointmentlist() {
     bool showMore = false;
     return FutureBuilder(
