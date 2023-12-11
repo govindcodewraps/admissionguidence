@@ -138,7 +138,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                       cornerRadius: 20.0,
                       activeBgColors: [
                         [Colors.green[800]!],
-                        [Colors.red[800]!]
+                        [Colors.green[800]!]
                       ],
                       activeFgColor: Colors.white,
                       inactiveBgColor: Colors.grey,
