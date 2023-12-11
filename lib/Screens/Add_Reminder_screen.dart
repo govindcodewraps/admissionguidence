@@ -107,7 +107,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      reminderTypewidget(),
+                      //reminderTypewidget(),
                       SizedBox(height: 10),
                       // DOB
 
@@ -403,79 +403,79 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
   }
 
 
-  Widget reminderTypewidget() {
-    return FutureBuilder(
-      future: remindertypeAPI(),
-      builder: (context, snapshot) {
-        // if (snapshot.connectionState == ConnectionState.waiting) {
-        //   return Container(
-        //     child: Center(child: CircularProgressIndicator()),
-        //   );
-        // } else if (snapshot.hasError) {
-        //   return Container(
-        //     child: Center(
-        //       child: Text('Error: Internal error'),
-        //     ),
-        //   );
-        // } else
-        if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
-          return Container(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else {
-          return Container(
-            // padding: EdgeInsets.only(left: 16, right: 16),
-            child: Column(
-              children: [
-
-                Container(
-                  width: MediaQuery.of(context).size.width*0.8,
-                  padding: EdgeInsets.only(left: 16,right: 11),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),  // Set the color of the border
-                    borderRadius: BorderRadius.circular(12), // Set the border radius
-                  ),
-                  child:
-
-                  DropdownButton<String>(
-                    isExpanded: true,
-
-                    value: accountselectedValue,
-                    onChanged: (newValue) {
-                      setState(() {
-                        accountselectedValue = newValue!;
-                        remindertypeid=newValue;
-                        print("Account Number ${newValue}");
-                        print("Account Number id ${remindertypeid}");
-                      });
-                    },
-                    underline: Container(),
-                    items: [
-                      DropdownMenuItem<String>(
-                        value: 'Select Reminder Type',
-                        child: Text('Select Reminder Type'),
-                      ),
-                      ...snapshot.data!.data!.map((datum) {
-                        return DropdownMenuItem<String>(
-                          value: datum.id!,
-                          child: Text("${(datum.type!)}"),
-                        );
-                      }).toList(),
-                    ],
-                  ),
-
-                ),
-
-                // selectedValue= snapshot.data.data.length;
-              ],
-            ),
-          );
-        }
-      },
-    );
-  }
+  // Widget reminderTypewidget() {
+  //   return FutureBuilder(
+  //     future: remindertypeAPI(),
+  //     builder: (context, snapshot) {
+  //       // if (snapshot.connectionState == ConnectionState.waiting) {
+  //       //   return Container(
+  //       //     child: Center(child: CircularProgressIndicator()),
+  //       //   );
+  //       // } else if (snapshot.hasError) {
+  //       //   return Container(
+  //       //     child: Center(
+  //       //       child: Text('Error: Internal error'),
+  //       //     ),
+  //       //   );
+  //       // } else
+  //       if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+  //         return Container(
+  //           child: Center(
+  //             child: CircularProgressIndicator(),
+  //           ),
+  //         );
+  //       } else {
+  //         return Container(
+  //           // padding: EdgeInsets.only(left: 16, right: 16),
+  //           child: Column(
+  //             children: [
+  //
+  //               Container(
+  //                 width: MediaQuery.of(context).size.width*0.8,
+  //                 padding: EdgeInsets.only(left: 16,right: 11),
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(color: Colors.black),  // Set the color of the border
+  //                   borderRadius: BorderRadius.circular(12), // Set the border radius
+  //                 ),
+  //                 child:
+  //
+  //                 DropdownButton<String>(
+  //                   isExpanded: true,
+  //
+  //                   value: accountselectedValue,
+  //                   onChanged: (newValue) {
+  //                     setState(() {
+  //                       accountselectedValue = newValue!;
+  //                       remindertypeid=newValue;
+  //                       print("Account Number ${newValue}");
+  //                       print("Account Number id ${remindertypeid}");
+  //                     });
+  //                   },
+  //                   underline: Container(),
+  //                   items: [
+  //                     DropdownMenuItem<String>(
+  //                       value: 'Select Reminder Type',
+  //                       child: Text('Select Reminder Type'),
+  //                     ),
+  //                     ...snapshot.data!.data!.map((datum) {
+  //                       return DropdownMenuItem<String>(
+  //                         value: datum.id!,
+  //                         child: Text("${(datum.type!)}"),
+  //                       );
+  //                     }).toList(),
+  //                   ],
+  //                 ),
+  //
+  //               ),
+  //
+  //               // selectedValue= snapshot.data.data.length;
+  //             ],
+  //           ),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
   Future<ReminderTypeModel?> remindertypeAPI() async {
     var headers = {
       'accept': 'application/json',

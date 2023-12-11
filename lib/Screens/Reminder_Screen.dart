@@ -52,7 +52,6 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
     super.initState();
   }
-  bool showMore = false;
 
   @override
   Widget build(BuildContext context) {
@@ -262,7 +261,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Container(
-                                padding: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.only(top: 20),
                                 height: 100,
                                 width: MediaQuery.of(context).size.width*0.33,
                                 decoration: BoxDecoration(
@@ -276,15 +275,6 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                     SizedBox(height: 10,),
                                     //Text("2023-11-11",style: TextStyle(color: Colors.white),),
                                     Text(snapshot.data!.data![index].date.toString(),style: TextStyle(color: Colors.white),),
-                                    SizedBox(height: 10,),
-
-                                    Text(
-                                      snapshot.data!.data![index].time != null
-                                          ? snapshot.data!.data![index].time.toString()
-                                          : ' ',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-
                                   ],
                                 ),
                               ),
@@ -335,7 +325,6 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                       color: Color(0xff68E3E3FF),
                                       child: Column(
                                         children: [
-
                                           Row(
                                             children: [
                                               Text("Reminder Type :"),
@@ -345,6 +334,8 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                                     ? snapshot.data!.data![index].reminderType.toString().split('.').last
                                                     : 'No Remark',
                                               ),
+
+
 
                                             ],
                                           ),
@@ -594,6 +585,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                     );
                   },
                 ),
+
               ),
               actions: <Widget>[
                 TextButton(

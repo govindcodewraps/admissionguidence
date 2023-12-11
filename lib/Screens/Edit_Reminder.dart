@@ -646,7 +646,6 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                   child:
 
                   DropdownButton<String>(
-                    isExpanded: true,
 
                     value: accountselectedValue,
                     onChanged: (newValue) {
