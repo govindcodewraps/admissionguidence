@@ -686,7 +686,7 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                   child:
 
                   DropdownButton<String>(
-
+                    isExpanded: true,
                     value: accountselectedValue,
                     onChanged: (newValue) {
                       setState(() {
@@ -698,6 +698,7 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                     },
                     underline: Container(),
                     items: [
+
                       DropdownMenuItem<String>(
                         value: 'Select Reminder Type',
                         child: Text('Select Reminder Type'),

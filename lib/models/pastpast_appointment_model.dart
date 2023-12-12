@@ -30,12 +30,12 @@ class PastAppointmentModel {
 
 class Datum {
   String? id;
-  String? appointmentDate;
+  DateTime? appointmentDate;
   String? email;
   String? name;
   String? appointmentTime;
   String? status;
-  String? remark;
+  dynamic remark;
 
   Datum({
     this.id,
@@ -49,7 +49,7 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
-    appointmentDate: json["appointment_date"],
+    appointmentDate: json["appointment_date"] == null ? null : DateTime.parse(json["appointment_date"]),
     email: json["email"],
     name: json["name"],
     appointmentTime: json["appointment_time"],
@@ -59,7 +59,7 @@ class Datum {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "appointment_date": appointmentDate,
+    "appointment_date": "${appointmentDate!.year.toString().padLeft(4, '0')}-${appointmentDate!.month.toString().padLeft(2, '0')}-${appointmentDate!.day.toString().padLeft(2, '0')}",
     "email": email,
     "name": name,
     "appointment_time": appointmentTime,

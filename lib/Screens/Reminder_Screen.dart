@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'dart:ui';
 
@@ -52,6 +53,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
     super.initState();
   }
+  bool showMore = false;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +99,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                   //mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     reminderlistwidget(),
-                   // lllist(),
+                    // lllist(),
 
                   ],
                 ),
@@ -127,81 +129,81 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     return
 
       ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, int index) {
-        return
-          Container(
-            padding: EdgeInsets.only(left: 10,right: 10),
-           // height: 100,
-           // color: Colors.pink,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: 20),
-                  height: 100,
-                  width: MediaQuery.of(context).size.width*0.33,
-                  decoration: BoxDecoration(
-                      color:MyTheme.backgroundcolor,
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16),topLeft: Radius.circular(16))
-                  ),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, int index) {
+            return
+              Container(
+                padding: EdgeInsets.only(left: 10,right: 10),
+                // height: 100,
+                // color: Colors.pink,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 20),
+                      height: 100,
+                      width: MediaQuery.of(context).size.width*0.33,
+                      decoration: BoxDecoration(
+                          color:MyTheme.backgroundcolor,
+                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16),topLeft: Radius.circular(16))
+                      ),
 
-                  child: Column(
-                    children: [
-                      Icon(Icons.notifications,color: Colors.white,),
-                      SizedBox(height: 10,),
-                      Text("2023-11-11",style: TextStyle(color: Colors.white),),
-                    ],
+                      child: Column(
+                        children: [
+                          Icon(Icons.notifications,color: Colors.white,),
+                          SizedBox(height: 10,),
+                          Text("2023-11-11",style: TextStyle(color: Colors.white),),
+                        ],
 
 
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(8),
-                  height: 100,
-                  width: MediaQuery.of(context).size.width * 0.52,
-                  color: Color(0xff68E3E3FF),
-                  child: Center(
-                    child: OverflowBox(
-                     // maxWidth: double.infinity,
-                      child: Text(
-                        maxLines: 5,
-                        "ydbcydbcc   dhybcydc",
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
-                ),
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      height: 100,
+                      width: MediaQuery.of(context).size.width * 0.52,
+                      color: Color(0xff68E3E3FF),
+                      child: Center(
+                        child: OverflowBox(
+                          // maxWidth: double.infinity,
+                          child: Text(
+                            maxLines: 5,
+                            "ydbcydbcc   dhybcydc",
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
 
-                Container(
-                  padding: EdgeInsets.only(top: 12),
-                  height: 100,
-                  decoration: BoxDecoration(
-                      color:MyTheme.WHITECOLOR,
-                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),topRight: Radius.circular(16))
-                  ),
-                  width: MediaQuery.of(context).size.width*0.1,
-                  //color: Colors.red,
-                  child: Column(
-                           children: [
-                             Icon(Icons.edit),
-                             SizedBox(height: 10,),
-                             Icon(Icons.delete),
-                           ],
-                  ),
+                    Container(
+                      padding: EdgeInsets.only(top: 12),
+                      height: 100,
+                      decoration: BoxDecoration(
+                          color:MyTheme.WHITECOLOR,
+                          borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),topRight: Radius.circular(16))
+                      ),
+                      width: MediaQuery.of(context).size.width*0.1,
+                      //color: Colors.red,
+                      child: Column(
+                        children: [
+                          Icon(Icons.edit),
+                          SizedBox(height: 10,),
+                          Icon(Icons.delete),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
+              );
 
-      },
-      separatorBuilder: (context, index) {
-        return SizedBox(height: 16);
-      },
-      itemCount:10
-    );
+          },
+          separatorBuilder: (context, index) {
+            return SizedBox(height: 16);
+          },
+          itemCount:10
+      );
   }
   String enumToString(enumItem) {
     return enumItem.toString().split('.').last;
@@ -247,168 +249,176 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                     // ),
                     SizedBox(height: 10),
 
-                   ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, int index) {
-                      return
-                        Container(
-                          padding: EdgeInsets.only(left: 10,right: 10),
-                          // height: 100,
-                          // color: Colors.pink,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(top: 20),
-                                height: 100,
-                                width: MediaQuery.of(context).size.width*0.33,
-                                decoration: BoxDecoration(
-                                    color:MyTheme.backgroundcolor,
-                                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16),topLeft: Radius.circular(16))
-                                ),
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, int index) {
+                        return
+                          Container(
+                            padding: EdgeInsets.only(left: 10,right: 10),
+                            // height: 100,
+                            // color: Colors.pink,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(top: 10),
+                                  height: 100,
+                                  width: MediaQuery.of(context).size.width*0.33,
+                                  decoration: BoxDecoration(
+                                      color:MyTheme.backgroundcolor,
+                                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16),topLeft: Radius.circular(16))
+                                  ),
 
-                                child: Column(
+                                  child: Column(
+                                    children: [
+                                      Icon(Icons.notifications,color: Colors.white,),
+                                      SizedBox(height: 10,),
+                                      //Text("2023-11-11",style: TextStyle(color: Colors.white),),
+                                      Text(snapshot.data!.data![index].date.toString(),style: TextStyle(color: Colors.white),),
+                                      SizedBox(height: 10,),
+
+                                      Text(
+                                        snapshot.data!.data![index].time != null
+                                            ? snapshot.data!.data![index].time.toString()
+                                            : ' ',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                                // Container(
+                                //   padding: EdgeInsets.all(8),
+                                //   height: 100,
+                                //   width: MediaQuery.of(context).size.width * 0.52,
+                                //   color: Color(0xff68E3E3FF),
+                                //   child: Center(
+                                //     child: OverflowBox(
+                                //       // maxWidth: double.infinity,
+                                //       child: Text(
+                                //         maxLines: 5,
+                                //        "  ybyb ",
+                                //        // snapshot.data!.data![index].remark.toString(),
+                                //         overflow: TextOverflow.ellipsis,
+                                //
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                                Column(
                                   children: [
-                                    Icon(Icons.notifications,color: Colors.white,),
-                                    SizedBox(height: 10,),
-                                    //Text("2023-11-11",style: TextStyle(color: Colors.white),),
-                                    Text(snapshot.data!.data![index].date.toString(),style: TextStyle(color: Colors.white),),
-                                  ],
-                                ),
-                              ),
-                              // Container(
-                              //   padding: EdgeInsets.all(8),
-                              //   height: 100,
-                              //   width: MediaQuery.of(context).size.width * 0.52,
-                              //   color: Color(0xff68E3E3FF),
-                              //   child: Center(
-                              //     child: OverflowBox(
-                              //       // maxWidth: double.infinity,
-                              //       child: Text(
-                              //         maxLines: 5,
-                              //        "  ybyb ",
-                              //        // snapshot.data!.data![index].remark.toString(),
-                              //         overflow: TextOverflow.ellipsis,
-                              //
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
-                              Column(
-                                children: [
 
-                                  Container(
-                                    padding: EdgeInsets.all(8),
-                                    height: 80,
-                                    width: MediaQuery.of(context).size.width * 0.50,
-                                    color: Color(0xff68E3E3FF),
-                                    child: OverflowBox(
-                                      //maxWidth: double.infinity,
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          maxLines: 2,
-                                          snapshot.data!.data![index].remark.toString(),
-                                          //enumToString(snapshot.data!.data![index].reminderType.toString()),
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.left,
+                                    Container(
+                                      padding: EdgeInsets.all(8),
+                                      height: 100,
+                                      width: MediaQuery.of(context).size.width * 0.50,
+                                      color: Color(0xff68E3E3FF),
+                                      child: OverflowBox(
+                                        //maxWidth: double.infinity,
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            maxLines: 2,
+                                            snapshot.data!.data![index].remark.toString(),
+                                            //enumToString(snapshot.data!.data![index].reminderType.toString()),
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.left,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
 
-                                  Container(
-                                      height: 20,
-                                      width: MediaQuery.of(context).size.width * 0.50,
-                                      color: Color(0xff68E3E3FF),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("Reminder Type :"),
-                                             // SizedBox(width: MediaQuery.of(context).size.width*0.1,),
-                                              Text(
-                                                snapshot.data!.data![index].reminderType != null && snapshot.data!.data![index].reminderType.toString().isNotEmpty
-                                                    ? snapshot.data!.data![index].reminderType.toString().split('.').last
-                                                    : 'No Remark',
-                                              ),
+                                    // Container(
+                                    //     height: 20,
+                                    //     width: MediaQuery.of(context).size.width * 0.50,
+                                    //     color: Color(0xff68E3E3FF),
+                                    //     child: Column(
+                                    //       children: [
+                                    //
+                                    //         Row(
+                                    //           children: [
+                                    //             Text("Reminder Type :"),
+                                    //             // SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+                                    //             Text(
+                                    //               snapshot.data!.data![index].reminderType != null && snapshot.data!.data![index].reminderType.toString().isNotEmpty
+                                    //                   ? snapshot.data!.data![index].reminderType.toString().split('.').last
+                                    //                   : 'No Remark',
+                                    //             ),
+                                    //
+                                    //           ],
+                                    //         ),
+                                    //       ],
+                                    //
+                                    //     )),
 
-
-
-                                            ],
-                                          ),
-                                        ],
-
-                                      )),
-
-                                ],
-                              ),
-                              //Text(enumToString(snapshot.data!.data![index].reminderType.toString()),),
-
-
-
-
-                              Container(
-
-                                height: 100,
-                                decoration: BoxDecoration(
-                                    color:MyTheme.WHITECOLOR,
-                                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),topRight: Radius.circular(16))
+                                  ],
                                 ),
-                                width: MediaQuery.of(context).size.width*0.1,
-                                //color: Colors.red,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                                        print("id ${snapshot.data!.data![index].id.toString()}");
-                                        print("date ${snapshot.data!.data![index].date.toString()}");
-                                        print("remark ${snapshot.data!.data![index].remark.toString()}");
-                                        print("time ${snapshot.data!.data![index].time.toString()}");
-                                        print("Reminder type ${snapshot.data!.data![index].reminderType.toString()}");
-                                        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString(),reminderType: snapshot.data!.data![index].reminderType.toString(),datew: snapshot.data!.data![index].date.toString(),timew:snapshot.data!.data![index].time.toString() ,remarkw: snapshot.data!.data![index].remark.toString(),)));
-                                        // Handle the "Edit Reminder" tap
-                                      },
-                                      child: Icon(Icons.edit),
-
-                                      //Text("Edit Reminder"),
-                                    ),
-                                    // InkWell(
-                                    //
-                                    //     onTap: (){
-                                    //       setState(() {
-                                    //         Remindertypevalue = ''; // You can assign any default or empty value
-                                    //       });
-                                    //       Remindertypevalue == null ? Remindertypevalue.clear:"";
-                                    //       ReminderListvalue=snapshot.data!.data![index].id.toString();
-                                    //       //_showCustomDialog(context);
-                                    //       print("print reminder list id:: ${snapshot.data!.data![index].id.toString()}");
-                                    //
-                                    //       Navigator.push(context, MaterialPageRoute(builder: (context)=>ReminderTypesScreen(reminderid:snapshot.data!.data![index].id.toString() ,)));
-                                    //
-                                    //     },
-                                    //     child: Icon(Icons.autorenew_rounded)),
+                                //Text(enumToString(snapshot.data!.data![index].reminderType.toString()),),
 
 
-                                    InkWell(
-                                        onTap: (){
-                                           var reminderid=snapshot.data!.data![index].id.toString();
-                                           print("delet id ${reminderid}");
-                                           deletereminderid=reminderid;
-                                          //
-                                          // deletreminderapi(reminderid.toString());
 
-                                           showDeleteConfirmationDialog(context);
+
+                                Container(
+
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                      color:MyTheme.WHITECOLOR,
+                                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),topRight: Radius.circular(16))
+                                  ),
+                                  width: MediaQuery.of(context).size.width*0.1,
+                                  //color: Colors.red,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                          print("id ${snapshot.data!.data![index].id.toString()}");
+                                          print("date ${snapshot.data!.data![index].date.toString()}");
+                                          print("remark ${snapshot.data!.data![index].remark.toString()}");
+                                          print("time ${snapshot.data!.data![index].time.toString()}");
+                                          print("Reminder type ${snapshot.data!.data![index].reminderType.toString()}");
+                                          print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString(),reminderType: snapshot.data!.data![index].reminderType.toString(),datew: snapshot.data!.data![index].date.toString(),timew:snapshot.data!.data![index].time.toString() ,remarkw: snapshot.data!.data![index].remark.toString(),)));
+                                          // Handle the "Edit Reminder" tap
                                         },
-                                        child: Icon(Icons.delete)),
+                                        child: Icon(Icons.edit),
 
-                                /*    Row(
+                                        //Text("Edit Reminder"),
+                                      ),
+                                      // InkWell(
+                                      //
+                                      //     onTap: (){
+                                      //       setState(() {
+                                      //         Remindertypevalue = ''; // You can assign any default or empty value
+                                      //       });
+                                      //       Remindertypevalue == null ? Remindertypevalue.clear:"";
+                                      //       ReminderListvalue=snapshot.data!.data![index].id.toString();
+                                      //       //_showCustomDialog(context);
+                                      //       print("print reminder list id:: ${snapshot.data!.data![index].id.toString()}");
+                                      //
+                                      //       Navigator.push(context, MaterialPageRoute(builder: (context)=>ReminderTypesScreen(reminderid:snapshot.data!.data![index].id.toString() ,)));
+                                      //
+                                      //     },
+                                      //     child: Icon(Icons.autorenew_rounded)),
+
+
+                                      InkWell(
+                                          onTap: (){
+                                            var reminderid=snapshot.data!.data![index].id.toString();
+                                            print("delet id ${reminderid}");
+                                            deletereminderid=reminderid;
+                                            //
+                                            // deletreminderapi(reminderid.toString());
+
+                                            showDeleteConfirmationDialog(context);
+                                          },
+                                          child: Icon(Icons.delete)),
+
+                                      /*    Row(
                                       children: [
 
                                         InkWell(
@@ -464,19 +474,19 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                       ],
                                     ),*/
 
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
+                              ],
+                            ),
+                          );
 
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(height: 16);
-                    },
-                    itemCount:snapshot.data!.data!.length,
-                ),
+                      },
+                      separatorBuilder: (context, index) {
+                        return SizedBox(height: 16);
+                      },
+                      itemCount:snapshot.data!.data!.length,
+                    ),
                     SizedBox(height: 80,),
 
                   ],
@@ -498,7 +508,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Are you sure want to delete?"),
-         // content: Text("Are you sure you want to logout?"),
+          // content: Text("Are you sure you want to logout?"),
           actions: [
             TextButton(
               onPressed: () {
@@ -509,11 +519,11 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
             TextButton(
               onPressed: () async {
                 // Perform logout actions
-               // var reminderid=snapshot.data!.data![index].id.toString();
+                // var reminderid=snapshot.data!.data![index].id.toString();
                 print("delete reminder id  ${deletereminderid}");
 
                 deletreminderapi(deletereminderid.toString());
-                   },
+              },
               child:
               //Image.asset('assets/logoutbutton.jpg'),
               Text("Delete",style: TextStyle(color: Colors.red),),
@@ -591,7 +601,6 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                     );
                   },
                 ),
-
               ),
               actions: <Widget>[
                 TextButton(
@@ -623,105 +632,105 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   }
 
 
-Future setreminderapi(reminderid,typeid) async{
-  var headers = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Cookie': 'PHPSESSID=30ead7cbd26e9fcee6465b06417e7aba'
-  };
-  var data = {
-    'set_reminder': '1',
-    'reminder_id':reminderid,
-    'type_id': typeid
-  };
-  var dio = Dio();
-  var response = await dio.request(
-    'https://admissionguidanceindia.com/appdata/webservice.php',
-    options: Options(
-      method: 'POST',
-      headers: headers,
-    ),
-    data: data,
-  );
-
-  if (response.statusCode == 200) {
-    print("successfully set remionder");
-    print(json.encode(response.data));
-    Fluttertoast.showToast(
-      msg: "successfully set remionder",
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.green,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-    Navigator.pop(context);
-  }
-
-  else if (response.statusCode == 401) {
-
-    Fluttertoast.showToast(
-      msg: "Please enter all required fields",
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
+  Future setreminderapi(reminderid,typeid) async{
+    var headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=30ead7cbd26e9fcee6465b06417e7aba'
+    };
+    var data = {
+      'set_reminder': '1',
+      'reminder_id':reminderid,
+      'type_id': typeid
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
     );
 
+    if (response.statusCode == 200) {
+      print("successfully set remionder");
+      print(json.encode(response.data));
+      Fluttertoast.showToast(
+        msg: "successfully set remionder",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Navigator.pop(context);
+    }
+
+    else if (response.statusCode == 401) {
+
+      Fluttertoast.showToast(
+        msg: "Please enter all required fields",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
+    }
+
+    else {
+      print(response.statusMessage);
+    }
   }
 
-  else {
-    print(response.statusMessage);
-  }
-}
-
-Future deletreminderapi(reminderid,) async{
-  setState(() {
-    isLoading = true;
-  });
-  var headers = {
-    'accept': 'application/json',
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Cookie': 'PHPSESSID=30ead7cbd26e9fcee6465b06417e7aba'
-  };
-  var data = {
-    'reminder_delete': '1',
-    'id': reminderid
-  };
-  var dio = Dio();
-  var response = await dio.request(
-    'https://admissionguidanceindia.com/appdata/webservice.php',
-    options: Options(
-      method: 'POST',
-      headers: headers,
-    ),
-    data: data,
-  );
-
-  if (response.statusCode == 200) {
-    print(json.encode(response.data));
-    Fluttertoast.showToast(
-      msg: "Deleted successfully",
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.green,
-      textColor: Colors.white,
-      fontSize: 16.0,
+  Future deletreminderapi(reminderid,) async{
+    setState(() {
+      isLoading = true;
+    });
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=30ead7cbd26e9fcee6465b06417e7aba'
+    };
+    var data = {
+      'reminder_delete': '1',
+      'id': reminderid
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
     );
-    Navigator.pop(context);
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+      Fluttertoast.showToast(
+        msg: "Deleted successfully",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Navigator.pop(context);
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
+    }
+    else {
+      print(response.statusMessage);
+    }
+    setState(() {
+      isLoading = true;
+    });
   }
-  else {
-    print(response.statusMessage);
-  }
-  setState(() {
-    isLoading = true;
-  });
-}
 
   // Future<ReminderListModel> reminderlistapill() async {
   //   var headers = {

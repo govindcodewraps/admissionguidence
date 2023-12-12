@@ -645,6 +645,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
     bool showMore = false;
     return FutureBuilder(
       future: pastappointmentapi(),
+
       builder: (context, snapshot) {
         print("object");
 
@@ -652,124 +653,181 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         //   return Container(
         //     child: Center(child: CircularProgressIndicator()),
         //   );
+        // } else if (snapshot.hasError) {
+        //   return Container(
+        //     child: Center(child: Text("No more Meetings")),
+        //   );
         // } else
-          if (snapshot.hasError) {
-          return Container(
-            child: Center(child: Text("No more Meetings")),
-          );
-        } else
-          if (snapshot.hasData) {
+        if (snapshot.hasData) {
+          bool showMore = false;
           if (snapshot.data != null && snapshot.data!.data != null) {
             print(snapshot.data!.data!.length);
             print("object");
 
             return Container(
-             // padding: EdgeInsets.only(left: 9, right: 9),
+
+              padding: EdgeInsets.only(left: 16, right: 16),
               child: Column(
                 children: [
                   ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, int index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              spreadRadius: 2,
-                              blurRadius: 4,
-                              offset: Offset(0, 3),
+                      return
+
+                        InkWell(
+                          onTap: (){
+                            print("govind kkk");
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 4,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        child: Container(
-                          padding: EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            child: Container(
+                              padding: EdgeInsets.all(8.0),
+                              child: Column(
                                 children: [
                                   Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text("Date:"),
-                                      SizedBox(width: 5,),
-                                      Text(snapshot.data!.data![index]
-                                          .appointmentDate
-                                          .toString()),
-                                      SizedBox(width: 5,),
-                                      Text(snapshot.data!.data![index]
-                                          .appointmentTime
-                                          .toString()),
+                                      Row(
+                                        children: [
+                                          Text("Date :"),
+                                          SizedBox(width: 5,),
+                                          Text(
+                                            DateFormat('yyyy-MM-dd').format(
+                                              snapshot.data!.data![index].appointmentDate!.toLocal(),
+                                            ),
+                                          ),
+                                          SizedBox(width: 5,),
+
+                                          Text(snapshot.data!.data![index]
+                                              .appointmentTime.toString()),
+                                        ],
+                                      ),
+
+                                      Row(
+                                        children: [
+                                          if(snapshot.data!.data![index].status == "0")
+                                            Row(
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    // Add your logic here
+                                                    print("Meeting ID: ${snapshot.data!.data![index].id.toString()}");
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString())));
+                                                  },
+                                                  child: Icon(Icons.calendar_month_outlined),
+                                                ),
+                                                SizedBox(width: 10,),
+                                                InkWell(
+                                                  onTap: () {
+                                                    _updateBookingStatus(
+                                                      snapshot.data!.data![index].id.toString(),
+                                                      Approved,
+                                                    );
+                                                  },
+                                                  child: Icon(Icons.done),
+                                                ),
+                                                SizedBox(width: 10,),
+                                                InkWell(
+                                                  onTap: () {
+
+                                                    mettingiddelete = snapshot.data!.data![index].id.toString();
+                                                    showDeleteConfirmationDialogtoday(context);
+
+
+                                                    // _updateBookingStatus(
+                                                    //   snapshot.data!.data![index].id.toString(),
+                                                    //   Canceled,
+                                                    // );
+                                                  },
+                                                  child: Icon(Icons.cancel_outlined),
+                                                ),
+                                              ],
+                                            ),
+                                          if(snapshot.data!.data![index].status == "1")
+                                            Icon(Icons.done,color: Colors.green,),
+                                          if(snapshot.data!.data![index].status == "2")
+                                            Icon(Icons.cancel_outlined,color: Colors.red,),
+                                        ],
+                                      ),
+
+                                    ],
+                                  ),
+                                  // Row(
+                                  //   children: [
+                                  //     Text("Date :"),
+                                  //     SizedBox(width: 10,),
+                                  //     Text(
+                                  //       DateFormat('yyyy-MM-dd').format(
+                                  //         snapshot.data!.data![index].appointmentDate!.toLocal(),
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  Row(
+                                    children: [
+                                      Text("Name :"),
+                                      Text(snapshot.data!.data![index].name.toString()),
+                                      SizedBox(width: 10,),
                                     ],
                                   ),
                                   Row(
                                     children: [
-                                      Icon(Icons.done),
+                                      Text("Contact:"),
+                                      SizedBox(width: 2,),
+                                      Text(snapshot.data!.data![index].email.toString()),
                                     ],
                                   ),
-                                ],
-                              ),
-                              // Row(
-                              //   children: [
-                              //     Text("Date :"),
-                              //     SizedBox(width: 10,),
-                              //     Text(snapshot.data!.data![index]
-                              //         .appointmentDate
-                              //         .toString()),
-                              //   ],
-                              // ),
-                              Row(
-                                children: [
-                                  Text("Name :"),
-                                  Text(snapshot.data!.data![index].name.toString()),
-                                  SizedBox(width: 10,),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text("Contact:"),
-                                  SizedBox(width: 2,),
-                                  Text(snapshot.data!.data![index].email.toString()),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text("Remark :"),
-                                  SizedBox(width: 10,),
-                                  Flexible(
-                                    child: Text(
-                                      snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
-                                          ? snapshot.data!.data![index].remark!
-                                          : 'No Remark',
+                                  Row(
+                                    children: [
+                                      Text("Remark :"),
+                                      SizedBox(width: 10,),
+                                      Flexible(
+                                        child: Text(
+                                          snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                              ? snapshot.data!.data![index].remark!
+                                              : 'No Remark',
 
 
-                                      //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
-                                      maxLines: !showMore ? null : 4,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                          //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
+                                          maxLines: !showMore ? null : 4,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      SizedBox(height: 8),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            showMore = !showMore;
+                                          });
+                                        },
+                                        child:   Icon(
+                                          !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                                          color: MyTheme.backgroundcolor,
+                                        ),
+
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(height: 8),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        showMore = !showMore;
-                                      });
-                                    },
-                                    child:   Icon(
-                                      !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
-                                      color: MyTheme.backgroundcolor,
-                                    ),
 
-                                  ),
+
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      );
+                        );
                     },
                     separatorBuilder: (context, index) {
                       return SizedBox(height: 16);
@@ -790,6 +848,153 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
           );
         }
       },
+
+
+      // builder: (context, snapshot) {
+      //   print("object");
+      //
+      //   // if (snapshot.connectionState == ConnectionState.waiting) {
+      //   //   return Container(
+      //   //     child: Center(child: CircularProgressIndicator()),
+      //   //   );
+      //   // } else
+      //     if (snapshot.hasError) {
+      //     return Container(
+      //       child: Center(child: Text("No more Meetings")),
+      //     );
+      //   } else
+      //     if (snapshot.hasData) {
+      //     if (snapshot.data != null && snapshot.data!.data != null) {
+      //       print(snapshot.data!.data!.length);
+      //       print("object");
+      //
+      //       return Container(
+      //        // padding: EdgeInsets.only(left: 9, right: 9),
+      //         child: Column(
+      //           children: [
+      //             ListView.separated(
+      //               shrinkWrap: true,
+      //               physics: const NeverScrollableScrollPhysics(),
+      //               itemBuilder: (context, int index) {
+      //                 return Container(
+      //                   decoration: BoxDecoration(
+      //                     color: Colors.white,
+      //                     borderRadius: BorderRadius.circular(12.0),
+      //                     boxShadow: [
+      //                       BoxShadow(
+      //                         color: Colors.black.withOpacity(0.2),
+      //                         spreadRadius: 2,
+      //                         blurRadius: 4,
+      //                         offset: Offset(0, 3),
+      //                       ),
+      //                     ],
+      //                   ),
+      //                   child: Container(
+      //                     padding: EdgeInsets.all(8.0),
+      //                     child: Column(
+      //                       children: [
+      //                         Row(
+      //                           mainAxisAlignment:
+      //                           MainAxisAlignment.spaceBetween,
+      //                           children: [
+      //                             Row(
+      //                               children: [
+      //                                 Text("Date:"),
+      //                                 SizedBox(width: 5,),
+      //                                 Text(snapshot.data!.data![index]
+      //                                     .appointmentDate
+      //                                     .toString()),
+      //                                 SizedBox(width: 5,),
+      //                                 Text(snapshot.data!.data![index]
+      //                                     .appointmentTime
+      //                                     .toString()),
+      //                               ],
+      //                             ),
+      //                             Row(
+      //                               children: [
+      //                                 Icon(Icons.done),
+      //                               ],
+      //                             ),
+      //                           ],
+      //                         ),
+      //                         // Row(
+      //                         //   children: [
+      //                         //     Text("Date :"),
+      //                         //     SizedBox(width: 10,),
+      //                         //     Text(snapshot.data!.data![index]
+      //                         //         .appointmentDate
+      //                         //         .toString()),
+      //                         //   ],
+      //                         // ),
+      //                         Row(
+      //                           children: [
+      //                             Text("Name :"),
+      //                             Text(snapshot.data!.data![index].name.toString()),
+      //                             SizedBox(width: 10,),
+      //                           ],
+      //                         ),
+      //                         Row(
+      //                           children: [
+      //                             Text("Contact:"),
+      //                             SizedBox(width: 2,),
+      //                             Text(snapshot.data!.data![index].email.toString()),
+      //                           ],
+      //                         ),
+      //                         Row(
+      //                           children: [
+      //                             Text("Remark :"),
+      //                             SizedBox(width: 10,),
+      //                             Flexible(
+      //                               child: Text(
+      //                                 snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+      //                                     ? snapshot.data!.data![index].remark!
+      //                                     : 'No Remark',
+      //
+      //
+      //                                 //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
+      //                                 maxLines: !showMore ? null : 4,
+      //                                 overflow: TextOverflow.ellipsis,
+      //                               ),
+      //                             ),
+      //                             SizedBox(height: 8),
+      //                             GestureDetector(
+      //                               onTap: () {
+      //                                 setState(() {
+      //                                   showMore = !showMore;
+      //                                 });
+      //                               },
+      //                               child:   Icon(
+      //                                 !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+      //                                 color: MyTheme.backgroundcolor,
+      //                               ),
+      //
+      //                             ),
+      //                           ],
+      //                         ),
+      //                       ],
+      //                     ),
+      //                   ),
+      //                 );
+      //               },
+      //               separatorBuilder: (context, index) {
+      //                 return SizedBox(height: 16);
+      //               },
+      //               itemCount: snapshot.data!.data!.length,
+      //             ),
+      //           ],
+      //         ),
+      //       );
+      //     } else {
+      //       return Container(
+      //         child: Center(child: Text("No data available")),
+      //       );
+      //     }
+      //   } else {
+      //     return Container(
+      //       child: Center(child: CircularProgressIndicator()),
+      //     );
+      //   }
+      // },
     );
   }
 
@@ -1153,9 +1358,11 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       }
     } catch (error) {
       print(error.toString());
-      throw Exception('Failed to load data');
+      throw Exception('Server Down ');
     }
   }
+
+
   Future<AppointmentsListModel?> getAppointments(String startDate, String endDate) async {
     var headers = {
       'accept': 'application/json',
@@ -1182,7 +1389,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         var responseData = response.data is String
             ? json.decode(response.data)
             : response.data;
-
+       print("Fillterd list ${responseData}");
         var appointmentsListModel =
         AppointmentsListModel.fromJson(responseData);
 
@@ -1483,6 +1690,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
             ? json.decode(response.data)
             : response.data;
 
+        print("past meeting record ${responseData}");
         return PastAppointmentModel.fromJson(responseData);
       } else {
         print(response.statusMessage);

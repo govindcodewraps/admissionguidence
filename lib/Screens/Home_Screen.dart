@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.fromLTRB(16, 10, 16, 0),
+                    padding: EdgeInsets.fromLTRB(16, 10, 16, 16 ),
                     decoration: BoxDecoration(
                       // color: MyTheme.WHITECOLOR,
                         borderRadius:BorderRadius.circular(12)
@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
 
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                           Container(
@@ -173,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            height: 100,
+                            height: 200,
                             width: 130,
                             child:   Center(
                               child: Column(
@@ -181,14 +181,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(height: 10,),
                                   Text("${_appointmentscount}",style:TextStyle(fontSize: 30),),
 
-                                  Text("Total",style:TextStyle(color: Colors.black),),
+                                  Text("Today",style:TextStyle(color: Colors.black),),
+                                  Text("Appointments",style:TextStyle(color: Colors.black),),
+
+
+                                  SizedBox(height: 10,),
+                                  Text("${_percntagecount}%",style:TextStyle(fontSize: 30),),
+                                  Text("Today",style:TextStyle(color: Colors.black),),
+                                  Text("Pending",style:TextStyle(color: Colors.black),),
                                   Text("Appointments",style:TextStyle(color: Colors.black),),
 
                                 ],
                               ),
                             ),
                           ),
-                          SizedBox(width: 10,),
+                          SizedBox(width: 30,),
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -206,18 +213,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            height: 100,
+                            height: 200,
                             width: 130,
                             child:  Center(
                               child: Column(
                                 children: [
                                   SizedBox(height: 10,),
+
+                                  Text("${_remindercount}",style:TextStyle(fontSize: 30),),
+
+                                  Text("Today",style:TextStyle(color: Colors.black),),
+                                  Text("Reminders",style:TextStyle(color: Colors.black),),
+
+
+                                  SizedBox(height: 10,),
+
                                   Text("${_percntagecount}%",style:TextStyle(fontSize: 30),),
-
+                                  Text("Today",style:TextStyle(color: Colors.black),),
                                   Text("Pending",style:TextStyle(color: Colors.black),),
-                                  Text("Appointments",style:TextStyle(color: Colors.black),),
+                                  Text("Reminders",style:TextStyle(color: Colors.black),),
 
-                                  //SizedBox(height: 1,),
                                 ],
                               ),
                             ),
@@ -226,152 +241,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
                         ],),
-                        SizedBox(height: 20,),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-
-
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.4),
-                                //color: Colors.black.withOpacity(0.2),
-                                spreadRadius: 2,
-                                blurRadius: 4,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          height: 100,
-                          width: 130,
-
-                          child:Center(
-                            child: Column(
-                              children: [
-                                SizedBox(height: 10,),
-                                Text("${_remindercount}",style:TextStyle(fontSize: 30),),
-
-                                Text("Total",style:TextStyle(color: Colors.black),),
-                                Text("Reminders ",style:TextStyle(color: Colors.black),),
-
-                              ],
-                            ),
-                          ),
-                        ),
-
-
-                        // Row(
-                        //   crossAxisAlignment: CrossAxisAlignment.center,
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     ClipOval(
-                        //       child: Container(
-                        //         height: 102,
-                        //         width: 102,
-                        //         padding: EdgeInsets.all(7),
-                        //         decoration: BoxDecoration(
-                        //           color: Colors.white,
-                        //           borderRadius: BorderRadius.circular(1),
-                        //
-                        //           boxShadow: [
-                        //             BoxShadow(
-                        //               color: Colors.black.withOpacity(0.3),
-                        //               spreadRadius: 2,
-                        //               blurRadius: 4,
-                        //               offset: Offset(0, 3),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         child:Center(
-                        //           child:
-                        //           Column(
-                        //             children: [
-                        //               SizedBox(height: 10,),
-                        //               Text("Today",style:TextStyle(color: Colors.black),),
-                        //               Text("Appointments",style:TextStyle(color: Colors.black),),
-                        //
-                        //               Text("${_appointmentscount}",style:TextStyle(fontSize: 30),),
-                        //                 ],
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     SizedBox(width: 10,),
-                        //
-                        //     ClipOval(
-                        //       child: Container(
-                        //         height: 108,
-                        //         width: 102,
-                        //         padding: EdgeInsets.all(7),
-                        //         decoration: BoxDecoration(
-                        //           color: Colors.white,
-                        //           borderRadius: BorderRadius.circular(1),
-                        //
-                        //           boxShadow: [
-                        //             BoxShadow(
-                        //               color: Colors.black.withOpacity(0.3),
-                        //               spreadRadius: 2,
-                        //               blurRadius: 4,
-                        //               offset: Offset(0, 3),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         child:
-                        //         Center(
-                        //           child: Column(
-                        //             children: [
-                        //               SizedBox(height: 10,),
-                        //               Text("Today\nPending",style:TextStyle(color: Colors.black),),
-                        //               Text("Appointments",style:TextStyle(color: Colors.black),),
-                        //
-                        //               Text("${_percntagecount}%",style:TextStyle(fontSize: 30),),
-                        //               //SizedBox(height: 1,),
-                        //                ],
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //
-                        //     SizedBox(width: 10,),
-                        //
-                        //     ClipOval(
-                        //       child: Container(
-                        //         height: 102,
-                        //         width: 102,
-                        //         padding: EdgeInsets.all(7),
-                        //         decoration: BoxDecoration(
-                        //           color: Colors.white,
-                        //           borderRadius: BorderRadius.circular(1),
-                        //
-                        //           boxShadow: [
-                        //             BoxShadow(
-                        //               color: Colors.black.withOpacity(0.3),
-                        //               spreadRadius: 2,
-                        //               blurRadius: 4,
-                        //               offset: Offset(0, 3),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         child:Center(
-                        //           child: Column(
-                        //             children: [
-                        //               SizedBox(height: 10,),
-                        //               Text("Total",style:TextStyle(color: Colors.black),),
-                        //               Text("Reminder ",style:TextStyle(color: Colors.black),),
-                        //
-                        //               Text("${_remindercount}",style:TextStyle(fontSize: 30),),
-                        //               ],
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //
-                        //
-                        //
-                        //   ],),
-
 
 
                       ],
