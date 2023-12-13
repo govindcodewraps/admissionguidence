@@ -33,8 +33,11 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   var ReminderListvalue;
   var deletereminderid="";
   bool _isLoading = false;
+  DateTime? selectedDate;
+
 
   TextEditingController dateInputController = TextEditingController();
+  FocusNode dateInputFocusNode = FocusNode();
 
   Time _time = Time(hour: 11, minute: 30, second: 20);
   bool iosStyle = true;
@@ -45,9 +48,14 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     });
   }
 
+
   @override
   void initState() {
     // TODO: implement initState
+    // dateInputController = TextEditingController();
+    // WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //   _selectDate(context);
+   // });
     reminderListApi();
     ReminderTypeApi();
 
@@ -57,7 +65,13 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: () async {
+          Navigator.pop(context, true);
+          return true;
+        },
+        child:
+      Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
           color: Colors.white, // Change the icon color here
@@ -68,6 +82,13 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
           style: TextStyle(
             color: Colors.white, // Change the text color here
           ),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigate back when back arrow is pressed
+            Navigator.pop(context, true);
+          },
         ),
       ),
       body: Container(
@@ -98,6 +119,44 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                 Column(
                   //mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+
+
+                    Container(child:Column(children: [
+
+                    ],),),
+                    SizedBox(height: 10,),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            width: 3,
+                            color: Colors.greenAccent,
+                          ),
+                        ),
+                        //labelText: "pickedDate",
+                        hintText: "",
+                        suffixIcon: Icon(Icons.calendar_month, color: Colors.black),
+                      ),
+                      controller: dateInputController,
+                      readOnly: true,
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2050),
+                        );
+
+                        if (pickedDate != null) {
+                          dateInputController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                        }
+
+                      },
+                    ),
+
+
+
                     reminderlistwidget(),
                     // lllist(),
 
@@ -111,16 +170,22 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Handle the "Add Reminder" button tap
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddReminderScreen(),
-            ),
-          );
+          //Navigator.push(context, MaterialPageRoute(builder: (context) => AddReminderScreen(),),);
+
+
+          Navigator.push(context,MaterialPageRoute(builder: (context)=>AddReminderScreen())).then((value){ if(value != null && value)
+          {
+            setState(() {
+              reminderListApi();
+              ReminderTypeApi();
+            });
+          };
+          });
         },
         backgroundColor: Colors.blue, // Set the FAB background color
         child: Icon(Icons.add,size: 20,),
       ),
+    ),
     );
   }
 
@@ -382,7 +447,21 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                           print("Reminder type ${snapshot.data!.data![index].reminderType.toString()}");
                                           print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString(),reminderType: snapshot.data!.data![index].reminderType.toString(),datew: snapshot.data!.data![index].date.toString(),timew:snapshot.data!.data![index].time.toString() ,remarkw: snapshot.data!.data![index].remark.toString(),)));
+                                         // Navigator.push(context, MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString(),reminderType: snapshot.data!.data![index].reminderType.toString(),datew: snapshot.data!.data![index].date.toString(),timew:snapshot.data!.data![index].time.toString() ,remarkw: snapshot.data!.data![index].remark.toString(),)));
+
+
+
+                                          Navigator.push(context,MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString(),reminderType: snapshot.data!.data![index].reminderType.toString(),datew: snapshot.data!.data![index].date.toString(),timew:snapshot.data!.data![index].time.toString() ,remarkw: snapshot.data!.data![index].remark.toString(),))).then((value){ if(value != null && value)
+                                          {
+                                            setState(() {
+                                              reminderListApi();
+                                              ReminderTypeApi();
+                                            });
+                                          };
+                                          });
+
+
+
                                           // Handle the "Edit Reminder" tap
                                         },
                                         child: Icon(Icons.edit),
@@ -721,8 +800,8 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      Navigator.pop(context);
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
+      Navigator.pop(context,true);
+      //Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
     }
     else {
       print(response.statusMessage);
@@ -858,7 +937,6 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       print(response.statusMessage);
     }
   }
-
 }
 
 

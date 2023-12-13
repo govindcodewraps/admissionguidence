@@ -1008,6 +1008,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
   String selectedtransactiontype = 'all';
   List<String> optionslist = ['all', 'CR', 'DR',];
   var transationtypevalue='';
+  String _CASHINHANDCOUNT="0";
 
 
 
@@ -1016,6 +1017,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
   void initState() {
     // TODO: implement initState
     // accountNameNumberApi();
+    caseinhandfetchData();
     paymentlistapi();
     todaybalanceApi();
     super.initState();
@@ -1059,7 +1061,13 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
+    return WillPopScope(
+        onWillPop: () async {
+          Navigator.pop(context, true);
+          return true;
+        },
+        child:
+      MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
         length: 2,
@@ -1069,7 +1077,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context, true);
                   },
                   child: Icon(Icons.arrow_back),
                 ),
@@ -1103,6 +1111,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
           ),
         ),
       ),
+    ),
     );
   }
 
@@ -1472,7 +1481,8 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                       print("govind kkk");
                     },
                     child:  Container(
-                      padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.10,right: MediaQuery.of(context).size.width*0.10),
+                      padding: EdgeInsets.only(left: 10,right: 10),
+                     // padding: EdgeInsets.only(left: MediaQuery.of(context).size.width*0.1,right: MediaQuery.of(context).size.width*0.10),
                       height: 100,
                       //width: MediaQuery.of(context).size.width*0.1,
                       //color: Colors.red,
@@ -1490,27 +1500,72 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                             ),
                           ],
                         ),
-                        child: Container(
-                          padding: EdgeInsets.only(left: 7,right: 7,top: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
+                        child:
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text("Balance ",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
-
-                              SizedBox(height: 10,),
-                              Row(
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(""),
-                                  SizedBox(width:10,),
-                                  Text("+₹${snapshot.requireData!.data.toString()}",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600,color: Colors.green),),
+                                  Text("Account Balance", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                                  SizedBox(height: 6,),
+                                  Text("+₹${snapshot.requireData!.data.toString()}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600, color: Colors.green)),
                                 ],
                               ),
+                              VerticalDivider(color: Colors.grey, thickness: 2), // Vertical Divider
 
 
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Cash In Hand ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                                  SizedBox(height: 6,),
+                                  Text("+₹${_CASHINHANDCOUNT}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600, color: Colors.green)),
+                                  //Text("+₹${snapshot.requireData!.data.toString()}", style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600, color: Colors.green)),
+                                ],
+                              ),
                             ],
                           ),
-                        ),
+                        )
+
+
+                        // Container(
+                        //   padding: EdgeInsets.only(left: 7,right: 7,top: 20),
+                        //   child: Row(
+                        //     children: [
+                        //       Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         mainAxisAlignment: MainAxisAlignment.start,
+                        //         children: [
+                        //           Text("Account Balance ",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
+                        //
+                        //           Text("+₹${snapshot.requireData!.data.toString()}",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600,color: Colors.green),),
+                        //
+                        //          // SizedBox(height: 10,),
+                        //           // Row(
+                        //           //   children: [
+                        //           //     Text("+₹${snapshot.requireData!.data.toString()}",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600,color: Colors.green),),
+                        //           //     SizedBox(width:10,),
+                        //           //     Text("+₹${snapshot.requireData!.data.toString()}",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600,color: Colors.green),),
+                        //           //   ],
+                        //           // ),
+                        //         ],
+                        //       ),
+                        //      SizedBox(width: 10,),
+                        //       Column(
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         mainAxisAlignment: MainAxisAlignment.start,
+                        //         children: [
+                        //           Text("Cash In Hand Balance ",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500),),
+                        //
+                        //           Text("+₹${snapshot.requireData!.data.toString()}",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w600,color: Colors.green),),
+                        //         ],
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                       ),
                     )
 
@@ -1948,6 +2003,49 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
 
   }
 
+
+  Future<int?> caseinhandfetchData() async {
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=d317ff54f034d4b459a98f619c622a7a'
+    };
+    var data = {
+      'cash_inhand_balance': '1'
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+      print("Total Appointmentss");
+      // Decode the JSON string to a Map
+      Map<String, dynamic> responseData = json.decode(response.data);
+
+      // Check if 'data' field is present in the response
+      if (responseData.containsKey('data')) {
+        var dataValue = responseData['data'];
+
+        print("Data value: $dataValue");
+        _CASHINHANDCOUNT = dataValue.toString();
+        print("_CASHINHANDCOUNT: $_CASHINHANDCOUNT");
+        setState(() {
+          _CASHINHANDCOUNT = dataValue.toString();
+        });
+        return dataValue;
+      }
+    }
+    else {
+      print(response.statusMessage);
+    }
+  }
 
 
 

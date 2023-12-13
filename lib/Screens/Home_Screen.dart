@@ -9,6 +9,7 @@ import 'Account_Details/AccountScreen.dart';
 import 'Meeting_record_Screen.dart';
 import 'Reminder_Screen.dart';
 import 'loginscreen.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,10 +27,16 @@ class _HomeScreenState extends State<HomeScreen> {
   String _appointmentscount="0";
   String _remindercount="0";
   String _percntagecount="0";
+  String _TOTALREMINDERCOUNT="0";
+  String _TOTALAPPOINTMENTSCOUNT="0";
+  String _TOTALTRANSACTIONCOUNT="0";
 
 @override
   void initState() {
     // TODO: implement initState
+  transactionfetchData();
+  appoinmentsfetchData();
+  reminderfetchData();
   totalAppointmentAPI();
   totalpercentageAPI();
   totalReminderAPI();
@@ -285,30 +292,42 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onPressed: (){
                                   Navigator.push(context,MaterialPageRoute(builder: (context)=>Meeting_record_screen())).then((value){ if(value != null && value)
                                     {
-
                                       setState(() {
+                                        transactionfetchData();
+                                        appoinmentsfetchData();
+                                        reminderfetchData();
                                         totalAppointmentAPI();
                                         totalpercentageAPI();
                                         totalReminderAPI();
                                       });
-
                                     };
                                   });
                                   
-                                  // setState(() {
-                                  //   totalAppointmentAPI();
-                                  //   totalpercentageAPI();
-                                  //   totalReminderAPI();
-                                  // });
-                                  // onPressUpdatePassword();
+
                                 },
-                                child: Text(
-                                  "APPOINTMENTS",
-                                  // AppLocalizations.of(context).update_password_ucf,
-                                  style: TextStyle(
-                                      color:MyTheme.WHITECOLOR,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "APPOINTMENTS",
+                                      // AppLocalizations.of(context).update_password_ucf,
+                                      style: TextStyle(
+                                          color:MyTheme.WHITECOLOR,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    SizedBox(width: 10,),
+                                    Text(
+                                      //" 98 ",
+                                        "(${_TOTALAPPOINTMENTSCOUNT})",
+                                        //TOTALAPPOINTMENTSCOUNT.toString(),
+                                      // AppLocalizations.of(context).update_password_ucf,
+                                      style: TextStyle(
+                                          color:MyTheme.WHITECOLOR,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
                                 ),),
                             ),
                           ),
@@ -342,17 +361,45 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                 onPressed: (){
                                   //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
-                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
-                                  // onPressUpdatePassword();
+                                 // Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
+
+
+                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen())).then((value){ if(value != null && value)
+                                  {
+                                    setState(() {
+                                      transactionfetchData();
+                                      appoinmentsfetchData();
+                                      reminderfetchData();
+                                      totalAppointmentAPI();
+                                      totalpercentageAPI();
+                                      totalReminderAPI();
+                                    });
+                                  };
+                                  });
 
                                 },
-                                child:Text(
-                                  "REMINDERS",
-                                  // AppLocalizations.of(context).update_password_ucf,
-                                  style: TextStyle(
-                                      color: MyTheme.backgroundcolor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
+                                child:Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "REMINDERS",
+                                      // AppLocalizations.of(context).update_password_ucf,
+                                      style: TextStyle(
+                                          color: MyTheme.backgroundcolor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    SizedBox(width: 10,),
+                                    Text(
+                                      "(${_TOTALREMINDERCOUNT})",
+                                      //"8",
+                                      // AppLocalizations.of(context).update_password_ucf,
+                                      style: TextStyle(
+                                          color: MyTheme.backgroundcolor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
                                 ),),
                             ),
                           ),
@@ -386,16 +433,43 @@ class _HomeScreenState extends State<HomeScreen> {
                                   //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
                                   // onPressUpdatePassword();
 
-                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountdetailsScreen()));
+                                 // Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountdetailsScreen()));
+
+                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>AccountdetailsScreen())).then((value){ if(value != null && value)
+                                  {
+                                    setState(() {
+                                      transactionfetchData();
+                                      appoinmentsfetchData();
+                                      reminderfetchData();
+                                      totalAppointmentAPI();
+                                      totalpercentageAPI();
+                                      totalReminderAPI();
+                                    });
+                                  };
+                                  });
 
                                 },
-                                child:Text(
-                                  "TRANSACTION",
-                                  // AppLocalizations.of(context).update_password_ucf,
-                                  style: TextStyle(
-                                      color:MyTheme.WHITECOLOR,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
+                                child:Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "TRANSACTION",
+                                      // AppLocalizations.of(context).update_password_ucf,
+                                      style: TextStyle(
+                                          color:MyTheme.WHITECOLOR,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    SizedBox(width: 10,),
+                                    Text(
+                                        "(${_TOTALTRANSACTIONCOUNT})",
+                                      // AppLocalizations.of(context).update_password_ucf,
+                                      style: TextStyle(
+                                          color:MyTheme.WHITECOLOR,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
                                 ),),
                             ),
                           ),
@@ -541,5 +615,134 @@ class _HomeScreenState extends State<HomeScreen> {
       print(response.statusMessage);
     }
   }
+
+
+  Future<int?> reminderfetchData() async {
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=d317ff54f034d4b459a98f619c622a7a'
+    };
+    var data = {
+      'new_totle_reminder_count': '1',
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+      print("Total Appointmentss");
+      // Decode the JSON string to a Map
+      Map<String, dynamic> responseData = json.decode(response.data);
+
+      // Check if 'data' field is present in the response
+      if (responseData.containsKey('data')) {
+        var dataValue = responseData['data'];
+
+        print("Data value: $dataValue");
+        _TOTALREMINDERCOUNT = dataValue.toString();
+        print("_TOTALREMINDERCOUNT: $_TOTALREMINDERCOUNT");
+        setState(() {
+          _TOTALREMINDERCOUNT = dataValue.toString();
+        });
+        return dataValue;
+      }
+    }
+    else {
+      print(response.statusMessage);
+    }
+  }
+  Future<int?> appoinmentsfetchData() async {
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=d317ff54f034d4b459a98f619c622a7a'
+    };
+    var data = {
+      'new_totle_appointment_count': '1',
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+      print("Total Appointmentss");
+      // Decode the JSON string to a Map
+      Map<String, dynamic> responseData = json.decode(response.data);
+
+      // Check if 'data' field is present in the response
+      if (responseData.containsKey('data')) {
+        var dataValue = responseData['data'];
+
+        print("Data value: $dataValue");
+        _TOTALAPPOINTMENTSCOUNT = dataValue.toString();
+        print("_TOTALAPPOINTMENTSCOUNT: $_TOTALAPPOINTMENTSCOUNT");
+        setState(() {
+          _TOTALAPPOINTMENTSCOUNT = dataValue.toString();
+        });
+        return dataValue;
+      }
+    }
+    else {
+      print(response.statusMessage);
+    }
+  }
+  Future<int?> transactionfetchData() async {
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=d317ff54f034d4b459a98f619c622a7a'
+    };
+    var data = {
+      'totle_payment': '1'
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+      print("Total Appointmentss");
+      // Decode the JSON string to a Map
+      Map<String, dynamic> responseData = json.decode(response.data);
+
+      // Check if 'data' field is present in the response
+      if (responseData.containsKey('data')) {
+        var dataValue = responseData['data'];
+
+        print("Data value: $dataValue");
+        _TOTALTRANSACTIONCOUNT = dataValue.toString();
+        print("_TOTALTRANSACTIONCOUNT: $_TOTALTRANSACTIONCOUNT");
+        setState(() {
+          _TOTALTRANSACTIONCOUNT = dataValue.toString();
+        });
+        return dataValue;
+      }
+    }
+    else {
+      print(response.statusMessage);
+    }
+  }
+
 
 }

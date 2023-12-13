@@ -794,9 +794,9 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      Navigator.pop(context);
+      Navigator.pop(context,true);
     //  Navigator.pop(context);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Reminder_Screen()));
+     // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Reminder_Screen()));
     } else {
       print(response.statusMessage);
     }

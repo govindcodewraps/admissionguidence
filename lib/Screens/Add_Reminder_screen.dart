@@ -557,8 +557,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
         fontSize: 16.0,
       );
 
-      Navigator.pop(context);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Reminder_Screen()));
+      Navigator.pop(context,true);
+      //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Reminder_Screen()));
     }
     else {
       print(response.statusMessage);
