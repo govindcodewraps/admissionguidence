@@ -18,6 +18,11 @@ import 'Add_Reminder_screen.dart';
 import 'Edit_Reminder.dart';
 import 'ReminderTypeScreen.dart';
 import 'dropdownscreen.dart';
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
+    show CalendarCarousel;
+import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:flutter_calendar_carousel/classes/event_list.dart';
+import 'package:intl/intl.dart' show DateFormat;
 
 class Reminder_Screen extends StatefulWidget {
   const Reminder_Screen({super.key});
@@ -33,11 +38,13 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   var ReminderListvalue;
   var deletereminderid="";
   bool _isLoading = false;
-  DateTime? selectedDate;
+  //DateTime? selectedDate;
 
 
   TextEditingController dateInputController = TextEditingController();
   FocusNode dateInputFocusNode = FocusNode();
+
+  DateTime selectedDate = DateTime.now();
 
   Time _time = Time(hour: 11, minute: 30, second: 20);
   bool iosStyle = true;
@@ -58,13 +65,105 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
    // });
     reminderListApi();
     ReminderTypeApi();
+    _selectDate();
 
     super.initState();
   }
   bool showMore = false;
 
+
+
+  Future<void> _selectDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2050),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        selectedDate = pickedDate;
+        dateInputController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
+      });
+    }
+  }
+
+  DateTime _currentDate = DateTime.now();
+  DateTime _currentDate2 = DateTime.now();
+  String _currentMonth = DateFormat.yMMM().format(DateTime.now());
+
+  DateTime _targetDateTime = DateTime.now();
+
+
+
+
   @override
   Widget build(BuildContext context) {
+
+    final _calendarCarouselNoHeader = CalendarCarousel<Event>(
+      todayBorderColor: Colors.green,
+      onDayPressed: (date, events) {
+        this.setState(() => _currentDate2 = date);
+        events.forEach((event) => print(event.title));
+        print("Selected datee ${_currentDate2}");
+      },
+      daysHaveCircularBorder: true,
+      showOnlyCurrentMonthDate: false,
+      weekendTextStyle: TextStyle(
+        color: Colors.red,
+      ),
+      //thisMonthDayBorderColor: Colors.grey,
+      weekFormat: false,
+//      firstDayOfWeek: 4,
+      // markedDatesMap: _markedDateMap,
+      height: 410.0,
+      selectedDateTime: _currentDate2,
+      targetDateTime: _targetDateTime,
+      customGridViewPhysics: NeverScrollableScrollPhysics(),
+      markedDateCustomShapeBorder:
+      CircleBorder(side: BorderSide(color: Colors.yellow)),
+      markedDateCustomTextStyle: TextStyle(
+        fontSize: 18,
+        color: Colors.blue,
+      ),
+      showHeader: true,
+      todayTextStyle: TextStyle(
+        color: Colors.blue,
+      ),
+      // markedDateShowIcon: true,
+      // markedDateIconMaxShown: 2,
+      // markedDateIconBuilder: (event) {
+      //   return event.icon;
+      // },
+      // markedDateMoreShowTotal:
+      //     true,
+      todayButtonColor: Colors.yellow,
+      selectedDayTextStyle: TextStyle(
+        color: Colors.yellow,
+      ),
+      minSelectedDate: _currentDate.subtract(Duration(days: 1360)),
+      maxSelectedDate: _currentDate.add(Duration(days: 1360)),
+      prevDaysTextStyle: TextStyle(
+        fontSize: 16,
+        color: Colors.pinkAccent,
+      ),
+      inactiveDaysTextStyle: TextStyle(
+        color: Colors.tealAccent,
+        fontSize: 16,
+      ),
+      onCalendarChanged: (DateTime date) {
+        this.setState(() {
+          _targetDateTime = date;
+          _currentMonth = DateFormat.yMMM().format(_targetDateTime);
+        });
+      },
+      onDayLongPressed: (DateTime date) {
+        print('long pressed date $date');
+      },
+    );
+
+
     return WillPopScope(
         onWillPop: () async {
           Navigator.pop(context, true);
@@ -120,40 +219,61 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                   //mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 
-
-                    Container(child:Column(children: [
-
-                    ],),),
-                    SizedBox(height: 10,),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            width: 3,
-                            color: Colors.greenAccent,
-                          ),
-                        ),
-                        //labelText: "pickedDate",
-                        hintText: "",
-                        suffixIcon: Icon(Icons.calendar_month, color: Colors.black),
-                      ),
-                      controller: dateInputController,
-                      readOnly: true,
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2050),
-                        );
-
-                        if (pickedDate != null) {
-                          dateInputController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                        }
-
-                      },
+                    //SizedBox(height: 10,),
+                    // TextFormField(
+                    //   decoration: InputDecoration(
+                    //     border: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.circular(12),
+                    //       borderSide: BorderSide(
+                    //         width: 3,
+                    //         color: Colors.greenAccent,
+                    //       ),
+                    //     ),
+                    //     //labelText: "pickedDate",
+                    //     hintText: "",
+                    //     suffixIcon: Icon(Icons.calendar_month, color: Colors.black),
+                    //   ),
+                    //   controller: dateInputController,
+                    //   readOnly: true,
+                    //   onTap: () async {
+                    //     DateTime? pickedDate = await showDatePicker(
+                    //       context: context,
+                    //       initialDate: DateTime.now(),
+                    //       firstDate: DateTime.now(),
+                    //       lastDate: DateTime(2050),
+                    //     );
+                    //
+                    //     if (pickedDate != null) {
+                    //       dateInputController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                    //     }
+                    //
+                    //   },
+                    // ),
+                    Container(
+                     // margin: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: _calendarCarouselNoHeader,
                     ),
+
+                  //   Container(
+                  //   padding: EdgeInsets.all(10),
+                  //   decoration: BoxDecoration(
+                  //     border: Border.all(
+                  //       width: 3,
+                  //       color: Colors.greenAccent,
+                  //     ),
+                  //     borderRadius: BorderRadius.circular(12),
+                  //   ),
+                  //   child: Row(
+                  //     children: [
+                  //       Icon(Icons.calendar_month, color: Colors.black),
+                  //       SizedBox(width: 10),
+                  //       Text(
+                  //         dateInputController.text,
+                  //         style: TextStyle(fontSize: 16),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
 
 
 
@@ -190,89 +310,90 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   }
 
 
-  Widget lllist(){
-    return
+  // Widget lllist(){
+  //   return
+  //
+  //     ListView.separated(
+  //         shrinkWrap: true,
+  //         physics: const NeverScrollableScrollPhysics(),
+  //         itemBuilder: (context, int index) {
+  //           return
+  //             Container(
+  //               padding: EdgeInsets.only(left: 10,right: 10),
+  //               // height: 100,
+  //               // color: Colors.pink,
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 children: [
+  //                   Container(
+  //                     padding: EdgeInsets.only(top: 20),
+  //                     height: 100,
+  //                     width: MediaQuery.of(context).size.width*0.33,
+  //                     decoration: BoxDecoration(
+  //                         color:MyTheme.backgroundcolor,
+  //                         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16),topLeft: Radius.circular(16))
+  //                     ),
+  //
+  //                     child: Column(
+  //                       children: [
+  //                         Icon(Icons.notifications,color: Colors.white,),
+  //                         SizedBox(height: 10,),
+  //                         Text("2023-11-11",style: TextStyle(color: Colors.white),),
+  //                       ],
+  //
+  //
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     padding: EdgeInsets.all(8),
+  //                     height: 100,
+  //                     width: MediaQuery.of(context).size.width * 0.52,
+  //                     color: Color(0xff68E3E3FF),
+  //                     child: Center(
+  //                       child: OverflowBox(
+  //                         // maxWidth: double.infinity,
+  //                         child: Text(
+  //                           maxLines: 5,
+  //                           "ydbcydbcc   dhybcydc",
+  //                           overflow: TextOverflow.ellipsis,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //
+  //                   Container(
+  //                     padding: EdgeInsets.only(top: 12),
+  //                     height: 100,
+  //                     decoration: BoxDecoration(
+  //                         color:MyTheme.WHITECOLOR,
+  //                         borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),topRight: Radius.circular(16))
+  //                     ),
+  //                     width: MediaQuery.of(context).size.width*0.1,
+  //                     //color: Colors.red,
+  //                     child: Column(
+  //                       children: [
+  //                         Icon(Icons.edit),
+  //                         SizedBox(height: 10,),
+  //                         Icon(Icons.delete),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             );
+  //
+  //         },
+  //         separatorBuilder: (context, index) {
+  //           return SizedBox(height: 16);
+  //         },
+  //         itemCount:10
+  //     );
+  // }
 
-      ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, int index) {
-            return
-              Container(
-                padding: EdgeInsets.only(left: 10,right: 10),
-                // height: 100,
-                // color: Colors.pink,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 20),
-                      height: 100,
-                      width: MediaQuery.of(context).size.width*0.33,
-                      decoration: BoxDecoration(
-                          color:MyTheme.backgroundcolor,
-                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16),topLeft: Radius.circular(16))
-                      ),
-
-                      child: Column(
-                        children: [
-                          Icon(Icons.notifications,color: Colors.white,),
-                          SizedBox(height: 10,),
-                          Text("2023-11-11",style: TextStyle(color: Colors.white),),
-                        ],
-
-
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      height: 100,
-                      width: MediaQuery.of(context).size.width * 0.52,
-                      color: Color(0xff68E3E3FF),
-                      child: Center(
-                        child: OverflowBox(
-                          // maxWidth: double.infinity,
-                          child: Text(
-                            maxLines: 5,
-                            "ydbcydbcc   dhybcydc",
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    Container(
-                      padding: EdgeInsets.only(top: 12),
-                      height: 100,
-                      decoration: BoxDecoration(
-                          color:MyTheme.WHITECOLOR,
-                          borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),topRight: Radius.circular(16))
-                      ),
-                      width: MediaQuery.of(context).size.width*0.1,
-                      //color: Colors.red,
-                      child: Column(
-                        children: [
-                          Icon(Icons.edit),
-                          SizedBox(height: 10,),
-                          Icon(Icons.delete),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-
-          },
-          separatorBuilder: (context, index) {
-            return SizedBox(height: 16);
-          },
-          itemCount:10
-      );
-  }
-  String enumToString(enumItem) {
-    return enumItem.toString().split('.').last;
-  }
+  // String enumToString(enumItem) {
+  //   return enumItem.toString().split('.').last;
+  // }
 
   Widget reminderlistwidget() {
     return
@@ -294,9 +415,9 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
             return
               Container(
-                //padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                 decoration: BoxDecoration(
-                  //color: MyTheme.WHITECOLOR,
+                  color: Colors.white70,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 //width: 300,
@@ -304,7 +425,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 10,),
+                    //SizedBox(height: 10,),
                     // Text(
                     //   "   Reminder List",
                     //   style: TextStyle(
@@ -312,7 +433,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                     //       fontSize: 18,
                     //       fontWeight: FontWeight.w600),
                     // ),
-                    SizedBox(height: 10),
+                    //SizedBox(height: 10),
 
                     ListView.separated(
                       shrinkWrap: true,
@@ -613,102 +734,102 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     );
   }
 
-  void _showCustomDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alertDialog(context); // Call your alertDialog function here
-      },
-    );
-  }
+  // void _showCustomDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return alertDialog(context); // Call your alertDialog function here
+  //     },
+  //   );
+  // }
 
-  Widget alertDialog(BuildContext context) {
-
-    return  FutureBuilder(
-      future: ReminderTypeApi(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            //child: Center(child: CircularProgressIndicator()),
-          );
-        } else if (snapshot.hasError) {
-          return Container(
-            child: Center(child: Text(" ")),
-          );
-        } else if (snapshot.hasData) {
-          var appointmentsListModel =
-          snapshot.data as ReminderTypeModel;
-
-          return
-            AlertDialog(
-
-              title: Text('Select Reminder Type'),
-              content: Container(
-                height: 600,
-                width: double.maxFinite,
-                child:
-                GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
-                  ),
-                  itemCount: snapshot.data!.data!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        // Update the selected index
-                        setState(() {
-                          selectedIdx = index;
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: selectedIdx == index ? Colors.blue : Colors.grey,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Center(
-                          child: Text(
-                            snapshot.data!.data![index].type.toString(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      Remindertypevalue = ''; // You can assign any default or empty value
-                    });
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                  child: Text('Close'),
-                ),
-                TextButton(
-                  onPressed: () {
-
-                    setreminderapi(ReminderListvalue,Remindertypevalue);
-                  },
-                  child: Text('Save'),
-                ),
-              ],
-            );
-
-        } else {
-          return Container(
-            child: Center(child: Text("No data available")),
-          );
-        }
-      },
-    );
-  }
+  // Widget alertDialog(BuildContext context) {
+  //
+  //   return  FutureBuilder(
+  //     future: ReminderTypeApi(),
+  //     builder: (context, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.waiting) {
+  //         return Container(
+  //           //child: Center(child: CircularProgressIndicator()),
+  //         );
+  //       } else if (snapshot.hasError) {
+  //         return Container(
+  //           child: Center(child: Text(" ")),
+  //         );
+  //       } else if (snapshot.hasData) {
+  //         var appointmentsListModel =
+  //         snapshot.data as ReminderTypeModel;
+  //
+  //         return
+  //           AlertDialog(
+  //
+  //             title: Text('Select Reminder Type'),
+  //             content: Container(
+  //               height: 600,
+  //               width: double.maxFinite,
+  //               child:
+  //               GridView.builder(
+  //                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  //                   crossAxisCount: 2,
+  //                   crossAxisSpacing: 8.0,
+  //                   mainAxisSpacing: 8.0,
+  //                 ),
+  //                 itemCount: snapshot.data!.data!.length,
+  //                 itemBuilder: (BuildContext context, int index) {
+  //                   return GestureDetector(
+  //                     onTap: () {
+  //                       // Update the selected index
+  //                       setState(() {
+  //                         selectedIdx = index;
+  //                       });
+  //                     },
+  //                     child: Container(
+  //                       decoration: BoxDecoration(
+  //                         color: selectedIdx == index ? Colors.blue : Colors.grey,
+  //                         borderRadius: BorderRadius.circular(12),
+  //                       ),
+  //                       child: Center(
+  //                         child: Text(
+  //                           snapshot.data!.data![index].type.toString(),
+  //                           style: TextStyle(
+  //                             color: Colors.white,
+  //                             fontWeight: FontWeight.bold,
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   );
+  //                 },
+  //               ),
+  //             ),
+  //             actions: <Widget>[
+  //               TextButton(
+  //                 onPressed: () {
+  //                   setState(() {
+  //                     Remindertypevalue = ''; // You can assign any default or empty value
+  //                   });
+  //                   Navigator.of(context).pop(); // Close the dialog
+  //                 },
+  //                 child: Text('Close'),
+  //               ),
+  //               TextButton(
+  //                 onPressed: () {
+  //
+  //                   setreminderapi(ReminderListvalue,Remindertypevalue);
+  //                 },
+  //                 child: Text('Save'),
+  //               ),
+  //             ],
+  //           );
+  //
+  //       } else {
+  //         return Container(
+  //           child: Center(child: Text("No data available")),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
 
 
   Future setreminderapi(reminderid,typeid) async{

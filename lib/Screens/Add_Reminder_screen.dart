@@ -229,12 +229,15 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                                       textColor: Colors.white,
                                       fontSize: 16.0,
                                     );
-                                  } else {
+                                  } else
+                                  {
                                     setState(() {
                                       _isLoading = true;
                                     });
                                    // _timeslotid
-                                    addmeeting(dateInputController.text,remarkInputtextController.text,remindertypeid,selecttime);                              }
+                                    addmeeting(dateInputController.text,remarkInputtextController.text,remindertypeid,selecttime);
+                                  }
+
                                 },
 
                                 //

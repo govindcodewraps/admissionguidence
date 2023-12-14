@@ -14,6 +14,7 @@ import '../models/Time_slot_model.dart';
 import '../models/Todays_Appointment_model.dart';
 import '../models/Upcoming_Appointment.dart';
 import '../models/pastpast_appointment_model.dart';
+import 'BookAppointmentScreen.dart';
 import 'Home_Screen.dart';
 import 'Notification_Screen.dart';
 import 'RescheduleMeetingScreen.dart';
@@ -100,6 +101,21 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                         Spacer(),
 
                         InkWell(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => BookingAppointments()));
+
+                            },
+                            child: Text("Book Appointment",style: TextStyle(color: Colors.white),)),
+                        SizedBox(width: 10,),
+
+                        // ElevatedButton(onPressed: (){
+                        //
+                        //   Navigator.push(context, MaterialPageRoute(builder: (context) => BookingAppointments()));
+                        //
+                        // }, child:Text("Book Appointment")),
+
+
+                        InkWell(
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => Notification_Screen()));
                           },
@@ -156,6 +172,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                         print('switched to: $index');
                       },
                     ),
+
                   ],
                 ),
               ),
@@ -1343,14 +1360,16 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       );
 
       if (response.statusCode == 200) {
-        print(json.encode(response.data));
-        print(response.data);
-        print("print response");
+        // print(json.encode(response.data));
+        // print(response.data);
+        // print("print response");
 
         // Check if the response is a string, then decode it to a Map
         var responseData = response.data is String
             ? json.decode(response.data)
             : response.data;
+
+        print("print upcomming  response ${responseData}");
 
         return UpcommingAppointmentModel.fromJson(responseData);
       } else {
