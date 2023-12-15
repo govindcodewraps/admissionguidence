@@ -5,6 +5,7 @@ import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import '../models/Time_slot_model.dart';
@@ -218,23 +219,23 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
                     ),
                   ),
 
-                  SizedBox(height: 10,),
-                  Text("Email"),
-                  SizedBox(height: 10,),
-                  TextField(
-                    controller: emailController,
-                    // maxLines: 4,
-                    decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      labelText: "Email",
-                      filled: true,
-                      isDense: true,
-                      border: OutlineInputBorder(
-
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
+                  //SizedBox(height: 10,),
+                  // Text("Email"),
+                  // SizedBox(height: 10,),
+                  // TextField(
+                  //   controller: emailController,
+                  //   // maxLines: 4,
+                  //   decoration: InputDecoration(
+                  //     floatingLabelBehavior: FloatingLabelBehavior.never,
+                  //     labelText: "Email",
+                  //     filled: true,
+                  //     isDense: true,
+                  //     border: OutlineInputBorder(
+                  //
+                  //       borderRadius: BorderRadius.circular(12),
+                  //     ),
+                  //   ),
+                  // ),
 
                   SizedBox(height: 10,),
                   Text("Contact"),
@@ -372,14 +373,14 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
                         // });
 
 
-                        print("Time print ${selecttime}");
+                        print("Time printa ${selecttime}");
+                        print("Time print ${_timeslotid}");
                         print("Date print ${dateInputController.text}");
                         print("Name print ${nameController.text}");
                         print("Email print ${emailController.text}");
                         print("Contact print ${contactController.text}");
 
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>BookingAppointments()));
+                        bookappointmentsapi(dateInputController.text,nameController.text,contactController.text,_timeslotid);
 
 
                       },
@@ -506,6 +507,59 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
       print("Error fetching time slots: $error");
     }
   }
+
+
+
+  Future<void> bookappointmentsapi(date,name,number,appointmentid) async {
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=148171d328986078134ae6cd0c0feb73'
+    };
+    var data = {
+      'appointment_add': '1',
+      'date': date,
+      'name': name,
+      'mobile': number,
+      'appointment_time': appointmentid
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+      Fluttertoast.showToast(
+        msg: "successfully set remionder",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+
+      print("Time printa ${selecttime}");
+      print("Time print ${_timeslotid}");
+      print("Date print ${dateInputController.text}");
+      print("Name print ${nameController.text}");
+      print("Email print ${emailController.text}");
+      print("Contact print ${contactController.text}");
+
+      Navigator.pop(context);
+
+    }
+    else {
+      print(response.statusMessage);
+    }
+  }
+
 
   Future<TimeslotModel?> timeslotlist(selectedDate) async {
     var headers = {

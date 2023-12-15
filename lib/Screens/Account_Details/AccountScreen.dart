@@ -1436,11 +1436,11 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                           //     SizedBox(width: MediaQuery.of(context).size.width * 0.19,),
                           //     Text("${snapshot.data!.data![index].remark.toString()}"),
 
-                          // Text(
-                          //   snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
-                          //       ? snapshot.data!.data![index].remark!
-                          //       : 'No Remark',
-                          // ),
+                          Text(
+                            snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                ? snapshot.data!.data![index].remark!
+                                : 'No Remark',
+                          ),
                           //   ],
                           // ),
 

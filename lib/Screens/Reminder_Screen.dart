@@ -38,6 +38,9 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   var ReminderListvalue;
   var deletereminderid="";
   bool _isLoading = false;
+  //String formattedDate="0";
+  String formattedDatee="0";
+  //String formatte='2023-12-12';
   //DateTime? selectedDate;
 
 
@@ -63,7 +66,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     // WidgetsBinding.instance?.addPostFrameCallback((_) {
     //   _selectDate(context);
    // });
-    reminderListApi();
+    reminderListApi(formattedDatee);
     ReminderTypeApi();
     _selectDate();
 
@@ -105,8 +108,20 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       todayBorderColor: Colors.green,
       onDayPressed: (date, events) {
         this.setState(() => _currentDate2 = date);
-        events.forEach((event) => print(event.title));
-        print("Selected datee ${_currentDate2}");
+        events.forEach((event) => print(event.title)
+        );
+
+
+        String formattedDate = DateFormat('yyyy-MM-dd').format(_currentDate2);
+        formattedDatee= "$formattedDate";
+        print('Selected datae: $formattedDatee');
+
+
+
+        setState(() {
+          reminderListApi(formattedDatee);
+        });
+
       },
       daysHaveCircularBorder: true,
       showOnlyCurrentMonthDate: false,
@@ -117,7 +132,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       weekFormat: false,
 //      firstDayOfWeek: 4,
       // markedDatesMap: _markedDateMap,
-      height: 410.0,
+      height: 390.0,
       selectedDateTime: _currentDate2,
       targetDateTime: _targetDateTime,
       customGridViewPhysics: NeverScrollableScrollPhysics(),
@@ -142,8 +157,8 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       selectedDayTextStyle: TextStyle(
         color: Colors.yellow,
       ),
-      minSelectedDate: _currentDate.subtract(Duration(days: 1360)),
-      maxSelectedDate: _currentDate.add(Duration(days: 1360)),
+      minSelectedDate: _currentDate.subtract(Duration(days: 11360)),
+      maxSelectedDate: _currentDate.add(Duration(days: 11360)),
       prevDaysTextStyle: TextStyle(
         fontSize: 16,
         color: Colors.pinkAccent,
@@ -191,6 +206,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
         ),
       ),
       body: Container(
+        height: double.infinity,
         decoration: BoxDecoration(
           color: Colors.yellow,
 
@@ -250,31 +266,15 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                     //   },
                     // ),
                     Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white70,
+
+                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16),bottomRight: Radius.circular(16))),
                      // margin: EdgeInsets.symmetric(horizontal: 16.0),
                       child: _calendarCarouselNoHeader,
                     ),
 
-                  //   Container(
-                  //   padding: EdgeInsets.all(10),
-                  //   decoration: BoxDecoration(
-                  //     border: Border.all(
-                  //       width: 3,
-                  //       color: Colors.greenAccent,
-                  //     ),
-                  //     borderRadius: BorderRadius.circular(12),
-                  //   ),
-                  //   child: Row(
-                  //     children: [
-                  //       Icon(Icons.calendar_month, color: Colors.black),
-                  //       SizedBox(width: 10),
-                  //       Text(
-                  //         dateInputController.text,
-                  //         style: TextStyle(fontSize: 16),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-
+                  SizedBox(height: 10,),
 
 
                     reminderlistwidget(),
@@ -296,7 +296,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
           Navigator.push(context,MaterialPageRoute(builder: (context)=>AddReminderScreen())).then((value){ if(value != null && value)
           {
             setState(() {
-              reminderListApi();
+              reminderListApi(formattedDatee);
               ReminderTypeApi();
             });
           };
@@ -398,16 +398,13 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   Widget reminderlistwidget() {
     return
       FutureBuilder(
-        future: reminderListApi(),
+        future: reminderListApi(formattedDatee),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
-              height:MediaQuery.of(context).size.height*1,
-              child: Center(child: CircularProgressIndicator()),
-            );
+            return CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Container(
-              child: Center(child: Text(" ")),
+              child: Center(child: Text("No Reminder")),
             );
           } else if (snapshot.hasData) {
             var appointmentsListModel =
@@ -415,12 +412,10 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
             return
               Container(
-                padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                decoration: BoxDecoration(
-                  color: Colors.white70,
-                  borderRadius: BorderRadius.circular(12),
+                decoration:BoxDecoration(
+                  color: Colors.red
                 ),
-                //width: 300,
+                padding: EdgeInsets.only(top: 16),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -575,7 +570,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                           Navigator.push(context,MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString(),reminderType: snapshot.data!.data![index].reminderType.toString(),datew: snapshot.data!.data![index].date.toString(),timew:snapshot.data!.data![index].time.toString() ,remarkw: snapshot.data!.data![index].remark.toString(),))).then((value){ if(value != null && value)
                                           {
                                             setState(() {
-                                              reminderListApi();
+                                              reminderListApi(formattedDatee);
                                               ReminderTypeApi();
                                             });
                                           };
@@ -913,7 +908,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     if (response.statusCode == 200) {
       print(json.encode(response.data));
       Fluttertoast.showToast(
-        msg: "Deleted successfully",
+        msg: "Reminder Deleted successfully",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
@@ -977,7 +972,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
 
 
-  Future<ReminderListModel?> reminderListApi() async {
+  Future<ReminderListModel?> areminderListApi() async {
     var headers = {
       'accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -985,6 +980,49 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     };
     var data = {
       'reminder_list': '1'
+    };
+    var dio = Dio();
+
+    try {
+      var response = await dio.post(
+        'https://admissionguidanceindia.com/appdata/webservice.php',
+        options: Options(
+          headers: headers,
+        ),
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        print(json.encode(response.data));
+        print(response.data);
+        print("Reminder list response printed ");
+
+        // Check if the response is a string, then decode it to a Map
+        var responseData = response.data is String
+            ? json.decode(response.data)
+            : response.data;
+
+        return ReminderListModel.fromJson(responseData);
+      } else {
+        print(response.statusMessage);
+        throw Exception('Failed to load data');
+      }
+    } catch (error) {
+      print(error.toString());
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<ReminderListModel?> reminderListApi(date) async {
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=8e2678e66318bb5eea7c33540ca4eb4f'
+    };
+    var data = {
+      'reminder_filter': '1',
+       'date': date
+       //'date': '2023-12-11'
     };
     var dio = Dio();
 

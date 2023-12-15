@@ -35,7 +35,7 @@ class Datum {
   String? oldBalance;
   String? newBalance;
   String? bankName;
-  dynamic? remark;
+  String? remark;
 
   Datum({
     this.id,
