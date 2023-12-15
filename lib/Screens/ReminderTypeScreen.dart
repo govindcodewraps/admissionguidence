@@ -70,7 +70,7 @@ class _ReminderTypesScreenState extends State<ReminderTypesScreen> {
         SafeArea(
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.yellow,
+              //color: Colors.yellow,
 
               image: DecorationImage(
 

@@ -67,7 +67,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
         width: double.infinity,
         //color: MyTheme.backgroundcolor,
         decoration: BoxDecoration(
-          color: Colors.yellow,
+          //color: Colors.yellow,
 
           image: DecorationImage(
 
@@ -193,8 +193,12 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                           controller: remarkInputtextController,
                           maxLines: 4,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            labelText: "Remark",
+                            filled: true,
+                            isDense: true,
                             border: OutlineInputBorder(
+
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),

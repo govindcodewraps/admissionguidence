@@ -68,7 +68,7 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
       width: double.infinity,
       //color: MyTheme.backgroundcolor,
       decoration: BoxDecoration(
-        color: Colors.yellow,
+       //color: Colors.yellow,
 
         image: DecorationImage(
 
@@ -92,115 +92,48 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                    children: [
-                    SizedBox(
-
-                      width:MediaQuery.of(context).size.width*0.43,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Date"),
-                          SizedBox(height: 10,),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                  // width: 3,
-                                  color: Colors.greenAccent,
-                                ),
-                              ),
-                              labelText: "Date",
-                              hintText: 'Date',
-                              suffixIcon: Icon(Icons.calendar_month, color: Colors.black),
-                            ),
-                            controller: dateInputController,
-                            readOnly: true,
-                            onTap: () async {
-                              DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime(2050),
-                              );
-
-                              if (pickedDate != null) {
-                                dateInputController.text =
-                                    DateFormat('yyyy-MM-dd').format(pickedDate);
-
-                                //Fetch time slots for the selected date
-                                 await fetchTimeSlots(dateInputController.text);
-                              }
-                            },
+                    Text("Date"),
+                    SizedBox(height: 10,),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            // width: 3,
+                            color: Colors.greenAccent,
                           ),
-                        ],),
+                        ),
+                        labelText: "Date",
+                        hintText: 'Date',
+                        suffixIcon: Icon(Icons.calendar_month, color: Colors.black),
+                      ),
+                      controller: dateInputController,
+                      readOnly: true,
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2050),
+                        );
+
+                        if (pickedDate != null) {
+                          dateInputController.text =
+                              DateFormat('yyyy-MM-dd').format(pickedDate);
+
+                          //Fetch time slots for the selected date
+                          await fetchTimeSlots(dateInputController.text);
+                        }
+                      },
                     ),
-                    SizedBox(width: 10,),
 
+                    SizedBox(height: 10,),
 
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                        Text("Time"),
-                          SizedBox(height: 10,),
+                    Text("Time"),
+                    SizedBox(height: 10,),
 
-                          timeslotwidget(),
-                      ],),
+                    timeslotwidget(),
 
-
-
-                    // SizedBox(
-                    //   width:MediaQuery.of(context).size.width*0.43,
-                    //   child: Column(
-                    //     mainAxisAlignment: MainAxisAlignment.start,
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     children: [
-                    //       Text("Time"),
-                    //       SizedBox(height: 10,),
-                    //
-                    //       TextFormField(
-                    //
-                    //         decoration:  InputDecoration(
-                    //           border: OutlineInputBorder(
-                    //             borderRadius: BorderRadius.circular(12),
-                    //             borderSide: BorderSide(
-                    //                 width: 3, color: Colors.greenAccent), //<-- SEE HERE
-                    //           ),
-                    //           // border: InputBorder.none,
-                    //           //label: "DOB",
-                    //           labelText: _time.format(context),
-                    //           hintText: _time.format(context),
-                    //           suffixIcon: Icon(Icons.watch_later_outlined,color: Colors.black,),
-                    //
-                    //         ),
-                    //         // controller: dateInputController,
-                    //         readOnly: true,
-                    //         onTap: () async {
-                    //
-                    //           //print("Time select  ${_time.format(context)}");
-                    //           print("Time selectaa  ${selecttime}");
-                    //           Navigator.of(context).push(
-                    //             showPicker(
-                    //               context: context,
-                    //               value: _time,
-                    //               sunrise: TimeOfDay(hour: 6, minute: 0), // optional
-                    //               sunset: TimeOfDay(hour: 18, minute: 0), // optional
-                    //               duskSpanInMinutes: 120, // optional
-                    //               onChange: onTimeChanged,
-                    //             ),
-                    //           );
-                    //         },
-                    //       ),
-                    //     ],),
-                    // ),
-
-
-
-                  ],),
                   SizedBox(height: 10,),
                   Text("Name"),
                   SizedBox(height: 10,),
@@ -310,9 +243,9 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
                         //   };
                         // });
 
+                Navigator.pop(context);
 
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>BookingAppointments()));
+                       //Navigator.push(context, MaterialPageRoute(builder: (context)=>BookingAppointments()));
 
 
                       },
@@ -446,7 +379,7 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
               children: [
 
                 Container(
-                  width: MediaQuery.of(context).size.width*0.45,
+                  width: MediaQuery.of(context).size.width*0.98,
                   height: 58,
                   padding: EdgeInsets.only(left: 10),
                   decoration: BoxDecoration(

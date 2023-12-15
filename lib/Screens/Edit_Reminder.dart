@@ -427,12 +427,22 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                           controller: remarkInputtextController,
                           maxLines: 3,
                           decoration: InputDecoration(
-                              hintText:"${widget.remarkw}",
-                            contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            labelText: "${widget.remarkw}",
+                            filled: true,
+                            isDense: true,
                             border: OutlineInputBorder(
+
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
+                          // decoration: InputDecoration(
+                          //     hintText:"${widget.remarkw}",
+                          //   contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                          //   border: OutlineInputBorder(
+                          //     borderRadius: BorderRadius.circular(12),
+                          //   ),
+                          // ),
                         ),
                         SizedBox(height: 30),
                         Align(

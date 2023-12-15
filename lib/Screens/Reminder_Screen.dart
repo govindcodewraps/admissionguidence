@@ -208,7 +208,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       body: Container(
         height: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.yellow,
+          //color: Colors.yellow,
 
           image: DecorationImage(
 
@@ -269,12 +269,12 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                       decoration: BoxDecoration(
                           color: Colors.white70,
 
-                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16),bottomRight: Radius.circular(16))),
+                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30),bottomRight: Radius.circular(30))),
                      // margin: EdgeInsets.symmetric(horizontal: 16.0),
                       child: _calendarCarouselNoHeader,
                     ),
 
-                  SizedBox(height: 10,),
+                  SizedBox(height: 30,),
 
 
                     reminderlistwidget(),
@@ -413,9 +413,10 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
             return
               Container(
                 decoration:BoxDecoration(
-                  color: Colors.red
+                  borderRadius: (BorderRadius.only(topRight: Radius.circular(30),topLeft: Radius.circular(30))),
+                  color: Colors.white70
                 ),
-                padding: EdgeInsets.only(top: 16),
+                padding: EdgeInsets.only(top: 30),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -495,7 +496,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                       padding: EdgeInsets.all(8),
                                       height: 100,
                                       width: MediaQuery.of(context).size.width * 0.50,
-                                      color: Color(0xff68E3E3FF),
+                                      color: Colors.white,
                                       child: OverflowBox(
                                         //maxWidth: double.infinity,
                                         child: Align(
@@ -970,8 +971,6 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   // }
 
 
-
-
   Future<ReminderListModel?> areminderListApi() async {
     var headers = {
       'accept': 'application/json',
@@ -1055,11 +1054,6 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       throw Exception('Failed to load data');
     }
   }
-
-
-
-
-
 
   Future<ReminderTypeModel?> ReminderTypeApi() async {
     var headers = {

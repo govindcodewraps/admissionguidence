@@ -43,7 +43,7 @@ class _Notification_ScreenState extends State<Notification_Screen> {
         child: Container(
 
           decoration: BoxDecoration(
-            color: Colors.yellow,
+            //color: Colors.yellow,
 
             image: DecorationImage(
 
