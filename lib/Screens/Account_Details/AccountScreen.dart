@@ -984,6 +984,7 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:admissionguidence/Screens/Home_Screen.dart';
 import 'package:admissionguidence/my_theme.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -993,6 +994,7 @@ import '../../models/AccountNameNumberModel.dart';
 import '../../models/PaymentListModel.dart';
 import '../../models/Time_slot_model.dart';
 import '../../models/TodayBalanceModel.dart';
+import '../../models/paymentlistpagination.dart';
 import '../amounttransaction.dart';
 import 'TransationScreen.dart';
 
@@ -1011,14 +1013,17 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
   var transationtypevalue='';
   String _CASHINHANDCOUNT="0";
   String _TODAYAMOUNTCOUNT="0";
+  String _PAGECOUNT="1";
 
 
 
   // String accountselectedValue = 'Select Account Number';
+
   @override
   void initState() {
     // TODO: implement initState
     // accountNameNumberApi();
+    paymentlistpagination(_PAGECOUNT);
     todayaccountfetchData();
     caseinhandfetchData();
     paymentlistapi();
@@ -1080,7 +1085,10 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.pop(context, true);
+
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                    //Navigator.pop(context, true);
+                    //Navigator.pop(context);
                   },
                   child: Icon(Icons.arrow_back),
                 ),
@@ -1257,8 +1265,11 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                           value: selectedtransactiontype,
                           onChanged: (newValue) {
                             setState(() {
+                              _PAGECOUNT="1";
+
                               selectedtransactiontype = newValue!;
                               transationtypevalue=newValue;
+
                               print("Transation type ${newValue}");
                             });
                           },
@@ -1286,7 +1297,11 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                       //MMM
                       // todaybalancelistwidget(),
                       SizedBox(height: 10,),
-                      paymentlistwidget(),
+                     // paymentlistwidget(),
+                      SizedBox(height: 20,),
+
+                      paymentlistwidgettt(),
+
                       SizedBox(height: 20,),
                     ],
                   ),
@@ -1430,58 +1445,6 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                             ],
                           ),
 
-                          // Row(
-                          //   children: [
-                          //     Text("Remark "),
-                          //     SizedBox(width: MediaQuery.of(context).size.width * 0.19,),
-                          //     Text("${snapshot.data!.data![index].remark.toString()}"),
-
-                          Text(
-                            snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
-                                ? snapshot.data!.data![index].remark!
-                                : 'No Remark',
-                          ),
-                          //   ],
-                          // ),
-
-
-                          /*     Text(
-                            snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
-                                ? snapshot.data!.data![index].remark!
-                                : 'No Remark',
-                            maxLines: showMore ? null : 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(height: 8),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                showMore = !showMore;
-                              });
-                            },
-                            child: Text(
-                              showMore ? 'View Less' : 'Show More',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),*/
-
-
-                          // Row(
-                          //   children: [
-                          //     Text("Remark :"),
-                          //     SizedBox(width: MediaQuery.of(context).size.width*0.1,),
-                          //     Text(snapshot.data!.data![index].remark.toString()),
-                          //     // Text(
-                          //     //   snapshot.data!.data![index].remark?.toString()?.isNotEmpty == true
-                          //     //       ? snapshot.data!.data![index].remark.toString()
-                          //     //       : 'No Remark',
-                          //     // ),
-                          //   ],
-                          // ),
-
                         ],
                       ),
                     ),
@@ -1498,9 +1461,187 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     );
   }
 
+  Widget paymentlistwidgettt() {
+    return FutureBuilder(
+      future: paymentlistpagination(_PAGECOUNT),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        // else if (snapshot.hasError) {
+        //   return Container(
+        //     child: Center(
+        //       child: Text('Error: Internal error'),
+        //     ),
+        //   );
+        // }
+
+        // else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+        //   return Container(
+        //     child: Center(
+        //       child: Text('No data available.'),
+        //     ),
+        //   );
+        // }
+        else {
+
+          return  Column(
+            children: [
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                reverse: true,
+                itemBuilder: (context, int index) {
+                  return
+
+                    InkWell(
+                      onTap: (){
+                        print("govind kkk");
+                        print("Remark: ${snapshot.data!.data![33].amount}");
+                        print("Remark: ${snapshot.data!.data![33].remark}");
+
+                        print("prevPage: ${snapshot.data!.pagination!.prevPage.toString()}");
+                        print("nextPage: ${snapshot.data!.pagination!.nextPage.toString()}");
+
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white70,
+                          borderRadius: BorderRadius.circular(10.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              spreadRadius: 2,
+                              blurRadius: 4,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text("Transaction Type  "),
+                                      SizedBox(width: 5,),
+                                      // Text(snapshot.data!.data![index]
+                                      //     .type.toString()),
+                                      // Text(snapshot.data!.data![index].type.toString(),style:TextStyle(color: Colors.black),),
+                                      if(snapshot.data!.data![index].type.toString() == "CR")
+                                        Text("Credit",style:TextStyle(color: Colors.black),),
+                                      if(snapshot.data!.data![index].type.toString()=="DR")
+                                        Text("Debit",style: TextStyle(color: Colors.black),),
+                                    ],
+                                  ),
+
+                                  if(snapshot.data!.data![index].type.toString() == "CR")
+                                    Icon(Icons.arrow_circle_left_outlined,color: Colors.green,),
+                                  if(snapshot.data!.data![index].type.toString()=="DR")
+                                  //Icon(Icons.arrow_upward_outlined,color: Colors.red,),
+                                    Icon(Icons.arrow_circle_right_outlined,color: Colors.red,),
 
 
 
+                                ],
+                              ),
+
+                              Row(
+                                children: [
+                                  Text("Amount "),
+                                  SizedBox(width: MediaQuery.of(context).size.width*0.180,),
+                                  if(snapshot.data!.data![index].type.toString() == "CR")
+                                    Text("+₹${snapshot.data!.data![index].amount.toString()}",style: TextStyle(color: Colors.green),),
+                                  if(snapshot.data!.data![index].type.toString()=="DR")
+                                    Text("-₹${snapshot.data!.data![index].amount.toString()}",style: TextStyle(color: Colors.red),),
+
+                                  // Text("₹${snapshot.data!.data![index].amount.toString()}"),
+
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text("Old Balance   "),
+                                  SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+                                  Text("₹${snapshot.data!.data![index].oldBalance.toString()}"),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text("New Balance "),
+                                  SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+                                  Text("₹${snapshot.data!.data![index].newBalance.toString()}"),
+                                ],
+                              ),
+
+                              Row(
+                                children: [
+                                  Text("Bank Name   "),
+                                  SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+                                  Flexible(child:
+                                  // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
+                                  Text("${formatAccountNumber(snapshot.data!.data![index].bankName.toString().split('.').last)}"),),
+                                  // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
+                                ],
+                              ),
+
+
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                },
+                separatorBuilder: (context, index) {
+                  return SizedBox(height: 16);
+                },
+                itemCount: snapshot.data!.data!.length,
+              ),
+              Row(
+                //crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+
+                 // snapshot.data!.pagination!.prevPage!.toString()
+                  if(snapshot.data!.pagination!.prevPage! >= 1)
+                  ElevatedButton(onPressed: (){
+                    _PAGECOUNT=snapshot.data!.pagination!.prevPage!.toString();
+                    paymentlistpagination(_PAGECOUNT);
+                    print("page count prev ${_PAGECOUNT}");
+                    setState(() {
+                      paymentlistpagination(_PAGECOUNT);
+
+                    });
+                  }, child:Text("Prev")),
+                  Spacer(),
+                  //if(snapshot.data!.pagination!.nextPage! <= 1)
+                  if(snapshot.data!.pagination!.nextPage! > 1)
+                  ElevatedButton(onPressed: (){
+                  _PAGECOUNT=snapshot.data!.pagination!.nextPage!.toString();
+
+                  paymentlistpagination(_PAGECOUNT);
+                  print("page count next ${_PAGECOUNT}");
+                  setState(() {
+                    paymentlistpagination(_PAGECOUNT);
+
+                  });
+                      }, child:Text("Next")),
+
+                ],
+              ),
+            ],
+          );
+        }
+      },
+    );
+  }
 
 
   Future<PaymentListModel?> paymentlistapi() async{
@@ -1540,6 +1681,47 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     }
 
   }
+
+
+  Future<PaymentListpaginationModel?> paymentlistpagination(page) async{
+    var headers = {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
+    };
+    var data = {
+      'payment_list': '1',
+      'page': page,
+      'type': selectedtransactiontype
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://admissionguidanceindia.com/appdata/webservice.php',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+
+      var responseData = response.data is String
+          ? json.decode(response.data)
+          : response.data;
+      print("payment pagination ");
+      print(responseData);
+      print("payment pagination");
+      //optionss=responseData;
+      return PaymentListpaginationModel.fromJson(responseData);
+    }
+    else {
+      print(response.statusMessage);
+    }
+
+  }
+
+
 
 
 

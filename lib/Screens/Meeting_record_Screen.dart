@@ -62,7 +62,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
     super.setState(fn);
   }
-  //bool showMore = false;
+ // bool showMore = false;
   @override
   Widget build(BuildContext context) {
 
@@ -109,7 +109,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                           child: ElevatedButton(
 
                             style: ButtonStyle(
-                                backgroundColor:MaterialStateProperty.all<Color>(Colors.cyan),
+                                backgroundColor:MaterialStateProperty.all<Color>(Colors.grey),
 
                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
@@ -134,9 +134,9 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                               "Book Appointment",
                               // AppLocalizations.of(context).update_password_ucf,
                               style: TextStyle(
-                                  color:MyTheme.WHITECOLOR,
+                                  color:MyTheme.BLACK,
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w600),
+                                  fontWeight: FontWeight.w500),
                             ),),
                         ),
 
@@ -619,6 +619,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   //     ),
                                   //   ],
                                   // ),
+                                  SizedBox(height: 10,),
+
                                   Row(
                                     children: [
                                       Text("Name :"),
@@ -626,6 +628,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                       SizedBox(width: 10,),
                                     ],
                                   ),
+                                  SizedBox(height: 10,),
                                   Row(
                                     children: [
                                       Text("Contact:"),
@@ -633,37 +636,80 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                       Text(snapshot.data!.data![index].email.toString()),
                                     ],
                                   ),
+
+
                                   Row(
                                     children: [
                                       Text("Remark :"),
-                                      SizedBox(width: 10,),
-                                      Flexible(
-                                        child: Text(
-                                          snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
-                                              ? snapshot.data!.data![index].remark!
-                                              : 'No Remark',
-
-
-                                          //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
-                                          maxLines: !showMore ? null : 4,
-                                          overflow: TextOverflow.ellipsis,
+                                      SizedBox(width: 10),
+                                      Expanded(
+                                        child: ExpansionTile(
+                                          title: Text(
+                                            snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                                ? snapshot.data!.data![index].remark!
+                                                : 'No Remark',
+                                            maxLines: 2, // Adjust the maxLines as needed
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          children: <Widget>[
+                                            Builder(
+                                              builder: (BuildContext context) {
+                                                return Container(
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                                            ? snapshot.data!.data![index].remark!
+                                                            : 'No Remark',
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            showMore = !showMore;
-                                          });
-                                        },
-                                        child:   Icon(
-                                          !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
-                                          color: MyTheme.backgroundcolor,
-                                        ),
-
                                       ),
                                     ],
                                   ),
+
+
+
+                                  // Row(
+                                  //   children: [
+                                  //     Text("Remark :"),
+                                  //     SizedBox(width: 10,),
+                                  //     Expanded(
+                                  //       child: ExpansionTile(
+                                  //         title:      Flexible(
+                                  //           child: Text(
+                                  //             snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                  //                 ? snapshot.data!.data![index].remark!
+                                  //                 : 'No Remark',
+                                  //             overflow: TextOverflow.ellipsis,
+                                  //           ),
+                                  //         ),
+                                  //         children: <Widget>[
+                                  //           Builder(
+                                  //             builder: (BuildContext context) {
+                                  //               return Container(
+                                  //
+                                  //                   //alignment: Alignment.center,
+                                  //                   child:
+                                  //                   Column(children: [
+                                  //                     Text(snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                  //                         ? snapshot.data!.data![index].remark!
+                                  //                         : 'No Remark',)
+                                  //                   ],)
+                                  //               );
+                                  //             },
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //
+                                  //   ],
+                                  // ),
 
 
                                 ],
@@ -797,6 +843,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                         //     ),
                         //   ],
                         // ),
+                        SizedBox(height: 10,),
+
                         Row(
                           children: [
                             Text("Name :"),
@@ -804,6 +852,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                             SizedBox(width: 10,),
                           ],
                         ),
+                        SizedBox(height: 10,),
+
                         Row(
                           children: [
                             Text("Contact:"),
@@ -814,35 +864,37 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                         Row(
                           children: [
                             Text("Remark :"),
-                            SizedBox(width: 10,),
-                            Flexible(
-                              child: Text(
-                                snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
-                                    ? snapshot.data!.data![index].remark!
-                                    : 'No Remark',
-
-
-                                //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
-                                // maxLines: !showMore ? null : 4,
-                                overflow: TextOverflow.ellipsis,
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: ExpansionTile(
+                                title: Text(
+                                  snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                      ? snapshot.data!.data![index].remark!
+                                      : 'No Remark',
+                                  maxLines: 2, // Adjust the maxLines as needed
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                children: <Widget>[
+                                  Builder(
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                                  ? snapshot.data!.data![index].remark!
+                                                  : 'No Remark',
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(height: 8),
-                            // GestureDetector(
-                            //   onTap: () {
-                            //     setState(() {
-                            //       showMore = !showMore;
-                            //     });
-                            //   },
-                            //   child:   Icon(
-                            //     !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
-                            //     color: MyTheme.backgroundcolor,
-                            //   ),
-                            //
-                            // ),
                           ],
                         ),
-
                       ],
                     ),
                   ),
@@ -862,6 +914,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
     return FutureBuilder(
       future: upcoming_appointment(),
       builder: (context, snapshot) {
+        bool showMore = false;
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
             child: Center(child: CircularProgressIndicator()),
@@ -988,6 +1041,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                         //     ),
                         //   ],
                         // ),
+                        SizedBox(height: 10,),
+
                         Row(
                           children: [
                             Text("Name :"),
@@ -995,6 +1050,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                             SizedBox(width: 10,),
                           ],
                         ),
+                        SizedBox(height: 10,),
+
                         Row(
                           children: [
                             Text("Contact:"),
@@ -1002,37 +1059,43 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                             Text(snapshot.data!.data![index].email.toString()),
                           ],
                         ),
+
                         Row(
                           children: [
                             Text("Remark :"),
-                            SizedBox(width: 10,),
-                            Flexible(
-                              child: Text(
-                                snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
-                                    ? snapshot.data!.data![index].remark!
-                                    : 'No Remark',
-
-
-                                //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
-                                // maxLines: !showMore ? null : 4,
-                                overflow: TextOverflow.ellipsis,
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: ExpansionTile(
+                                title: Text(
+                                  snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                      ? snapshot.data!.data![index].remark!
+                                      : 'No Remark',
+                                  maxLines: 2, // Adjust the maxLines as needed
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                children: <Widget>[
+                                  Builder(
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                                  ? snapshot.data!.data![index].remark!
+                                                  : 'No Remark',
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(height: 8),
-                            // GestureDetector(
-                            //   onTap: () {
-                            //     setState(() {
-                            //       showMore = !showMore;
-                            //     });
-                            //   },
-                            //   child:   Icon(
-                            //     !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
-                            //     color: MyTheme.backgroundcolor,
-                            //   ),
-                            //
-                            // ),
                           ],
                         ),
+
+
 
                       ],
                     ),

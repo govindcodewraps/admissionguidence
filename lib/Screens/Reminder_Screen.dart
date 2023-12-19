@@ -68,29 +68,29 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
    // });
     reminderListApi(formattedDatee);
     ReminderTypeApi();
-    _selectDate();
+    //_selectDate();
 
     super.initState();
   }
   bool showMore = false;
 
 
-
-  Future<void> _selectDate() async {
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2050),
-    );
-
-    if (pickedDate != null) {
-      setState(() {
-        selectedDate = pickedDate;
-        dateInputController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
-      });
-    }
-  }
+  //
+  // Future<void> _selectDate() async {
+  //   DateTime? pickedDate = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime.now(),
+  //     lastDate: DateTime(2050),
+  //   );
+  //
+  //   if (pickedDate != null) {
+  //     setState(() {
+  //       selectedDate = pickedDate;
+  //       dateInputController.text = DateFormat('yyyy-MM-dd').format(selectedDate);
+  //     });
+  //   }
+  // }
 
   DateTime _currentDate = DateTime.now();
   DateTime _currentDate2 = DateTime.now();
@@ -132,7 +132,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
       weekFormat: false,
 //      firstDayOfWeek: 4,
       // markedDatesMap: _markedDateMap,
-      height: 390.0,
+      height: 400.0,
       selectedDateTime: _currentDate2,
       targetDateTime: _targetDateTime,
       customGridViewPhysics: NeverScrollableScrollPhysics(),

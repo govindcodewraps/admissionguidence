@@ -5,6 +5,7 @@ import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
@@ -39,6 +40,7 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
   }
 
   String selectedValue = 'Select Time';
+  String selectedDatee="2023-12-19";
 
 
   @override
@@ -120,9 +122,16 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
                         if (pickedDate != null) {
                           dateInputController.text =
                               DateFormat('yyyy-MM-dd').format(pickedDate);
+                          setState(() async {
+                            await fetchTimeSlots(dateInputController.text);
 
+                            selectedDatee=dateInputController.text;
+                            timeslotlist(selectedDatee);
+                            print("date format ${selectedDatee}");
+                          });
                           //Fetch time slots for the selected date
-                          await fetchTimeSlots(dateInputController.text);
+                         // await fetchTimeSlots(dateInputController.text);
+
                         }
                       },
                     ),
@@ -178,7 +187,9 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
                     // maxLines: 4,
                     controller: contactController,
                     keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(10)],
                     decoration: InputDecoration(
+
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       labelText: "Contact",
                       filled: true,
@@ -348,7 +359,7 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
 
   Widget timeslotwidget() {
     return FutureBuilder(
-      future: timeslotlist(dateInputController),
+      future: timeslotlist(dateInputController.text),
       builder: (context, snapshot) {
         // if
         // (snapshot.connectionState == ConnectionState.waiting) {
@@ -428,10 +439,10 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
     );
   }
 
-  Future<void> fetchTimeSlots(String selectedDate) async {
+  Future<void> fetchTimeSlots(String selectedDatee) async {
     // Call your timeslotlist API with the selected date
     try {
-      TimeslotModel? timeslotData = await timeslotlist(selectedDate);
+      TimeslotModel? timeslotData = await timeslotlist(selectedDatee);
       if (timeslotData != null) {
         // Handle the fetched time slots, if needed
       }
@@ -494,7 +505,7 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
   }
 
 
-  Future<TimeslotModel?> timeslotlist(selectedDate) async {
+  Future<TimeslotModel?> timeslotlist(selectedDatee) async {
     var headers = {
       'accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -502,8 +513,8 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
     };
     var data = {
       'time_slot': '1',
-      'date':"selectedDate"
-      //'date': '2023-11-29'
+      'date':selectedDatee
+      //'date': '2023-12-19'
     };
     var dio = Dio();
     var response = await dio.request(
