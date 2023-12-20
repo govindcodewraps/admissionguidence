@@ -326,7 +326,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                               // Navigator.push(context,MaterialPageRoute(builder: (context)=>Reschedule_Screen()));
                               // onPressUpdatePassword();
 
-                             //rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
+                             rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
 
                             },
                             child:Text(

@@ -190,22 +190,21 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
                   Text("Remark"),
                   SizedBox(height: 10,),
 
-                  TextField(
-                    // maxLines: 4,
-                    maxLines: 4,
-                    controller: contactController,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(10)],
-                    decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      labelText: "Contact",
-                      filled: true,
-                      isDense: true,
-                      border: OutlineInputBorder(
 
-                        borderRadius: BorderRadius.circular(12),
+                    TextField(
+                      controller: contactController,
+                      maxLines: 4,
+                      decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelText: "Remark",
+                        filled: true,
+                        isDense: true,
+                        border: OutlineInputBorder(
+
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
-                  ),
 
 
                 ],),
@@ -506,7 +505,7 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
       'appointment_add': '1',
       'date': date,
       'name': name,
-      'mobile': number,
+      'remark': number,
       'appointment_time': appointmentid
     };
     var dio = Dio();
