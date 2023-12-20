@@ -11,26 +11,30 @@ String reminderListModelToJson(ReminderListModel data) => json.encode(data.toJso
 class ReminderListModel {
   int? success;
   List<Datum>? data;
+  Pagination? pagination;
 
   ReminderListModel({
     this.success,
     this.data,
+    this.pagination,
   });
 
   factory ReminderListModel.fromJson(Map<String, dynamic> json) => ReminderListModel(
     success: json["success"],
     data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    pagination: json["pagination"] == null ? null : Pagination.fromJson(json["pagination"]),
   );
 
   Map<String, dynamic> toJson() => {
     "success": success,
     "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "pagination": pagination?.toJson(),
   };
 }
 
 class Datum {
   String? id;
-  String? date;
+  DateTime? date;
   String? remark;
   String? status;
   String? time;
@@ -47,7 +51,7 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
-    date: json["date"],
+    date: json["date"] == null ? null : DateTime.parse(json["date"]),
     remark: json["remark"],
     status: json["status"],
     time: json["time"],
@@ -56,10 +60,38 @@ class Datum {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "date": date,
+    "date": "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
     "remark": remark,
     "status": status,
     "time": time,
     "reminder_type": reminderType,
+  };
+}
+
+class Pagination {
+  int? totalPages;
+  int? currentPage;
+  int? nextPage;
+  int? prevPage;
+
+  Pagination({
+    this.totalPages,
+    this.currentPage,
+    this.nextPage,
+    this.prevPage,
+  });
+
+  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
+    totalPages: json["totalPages"],
+    currentPage: json["currentPage"],
+    nextPage: json["nextPage"],
+    prevPage: json["prevPage"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "totalPages": totalPages,
+    "currentPage": currentPage,
+    "nextPage": nextPage,
+    "prevPage": prevPage,
   };
 }

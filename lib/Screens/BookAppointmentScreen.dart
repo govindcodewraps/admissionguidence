@@ -24,7 +24,7 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController contactController = TextEditingController();
-
+  String selectedDate="2023-12-19";
 
   var _timeslotid;
   var selecttime;
@@ -40,8 +40,13 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
   }
 
   String selectedValue = 'Select Time';
-  String selectedDatee="2023-12-19";
+  //String selectedDatee="2023-12-19";
 
+@override
+  void initState() {
+    // TODO: implement initState
+  super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,12 +127,14 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
                         if (pickedDate != null) {
                           dateInputController.text =
                               DateFormat('yyyy-MM-dd').format(pickedDate);
-                          setState(() async {
-                            await fetchTimeSlots(dateInputController.text);
+                           fetchTimeSlots(dateInputController.text);
 
-                            selectedDatee=dateInputController.text;
-                            timeslotlist(selectedDatee);
-                            print("date format ${selectedDatee}");
+                          setState(()  {
+                             fetchTimeSlots(dateInputController.text);
+
+                             selectedDate=dateInputController.text;
+                            timeslotlist(selectedDate);
+                            print("date format ${selectedDate}");
                           });
                           //Fetch time slots for the selected date
                          // await fetchTimeSlots(dateInputController.text);
@@ -180,16 +187,15 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
                   // ),
 
                   SizedBox(height: 10,),
-                  Text("Contact"),
+                  Text("Remark"),
                   SizedBox(height: 10,),
 
                   TextField(
                     // maxLines: 4,
+                    maxLines: 4,
                     controller: contactController,
-                    keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(10)],
                     decoration: InputDecoration(
-
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       labelText: "Contact",
                       filled: true,
@@ -200,6 +206,7 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
                       ),
                     ),
                   ),
+
 
                 ],),
               ),
@@ -357,101 +364,136 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
 
 
 
-  Widget timeslotwidget() {
-    return FutureBuilder(
-      future: timeslotlist(dateInputController.text),
-      builder: (context, snapshot) {
-        // if
-        // (snapshot.connectionState == ConnectionState.waiting) {
-        //   return Container(
-        //     child: Center(child: CircularProgressIndicator()),
-        //   );
-        // }
-        // // else if (snapshot.hasError) {
-        // //   return Container(
-        // //     child: Center(
-        // //       child: Text('Error: Internal error'),
-        // //     ),
-        // //   );
-        // // }
-        // else
-        if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
-          return Container(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-        else
-        {
-          return Container(
-            // padding: EdgeInsets.only(left: 16, right: 16),
-            child: Column(
-              children: [
-
-                Container(
-                  width: MediaQuery.of(context).size.width*0.98,
-                  height: 58,
-                  padding: EdgeInsets.only(left: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),  // Set the color of the border
-                    borderRadius: BorderRadius.circular(12), // Set the border radius
-                  ),
-                  child:
-
-                  DropdownButton<String>(
-                    isExpanded: true,
-
-                    value: selectedValue,
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedValue = newValue!;
-                        print(newValue);
-                        _timeslotid=newValue;
-                        print("time slot id print ${_timeslotid}");
-                      });
-                    },
-                    underline: Container(),
-
-                    items: [
-                      DropdownMenuItem<String>(
-
-                        value: 'Select Time',
-                        child: Text('Select Time'),
-                      ),
-                      ...snapshot.data!.data!.map((datum) {
-                        return DropdownMenuItem<String>(
-                          value: datum.id!,
-                          child: Text("${datum.slotFrom!}-${datum.slotTo!}"),
-                        );
-                      }).toList(),
-                    ],
-
-                  ),
-                ),
-
-                // selectedValue= snapshot.data.data.length;
-              ],
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  Future<void> fetchTimeSlots(String selectedDatee) async {
-    // Call your timeslotlist API with the selected date
-    try {
-      TimeslotModel? timeslotData = await timeslotlist(selectedDatee);
-      if (timeslotData != null) {
-        // Handle the fetched time slots, if needed
-      }
-    } catch (error) {
-      // Handle any errors that may occur during API call
-      print("Error fetching time slots: $error");
-    }
-  }
-
+  // Widget timeslotwidget() {
+  //   return FutureBuilder(
+  //     future: timeslotlist(dateInputController.text),
+  //     builder: (context, snapshot) {
+  //       if
+  //       (snapshot.connectionState == ConnectionState.waiting) {
+  //         return Container(
+  //           child: Center(child: CircularProgressIndicator()),
+  //         );
+  //       }
+  //       // // else if (snapshot.hasError) {
+  //       // //   return Container(
+  //       // //     child: Center(
+  //       // //       child: Text('Error: Internal error'),
+  //       // //     ),
+  //       // //   );
+  //       // // }
+  //        else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+  //         return Container(
+  //           child: Center(
+  //             child: CircularProgressIndicator(),
+  //           ),
+  //         );
+  //       }
+  //       else
+  //       {
+  //         return Container(
+  //           // padding: EdgeInsets.only(left: 16, right: 16),
+  //           child: Column(
+  //             children: [
+  //
+  //               Container(
+  //                 width: MediaQuery.of(context).size.width*0.98,
+  //                 height: 58,
+  //                 padding: EdgeInsets.only(left: 10),
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(color: Colors.grey),  // Set the color of the border
+  //                   borderRadius: BorderRadius.circular(12), // Set the border radius
+  //                 ),
+  //                 child:
+  //
+  //                 DropdownButton<String>(
+  //                   isExpanded: true,
+  //
+  //                   value: selectedValue,
+  //                   onChanged: (newValue) {
+  //                     setState(() {
+  //                       selectedValue = newValue!;
+  //                       print(newValue);
+  //                       _timeslotid=newValue;
+  //                       print("time slot id print ${_timeslotid}");
+  //                     });
+  //                   },
+  //                   underline: Container(),
+  //
+  //                   items: [
+  //                     DropdownMenuItem<String>(
+  //
+  //                       value: 'Select Time',
+  //                       child: Text('Select Time'),
+  //                     ),
+  //                     ...snapshot.data!.data!.map((datum) {
+  //                       return DropdownMenuItem<String>(
+  //                         value: datum.id!,
+  //                         child: Text("${datum.slotFrom!}-${datum.slotTo!}"),
+  //                       );
+  //                     }).toList(),
+  //                   ],
+  //
+  //                 ),
+  //               ),
+  //
+  //               // selectedValue= snapshot.data.data.length;
+  //             ],
+  //           ),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
+  // Future<void> fetchTimeSlots(String selectedDatee) async {
+  //   // Call your timeslotlist API with the selected date
+  //   try {
+  //     TimeslotModel? timeslotData = await timeslotlist(selectedDatee);
+  //     if (timeslotData != null) {
+  //       // Handle the fetched time slots, if needed
+  //     }
+  //   } catch (error) {
+  //     // Handle any errors that may occur during API call
+  //     print("Error fetching time slots: $error");
+  //   }
+  // }
+  // Future<TimeslotModel?> timeslotlist(selectedDatee) async {
+  //   var headers = {
+  //     'accept': 'application/json',
+  //     'Content-Type': 'application/x-www-form-urlencoded',
+  //     'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
+  //   };
+  //   var data = {
+  //     'time_slot': '1',
+  //     'date':selectedDatee
+  //     //'date': '2023-12-19'
+  //   };
+  //   var dio = Dio();
+  //   var response = await dio.request(
+  //     'https://admissionguidanceindia.com/appdata/webservice.php',
+  //     options: Options(
+  //       method: 'POST',
+  //       headers: headers,
+  //     ),
+  //     data: data,
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //
+  //
+  //     var responseData = response.data is String
+  //         ? json.decode(response.data)
+  //         : response.data;
+  //     print("time slot list");
+  //     print(responseData);
+  //     print("time slot list");
+  //
+  //     //optionss=responseData;
+  //     return TimeslotModel.fromJson(responseData);
+  //   }
+  //   else {
+  //     print(response.statusMessage);
+  //   }
+  // }
 
 
   Future<void> bookappointmentsapi(date,name,number,appointmentid) async {
@@ -505,7 +547,106 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
   }
 
 
-  Future<TimeslotModel?> timeslotlist(selectedDatee) async {
+
+
+
+
+
+
+  Widget timeslotwidget() {
+    return FutureBuilder(
+      future: timeslotlist(selectedDate),
+      builder: (context, snapshot) {
+        if
+        (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        // // else if (snapshot.hasError) {
+        // //   return Container(
+        // //     child: Center(
+        // //       child: Text('Error: Internal error'),
+        // //     ),
+        // //   );
+        // // }
+        else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        else
+        {
+          return Container(
+            // padding: EdgeInsets.only(left: 16, right: 16),
+            child: Column(
+              children: [
+
+                Container(
+                  width: MediaQuery.of(context).size.width*1,
+                  padding: EdgeInsets.only(left: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),  // Set the color of the border
+                    borderRadius: BorderRadius.circular(12), // Set the border radius
+                  ),
+                  child:
+
+                  DropdownButton<String>(
+                    isExpanded: true,
+
+                    value: selectedValue,
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedValue = newValue!;
+                        print(newValue);
+                        _timeslotid=newValue;
+                        print("time slot id print ${_timeslotid}");
+                      });
+                    },
+                    underline: Container(),
+
+                    items: [
+                      DropdownMenuItem<String>(
+
+                        value: 'Select Time',
+                        child: Text('Select Time'),
+                      ),
+                      ...snapshot.data!.data!.map((datum) {
+                        return DropdownMenuItem<String>(
+                          value: datum.id!,
+                          child: Text("${datum.slotFrom!}-${datum.slotTo!}"),
+                        );
+                      }).toList(),
+                    ],
+
+                  ),
+                ),
+
+                // selectedValue= snapshot.data.data.length;
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Future<void> fetchTimeSlots(String selectedDate) async {
+    // Call your timeslotlist API with the selected date
+    try {
+      TimeslotModel? timeslotData = await timeslotlist(selectedDate);
+      if (timeslotData != null) {
+        // Handle the fetched time slots, if needed
+      }
+    } catch (error) {
+      // Handle any errors that may occur during API call
+      print("Error fetching time slots: $error");
+    }
+  }
+
+  Future<TimeslotModel?> timeslotlist(selectedDate) async {
     var headers = {
       'accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -513,8 +654,8 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
     };
     var data = {
       'time_slot': '1',
-      'date':selectedDatee
-      //'date': '2023-12-19'
+      'date':selectedDate
+      //'date': '2023-12-21'
     };
     var dio = Dio();
     var response = await dio.request(

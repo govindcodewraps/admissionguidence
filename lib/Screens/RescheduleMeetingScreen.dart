@@ -11,7 +11,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-
 import '../models/Time_slot_model.dart';
 import '../my_theme.dart';
 import 'Meeting_record_Screen.dart';
@@ -19,12 +18,12 @@ import 'Meeting_record_Screen.dart';
 class Reschedule_Meeting_Screen extends StatefulWidget {
   String meetingid;
   String date;
-  String appointmenttime;
+  String? appointmenttime,remark;
   // DateFormat('yyyy-MM-dd').format(pickedDate)
   //String timeslotdate
 
 
-  Reschedule_Meeting_Screen({super.key, required this.meetingid,required this.date,required this.appointmenttime,});
+  Reschedule_Meeting_Screen({super.key, required this.meetingid,required this.date,required this.appointmenttime, this.remark});
 
   @override
   State<Reschedule_Meeting_Screen> createState() => _Reschedule_Meeting_ScreenState();
@@ -39,6 +38,9 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
   var _timeslotid;
   String newdate =" ";
   bool _isLoading = false;
+  var Datewidget="2023-12-12";
+  String selectedDate="2023-12-19";
+
 
   Time _time = Time(hour: 11, minute: 30, second: 20);
   bool iosStyle = true;
@@ -72,10 +74,13 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
     print("OLD");
     print(widget.date);
     print("OLD");
+    print("Datee ${DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.date.split(' ')[0]))}");
+    Datewidget=DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.date.split(' ')[0]));
 
 
 
     print("Input Date ${_inputdate}");
+    print("Remark ${widget.remark}");
     print("Input Remark ${remarkInputController.text}");
     //print("time");
     return Scaffold(
@@ -186,8 +191,8 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                           borderSide: BorderSide(
                               width: 3, color: Colors.greenAccent),
                         ),
-                        labelText:"Date",
-                        hintText: "Date",
+                        labelText:Datewidget,
+                        hintText: Datewidget,
                         suffixIcon: Icon(Icons.calendar_month,color: Colors.black,),
                       ),
                       controller: dateInputController,
@@ -205,7 +210,16 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                               DateFormat('yyyy-MM-dd').format(pickedDate);
 
                           // Fetch time slots for the selected date
-                          await fetchTimeSlots(dateInputController.text);
+                           fetchTimeSlots(dateInputController.text);
+
+                          setState(()  {
+                             fetchTimeSlots(dateInputController.text);
+
+                            selectedDate=dateInputController.text;
+                            timeslotlist(selectedDate);
+                            print("date format ${selectedDate}");
+                          });
+
                         }
                       },
                     ),
@@ -251,11 +265,15 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                     TextField(
                       controller: remarkInputController,
                       maxLines: 4,
-                      decoration:InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 10.0),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)
-                          )
+                      decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        labelText: widget.remark,
+                        filled: true,
+                        isDense: true,
+                        border: OutlineInputBorder(
+
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                     SizedBox(height: 30,),
@@ -297,11 +315,18 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
 
 
                               print("AAAAAAAAA ${widget.date}");
+                              //DateFormat('yyyy-MM-dd').format(widget.date as DateTime);
+                              print("Remarkk ${widget.remark}");
+                              print("Datee ${widget.date}");
+                              print("Datee ${DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.date.split(' ')[0]))}");
+
+                              print("print date widget ${Datewidget}");
+
 
                               // Navigator.push(context,MaterialPageRoute(builder: (context)=>Reschedule_Screen()));
                               // onPressUpdatePassword();
 
-                             rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
+                             //rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
 
                             },
                             child:Text(
@@ -390,14 +415,14 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
 
   Widget timeslotwidget() {
     return FutureBuilder(
-      future: timeslotlist(dateInputController),
+      future: timeslotlist(selectedDate),
       builder: (context, snapshot) {
-        // if
-        // (snapshot.connectionState == ConnectionState.waiting) {
-        //   return Container(
-        //     child: Center(child: CircularProgressIndicator()),
-        //   );
-        // }
+        if
+        (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
         // // else if (snapshot.hasError) {
         // //   return Container(
         // //     child: Center(
@@ -405,8 +430,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
         // //     ),
         // //   );
         // // }
-        // else
-          if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+         else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
           return Container(
             child: Center(
               child: CircularProgressIndicator(),
@@ -490,8 +514,8 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
     };
     var data = {
       'time_slot': '1',
-      'date':"selectedDate"
-      //'date': '2023-11-29'
+      'date':selectedDate
+      //'date': '2023-12-21'
     };
     var dio = Dio();
     var response = await dio.request(

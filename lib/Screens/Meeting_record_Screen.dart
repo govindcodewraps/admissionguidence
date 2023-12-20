@@ -36,6 +36,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
   String _nitificationcount="0";
   bool _isApproving = false;
   bool _isCanceling = false;
+  String _PAGECOUNT="1";
 
   var mettingiddelete;
 
@@ -46,18 +47,21 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
     // TODO: implement initState
     super.initState();
     notificationCountApi();
-    pastappointmentapi();
+    pastappointmentapi(_PAGECOUNT);
     todayappointmentlist();
-    upcoming_appointment();
-    time_slot();
+   // upcoming_appointment();
+
+    upcoming_appointment(_PAGECOUNT);
+   // time_slot();
   }
 
   @override
   void setState(VoidCallback fn) {
     // TODO: implement setState
-    pastappointmentapi();
+    pastappointmentapi(_PAGECOUNT);
     todayappointmentlist();
-    upcoming_appointment();
+    //upcoming_appointment();
+    upcoming_appointment(_PAGECOUNT);
     //appointmentslistwidget();
 
     super.setState(fn);
@@ -568,7 +572,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                                   onTap: () {
                                                     // Add your logic here
                                                     print("Meeting ID: ${snapshot.data!.data![index].id.toString()}");
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString())));
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString(),remark: snapshot.data!.data![index].remark.toString(),)));
                                                   },
                                                   child: Icon(Icons.calendar_month_outlined),
                                                 ),
@@ -619,20 +623,20 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   //     ),
                                   //   ],
                                   // ),
-                                  SizedBox(height: 10,),
+                                  SizedBox(height: 5,),
 
                                   Row(
                                     children: [
                                       Text("Name :"),
-                                      Text(snapshot.data!.data![index].name.toString()),
                                       SizedBox(width: 10,),
+                                      Text(snapshot.data!.data![index].name.toString()),
                                     ],
                                   ),
                                   SizedBox(height: 10,),
                                   Row(
                                     children: [
                                       Text("Contact:"),
-                                      SizedBox(width: 2,),
+                                      SizedBox(width: 10,),
                                       Text(snapshot.data!.data![index].email.toString()),
                                     ],
                                   ),
@@ -641,7 +645,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   Row(
                                     children: [
                                       Text("Remark :"),
-                                      SizedBox(width: 10),
+                                     // SizedBox(width: 10),
                                       Expanded(
                                         child: ExpansionTile(
                                           title: Text(
@@ -742,7 +746,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
   Widget pastappointmentlist() {
     return FutureBuilder(
-      future: pastappointmentapi(),
+      future: pastappointmentapi(_PAGECOUNT),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
@@ -767,143 +771,187 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         else {
 
           return
-            ListView.separated(
+            Column(
+              children: [
+                ListView.separated(
 
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, int index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 4,
-                        offset: Offset(0, 3),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, int index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.all(6.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                      child: Container(
+                        padding: EdgeInsets.all(6.0),
+                        child: Column(
                           children: [
                             Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Date:"),
-                                SizedBox(width: 5,),
-                                Text(snapshot.data!.data![index].appointmentDate.toString()),
-                                // Text(
-                                //   DateFormat('yyyy-MM-dd').format(
-                                //     snapshot.data!.data![index].appointmentTime?.(),
-                                //   ),
-                                // ),
+                                Row(
+                                  children: [
+                                    Text("Date:"),
+                                    SizedBox(width: 5,),
+                                    //Text(snapshot.data!.data![index].appointmentDate.toString()),
+                                    Text(
+                                      DateFormat('yyyy-MM-dd').format(
+                                        snapshot.data!.data![index].appointmentDate!.toLocal(),
+                                      ),
+                                    ),
 
-                                // Text(
-                                //   DateFormat('yyyy-MM-dd').format(
-                                //     DateTime.parse(snapshot.data!.data![index].appointmentTime!).toLocal(),
-                                //   ),
-                                // )
+                                    // Text(
+                                    //   DateFormat('yyyy-MM-dd').format(
+                                    //     snapshot.data!.data![index].appointmentTime?.(),
+                                    //   ),
+                                    // ),
 
-                                SizedBox(width: 5,),
-                                Text(snapshot.data!.data![index]
-                                    .appointmentTime
-                                    .toString()),
-                              ],
-                            ),
+                                    // Text(
+                                    //   DateFormat('yyyy-MM-dd').format(
+                                    //     DateTime.parse(snapshot.data!.data![index].appointmentTime!).toLocal(),
+                                    //   ),
+                                    // )
 
-                            Row(
-                              children: [
-                               // if(snapshot.data!.data![index].status == "0")
-
-                                //if(snapshot.data!.data![index].status == "1")
-                                  Icon(Icons.done,color: Colors.green,),
-                               // if(snapshot.data!.data![index].status == "2")
-                                 // Icon(Icons.cancel_outlined,color: Colors.red,),
-                              ],
-                            ),
-
-
-
-                          ],
-                        ),
-                        // Row(
-                        //   children: [
-                        //     Text("Date :"),
-                        //     SizedBox(width: 10,),
-                        //     Text(
-                        //       DateFormat('yyyy-MM-dd').format(
-                        //         snapshot.data!.data![index].appointmentDate!.toLocal(),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        SizedBox(height: 10,),
-
-                        Row(
-                          children: [
-                            Text("Name :"),
-                            Text(snapshot.data!.data![index].name.toString().split('.').last),
-                            SizedBox(width: 10,),
-                          ],
-                        ),
-                        SizedBox(height: 10,),
-
-                        Row(
-                          children: [
-                            Text("Contact:"),
-                            SizedBox(width: 2,),
-                            Text(snapshot.data!.data![index].email.toString()),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text("Remark :"),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: ExpansionTile(
-                                title: Text(
-                                  snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
-                                      ? snapshot.data!.data![index].remark!
-                                      : 'No Remark',
-                                  maxLines: 2, // Adjust the maxLines as needed
-                                  overflow: TextOverflow.ellipsis,
+                                    SizedBox(width: 5,),
+                                    Text(snapshot.data!.data![index]
+                                        .appointmentTime
+                                        .toString()),
+                                  ],
                                 ),
-                                children: <Widget>[
-                                  Builder(
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
-                                                  ? snapshot.data!.data![index].remark!
-                                                  : 'No Remark',
+
+                                Row(
+                                  children: [
+                                   // if(snapshot.data!.data![index].status == "0")
+
+                                    //if(snapshot.data!.data![index].status == "1")
+                                      Icon(Icons.done,color: Colors.green,),
+                                   // if(snapshot.data!.data![index].status == "2")
+                                     // Icon(Icons.cancel_outlined,color: Colors.red,),
+                                  ],
+                                ),
+
+
+
+                              ],
+                            ),
+                            // Row(
+                            //   children: [
+                            //     Text("Date :"),
+                            //     SizedBox(width: 10,),
+                            //     Text(
+                            //       DateFormat('yyyy-MM-dd').format(
+                            //         snapshot.data!.data![index].appointmentDate!.toLocal(),
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+                            SizedBox(height: 10,),
+
+                            Row(
+                              children: [
+                                Text("Name :"),
+                                Text(snapshot.data!.data![index].name.toString().split('.').last),
+                                SizedBox(width: 10,),
+                              ],
+                            ),
+                            SizedBox(height: 10,),
+
+                            Row(
+                              children: [
+                                Text("Contact:"),
+                                SizedBox(width: 2,),
+                                Text(snapshot.data!.data![index].email.toString()),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text("Remark :"),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: ExpansionTile(
+                                    title: Text(
+                                      snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                          ? snapshot.data!.data![index].remark!
+                                          : 'No Remark',
+                                      maxLines: 2, // Adjust the maxLines as needed
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    children: <Widget>[
+                                      Builder(
+                                        builder: (BuildContext context) {
+                                          return Container(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                                      ? snapshot.data!.data![index].remark!
+                                                      : 'No Remark',
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      );
-                                    },
+                                          );
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 16);
-              },
-              itemCount: snapshot.data!.data!.length,
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return SizedBox(height: 16);
+                  },
+                  itemCount: snapshot.data!.data!.length,
+                ),
+
+                Row(
+                  //crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+
+                    // snapshot.data!.pagination!.prevPage!.toString()
+                    if(snapshot.data!.pagination!.prevPage! >= 1)
+                      ElevatedButton(onPressed: (){
+                        _PAGECOUNT=snapshot.data!.pagination!.prevPage!.toString();
+                        pastappointmentapi(_PAGECOUNT);
+                        print("page count prev ${_PAGECOUNT}");
+                        setState(() {
+                          pastappointmentapi(_PAGECOUNT);
+
+                        });
+                      }, child:Text("Prev")),
+                    Spacer(),
+                    //if(snapshot.data!.pagination!.nextPage! <= 1)
+                    if(snapshot.data!.pagination!.nextPage! > 1)
+                      ElevatedButton(onPressed: (){
+                        _PAGECOUNT=snapshot.data!.pagination!.nextPage!.toString();
+
+                        pastappointmentapi(_PAGECOUNT);
+                        print("page count next ${_PAGECOUNT}");
+                        setState(() {
+                          pastappointmentapi(_PAGECOUNT);
+
+                        });
+                      }, child:Text("Next")),
+
+                  ],
+                ),
+
+              ],
             );
         }
       },
@@ -912,7 +960,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
   Widget upcomingappointmentlist() {
     return FutureBuilder(
-      future: upcoming_appointment(),
+      future: upcoming_appointment(_PAGECOUNT),
       builder: (context, snapshot) {
         bool showMore = false;
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -938,91 +986,162 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         else {
 
           return
-            ListView.separated(
+            Column(
+              children: [
+                ListView.separated(
 
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, int index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 4,
-                        offset: Offset(0, 3),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, int index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.all(6.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                      child: Container(
+                        padding: EdgeInsets.all(6.0),
+                        child: Column(
                           children: [
                             Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Date:"),
-                                SizedBox(width: 5,),
-                                Text(
-                                  DateFormat('yyyy-MM-dd').format(
-                                    snapshot.data!.data![index].appointmentDate!.toLocal(),
-                                  ),
+                                Row(
+                                  children: [
+                                    Text("Date:"),
+                                    SizedBox(width: 5,),
+                                    Text(
+                                      DateFormat('yyyy-MM-dd').format(
+                                        snapshot.data!.data![index].appointmentDate!.toLocal(),
+                                      ),
+                                    ),
+                                    SizedBox(width: 5,),
+                                    Text(snapshot.data!.data![index]
+                                        .appointmentTime
+                                        .toString()),
+                                  ],
                                 ),
-                                SizedBox(width: 5,),
-                                Text(snapshot.data!.data![index]
-                                    .appointmentTime
-                                    .toString()),
+
+                                Row(
+                                  children: [
+                                    if(snapshot.data!.data![index].status == "0")
+                                      Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              // Add your logic here
+                                              print("Meeting ID upcoming : ${snapshot.data!.data![index].id.toString()}");
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString(),remark: snapshot.data!.data![index].remark.toString()),));
+
+                                            },
+                                            child: Icon(Icons.calendar_month_outlined),
+                                          ),
+                                          SizedBox(width: 10,),
+                                          InkWell(
+                                            onTap: () {
+                                              _updateBookingStatus(
+                                                snapshot.data!.data![index].id.toString(),
+                                                Approved,
+                                              );
+                                            },
+                                            child: Icon(Icons.done),
+                                          ),
+                                          SizedBox(width: 10,),
+                                          InkWell(
+                                            onTap: () {
+                                              // _updateBookingStatus(
+                                              //   snapshot.data!.data![index].id.toString(),
+                                              //   Canceled,
+                                              // );
+
+                                              mettingiddelete = snapshot.data!.data![index].id.toString();
+                                              showDeleteConfirmationDialog(context);
+                                            },
+                                            child: Icon(Icons.cancel_outlined),
+                                          ),
+                                        ],
+                                      ),
+                                    if(snapshot.data!.data![index].status == "1")
+                                      Icon(Icons.done,color: Colors.green,),
+                                    if(snapshot.data!.data![index].status == "2")
+                                      Icon(Icons.cancel_outlined,color: Colors.red,),
+                                  ],
+                                ),
+
+
+
+                              ],
+                            ),
+                            // Row(
+                            //   children: [
+                            //     Text("Date :"),
+                            //     SizedBox(width: 10,),
+                            //     Text(
+                            //       DateFormat('yyyy-MM-dd').format(
+                            //         snapshot.data!.data![index].appointmentDate!.toLocal(),
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+                            SizedBox(height: 10,),
+
+                            Row(
+                              children: [
+                                Text("Name :"),
+                                Text(snapshot.data!.data![index].name.toString().split('.').last),
+                                SizedBox(width: 10,),
+                              ],
+                            ),
+                            SizedBox(height: 10,),
+
+                            Row(
+                              children: [
+                                Text("Contact:"),
+                                SizedBox(width: 2,),
+                                Text(snapshot.data!.data![index].email.toString()),
                               ],
                             ),
 
                             Row(
                               children: [
-                                if(snapshot.data!.data![index].status == "0")
-                                  Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          // Add your logic here
-                                          print("Meeting ID upcoming : ${snapshot.data!.data![index].id.toString()}");
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString())));
-
-                                        },
-                                        child: Icon(Icons.calendar_month_outlined),
-                                      ),
-                                      SizedBox(width: 10,),
-                                      InkWell(
-                                        onTap: () {
-                                          _updateBookingStatus(
-                                            snapshot.data!.data![index].id.toString(),
-                                            Approved,
+                                Text("Remark :"),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: ExpansionTile(
+                                    title: Text(
+                                      snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                          ? snapshot.data!.data![index].remark!
+                                          : 'No Remark',
+                                      maxLines: 2, // Adjust the maxLines as needed
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    children: <Widget>[
+                                      Builder(
+                                        builder: (BuildContext context) {
+                                          return Container(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                                      ? snapshot.data!.data![index].remark!
+                                                      : 'No Remark',
+                                                ),
+                                              ],
+                                            ),
                                           );
                                         },
-                                        child: Icon(Icons.done),
-                                      ),
-                                      SizedBox(width: 10,),
-                                      InkWell(
-                                        onTap: () {
-                                          // _updateBookingStatus(
-                                          //   snapshot.data!.data![index].id.toString(),
-                                          //   Canceled,
-                                          // );
-
-                                          mettingiddelete = snapshot.data!.data![index].id.toString();
-                                          showDeleteConfirmationDialog(context);
-                                        },
-                                        child: Icon(Icons.cancel_outlined),
                                       ),
                                     ],
                                   ),
-                                if(snapshot.data!.data![index].status == "1")
-                                  Icon(Icons.done,color: Colors.green,),
-                                if(snapshot.data!.data![index].status == "2")
-                                  Icon(Icons.cancel_outlined,color: Colors.red,),
+                                ),
                               ],
                             ),
 
@@ -1030,84 +1149,51 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
                           ],
                         ),
-                        // Row(
-                        //   children: [
-                        //     Text("Date :"),
-                        //     SizedBox(width: 10,),
-                        //     Text(
-                        //       DateFormat('yyyy-MM-dd').format(
-                        //         snapshot.data!.data![index].appointmentDate!.toLocal(),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        SizedBox(height: 10,),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return SizedBox(height: 16);
+                  },
+                  itemCount: snapshot.data!.data!.length,
+                ),
+                //Text("govind"),
+                Row(
+                  //crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
 
-                        Row(
-                          children: [
-                            Text("Name :"),
-                            Text(snapshot.data!.data![index].name.toString().split('.').last),
-                            SizedBox(width: 10,),
-                          ],
-                        ),
-                        SizedBox(height: 10,),
+                    // snapshot.data!.pagination!.prevPage!.toString()
+                    if(snapshot.data!.pagination!.prevPage! >= 1)
+                      ElevatedButton(onPressed: (){
+                        _PAGECOUNT=snapshot.data!.pagination!.prevPage!.toString();
+                        upcoming_appointment(_PAGECOUNT);
+                        print("page count prev ${_PAGECOUNT}");
+                        setState(() {
+                          upcoming_appointment(_PAGECOUNT);
 
-                        Row(
-                          children: [
-                            Text("Contact:"),
-                            SizedBox(width: 2,),
-                            Text(snapshot.data!.data![index].email.toString()),
-                          ],
-                        ),
+                        });
+                      }, child:Text("Prev")),
+                    Spacer(),
+                    //if(snapshot.data!.pagination!.nextPage! <= 1)
+                    if(snapshot.data!.pagination!.nextPage! > 1)
+                      ElevatedButton(onPressed: (){
+                        _PAGECOUNT=snapshot.data!.pagination!.nextPage!.toString();
 
-                        Row(
-                          children: [
-                            Text("Remark :"),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: ExpansionTile(
-                                title: Text(
-                                  snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
-                                      ? snapshot.data!.data![index].remark!
-                                      : 'No Remark',
-                                  maxLines: 2, // Adjust the maxLines as needed
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                children: <Widget>[
-                                  Builder(
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
-                                                  ? snapshot.data!.data![index].remark!
-                                                  : 'No Remark',
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                        upcoming_appointment(_PAGECOUNT);
+                        print("page count next ${_PAGECOUNT}");
+                        setState(() {
+                          upcoming_appointment(_PAGECOUNT);
 
+                        });
+                      }, child:Text("Next")),
 
-
-                      ],
-                    ),
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 16);
-              },
-              itemCount: snapshot.data!.data!.length,
+                  ],
+                ),
+              ],
             );
         }
+
       },
     );
   }
@@ -1232,14 +1318,15 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
     );
   }
 
-  Future<UpcommingAppointmentModel> upcoming_appointment() async {
+  Future<UpcommingAppointmentModel> upcoming_appointment(pagecount) async {
     var headers = {
       'accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
       'Cookie': 'PHPSESSID=8e2678e66318bb5eea7c33540ca4eb4f'
     };
     var data = {
-      'upcoming_appointment': '1'
+      'upcoming_appointment': '1',
+      'page': pagecount
     };
     var dio = Dio();
 
@@ -1276,14 +1363,15 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
     }
   }
 
-  Future<PastAppointmentModel> pastappointmentapi() async {
+  Future<PastAppointmentModel> pastappointmentapi(pagecount) async {
     var headers = {
       'accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
       'Cookie': 'PHPSESSID=8e2678e66318bb5eea7c33540ca4eb4f'
     };
     var data = {
-      'past_appointment': '1'
+      'past_appointment': '1',
+      'page': pagecount
     };
     var dio = Dio();
 
@@ -1522,37 +1610,75 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                       .toString()),
                                 ],
                               ),
+                              // Row(
+                              //   children: [
+                              //     Text("Remark :"),
+                              //     SizedBox(width: 10,),
+                              //     Flexible(
+                              //       child: Text(
+                              //         snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                              //             ? snapshot.data!.data![index].remark!
+                              //             : 'No Remark',
+                              //
+                              //
+                              //         //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
+                              //         maxLines: !showMore ? null : 4,
+                              //         overflow: TextOverflow.ellipsis,
+                              //       ),
+                              //     ),
+                              //     SizedBox(height: 8),
+                              //     GestureDetector(
+                              //       onTap: () {
+                              //         setState(() {
+                              //           showMore = !showMore;
+                              //         });
+                              //       },
+                              //       child:   Icon(
+                              //         !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
+                              //         color: MyTheme.backgroundcolor,
+                              //       ),
+                              //
+                              //     ),
+                              //   ],
+                              // ),
+
                               Row(
                                 children: [
                                   Text("Remark :"),
-                                  SizedBox(width: 10,),
-                                  Flexible(
-                                    child: Text(
-                                      snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
-                                          ? snapshot.data!.data![index].remark!
-                                          : 'No Remark',
+                                  SizedBox(width: 10),
+                                  Expanded(
+                                    child: ExpansionTile(
+                                      title: Text(
+                                        snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                            ? snapshot.data!.data![index].remark!
+                                            : 'No Remark',
+                                        maxLines: 2, // Adjust the maxLines as needed
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      children: <Widget>[
+                                        Builder(
+                                          builder: (BuildContext context) {
+                                            return Container(
 
-
-                                      //  "AAAAAAAAAAAAAAAAAAAA  BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB  CCCCCCCCCCCCCCCCCCCCCCCCC DDDDDDDDDDD",
-                                      maxLines: !showMore ? null : 4,
-                                      overflow: TextOverflow.ellipsis,
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                                        ? snapshot.data!.data![index].remark!
+                                                        : 'No Remark',
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        showMore = !showMore;
-                                      });
-                                    },
-                                    child:   Icon(
-                                      !showMore ? Icons.arrow_drop_down : Icons.arrow_drop_up,
-                                      color: MyTheme.backgroundcolor,
-                                    ),
-
                                   ),
                                 ],
                               ),
+
+
                             ],
                           ),
                         ),
@@ -1660,47 +1786,47 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
   //   }
   // }
 
-  Future<TimeslotModel> time_slot() async {
-    var headers = {
-      'accept': 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Cookie': 'PHPSESSID=8e2678e66318bb5eea7c33540ca4eb4f'
-    };
-    var data = {
-      'time_slot': '1'
-    };
-    var dio = Dio();
-
-    try {
-      var response = await dio.request(
-        'https://admissionguidanceindia.com/appdata/webservice.php',
-        options: Options(
-          method: 'POST',
-          headers: headers,
-        ),
-        data: data,
-      );
-
-      if (response.statusCode == 200) {
-        print(json.encode(response.data));
-        print(response.data);
-        print("print time slot response");
-        setState(() {});
-        // Check if the response is a string, then decode it to a Map
-        var responseData = response.data is String
-            ? json.decode(response.data)
-            : response.data;
-
-        return TimeslotModel.fromJson(responseData);
-      } else {
-        print(response.statusMessage);
-        throw Exception('Failed to load data');
-      }
-    } catch (error) {
-      print(error.toString());
-      throw Exception('Failed to load data');
-    }
-  }
+  // Future<TimeslotModel> time_slot() async {
+  //   var headers = {
+  //     'accept': 'application/json',
+  //     'Content-Type': 'application/x-www-form-urlencoded',
+  //     'Cookie': 'PHPSESSID=8e2678e66318bb5eea7c33540ca4eb4f'
+  //   };
+  //   var data = {
+  //     'time_slot': '1'
+  //   };
+  //   var dio = Dio();
+  //
+  //   try {
+  //     var response = await dio.request(
+  //       'https://admissionguidanceindia.com/appdata/webservice.php',
+  //       options: Options(
+  //         method: 'POST',
+  //         headers: headers,
+  //       ),
+  //       data: data,
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       print(json.encode(response.data));
+  //       print(response.data);
+  //       print("print time slot response");
+  //       setState(() {});
+  //       // Check if the response is a string, then decode it to a Map
+  //       var responseData = response.data is String
+  //           ? json.decode(response.data)
+  //           : response.data;
+  //
+  //       return TimeslotModel.fromJson(responseData);
+  //     } else {
+  //       print(response.statusMessage);
+  //       throw Exception('Failed to load data');
+  //     }
+  //   } catch (error) {
+  //     print(error.toString());
+  //     throw Exception('Failed to load data');
+  //   }
+  // }
 
   Future<void> bookin_status(bookingid,statusid) async {
     var headers = {

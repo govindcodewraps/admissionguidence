@@ -42,6 +42,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   String formattedDatee="0";
   //String formatte='2023-12-12';
   //DateTime? selectedDate;
+  String _PAGECOUNT="1";
 
 
   TextEditingController dateInputController = TextEditingController();
@@ -66,7 +67,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     // WidgetsBinding.instance?.addPostFrameCallback((_) {
     //   _selectDate(context);
    // });
-    reminderListApi(formattedDatee);
+    reminderListApi(formattedDatee,_PAGECOUNT);
     ReminderTypeApi();
     //_selectDate();
 
@@ -111,15 +112,15 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
         events.forEach((event) => print(event.title)
         );
 
-
         String formattedDate = DateFormat('yyyy-MM-dd').format(_currentDate2);
         formattedDatee= "$formattedDate";
         print('Selected datae: $formattedDatee');
 
-
-
         setState(() {
-          reminderListApi(formattedDatee);
+          _PAGECOUNT="1";
+         // reminderListApi(formattedDatee);
+          reminderListApi(formattedDatee,_PAGECOUNT);
+
         });
 
       },
@@ -296,7 +297,9 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
           Navigator.push(context,MaterialPageRoute(builder: (context)=>AddReminderScreen())).then((value){ if(value != null && value)
           {
             setState(() {
-              reminderListApi(formattedDatee);
+             // reminderListApi(formattedDatee);
+              reminderListApi(formattedDatee,_PAGECOUNT);
+
               ReminderTypeApi();
             });
           };
@@ -398,8 +401,9 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
   Widget reminderlistwidget() {
     return
       FutureBuilder(
-        future: reminderListApi(formattedDatee),
-        builder: (context, snapshot) {
+        //future: reminderListApi(formattedDatee),
+        future:    reminderListApi(formattedDatee,_PAGECOUNT),
+          builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           } else if (snapshot.hasError) {
@@ -458,7 +462,13 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                       Icon(Icons.notifications,color: Colors.white,),
                                       SizedBox(height: 10,),
                                       //Text("2023-11-11",style: TextStyle(color: Colors.white),),
-                                      Text(snapshot.data!.data![index].date.toString(),style: TextStyle(color: Colors.white),),
+                                      //Text(snapshot.data!.data![index].date.toString(),style: TextStyle(color: Colors.white),),
+                                      Text(
+                                        DateFormat('yyyy-MM-dd').format(DateTime.parse(snapshot.data!.data![index].date.toString())),
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+
+
                                       SizedBox(height: 10,),
 
                                       Text(
@@ -571,7 +581,8 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                                           Navigator.push(context,MaterialPageRoute(builder: (context)=>EditReminderScreen(meetingid:snapshot.data!.data![index].id.toString(),reminderType: snapshot.data!.data![index].reminderType.toString(),datew: snapshot.data!.data![index].date.toString(),timew:snapshot.data!.data![index].time.toString() ,remarkw: snapshot.data!.data![index].remark.toString(),))).then((value){ if(value != null && value)
                                           {
                                             setState(() {
-                                              reminderListApi(formattedDatee);
+                                              //reminderListApi(formattedDatee);
+                                              reminderListApi(formattedDatee,_PAGECOUNT);
                                               ReminderTypeApi();
                                             });
                                           };
@@ -683,7 +694,44 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
                       },
                       itemCount:snapshot.data!.data!.length,
                     ),
+
+
+                    Row(
+                      //crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+
+                        // snapshot.data!.pagination!.prevPage!.toString()
+                        if(snapshot.data!.pagination!.prevPage! >= 1)
+                          ElevatedButton(onPressed: (){
+                            _PAGECOUNT=snapshot.data!.pagination!.prevPage!.toString();
+                            reminderListApi(formattedDatee,_PAGECOUNT);
+                            print("page count prev ${_PAGECOUNT}");
+                            setState(() {
+                              reminderListApi(formattedDatee,_PAGECOUNT);
+
+                            });
+                          }, child:Text("Prev")),
+                        Spacer(),
+                        //if(snapshot.data!.pagination!.nextPage! <= 1)
+                        if(snapshot.data!.pagination!.nextPage! > 1)
+                          ElevatedButton(onPressed: (){
+                            _PAGECOUNT=snapshot.data!.pagination!.nextPage!.toString();
+
+                            reminderListApi(formattedDatee,_PAGECOUNT);
+                            print("page count next ${_PAGECOUNT}");
+                            setState(() {
+                             // paymentlistpagination(_PAGECOUNT);
+                              reminderListApi(formattedDatee,_PAGECOUNT);
+
+
+                            });
+                          }, child:Text("Next")),
+
+                      ],
+                    ),
                     SizedBox(height: 80,),
+
 
                   ],
                 ),
@@ -1012,7 +1060,7 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     }
   }
 
-  Future<ReminderListModel?> reminderListApi(date) async {
+  Future<ReminderListModel?> reminderListApi(date,pagecount) async {
     var headers = {
       'accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -1020,7 +1068,10 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     };
     var data = {
       'reminder_filter': '1',
-       'date': date
+       'date': date,
+       'page': pagecount
+      //'page': '1'
+
        //'date': '2023-12-11'
     };
     var dio = Dio();

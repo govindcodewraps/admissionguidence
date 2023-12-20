@@ -11,20 +11,24 @@ String upcommingAppointmentModelToJson(UpcommingAppointmentModel data) => json.e
 class UpcommingAppointmentModel {
   int? success;
   List<Datum>? data;
+  Pagination? pagination;
 
   UpcommingAppointmentModel({
     this.success,
     this.data,
+    this.pagination,
   });
 
   factory UpcommingAppointmentModel.fromJson(Map<String, dynamic> json) => UpcommingAppointmentModel(
     success: json["success"],
     data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    pagination: json["pagination"] == null ? null : Pagination.fromJson(json["pagination"]),
   );
 
   Map<String, dynamic> toJson() => {
     "success": success,
     "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "pagination": pagination?.toJson(),
   };
 }
 
@@ -35,7 +39,7 @@ class Datum {
   String? name;
   String? appointmentTime;
   String? status;
-  String? remark;
+  dynamic remark;
 
   Datum({
     this.id,
@@ -65,5 +69,33 @@ class Datum {
     "appointment_time": appointmentTime,
     "status": status,
     "remark": remark,
+  };
+}
+
+class Pagination {
+  int? totalPages;
+  int? currentPage;
+  int? nextPage;
+  int? prevPage;
+
+  Pagination({
+    this.totalPages,
+    this.currentPage,
+    this.nextPage,
+    this.prevPage,
+  });
+
+  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
+    totalPages: json["totalPages"],
+    currentPage: json["currentPage"],
+    nextPage: json["nextPage"],
+    prevPage: json["prevPage"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "totalPages": totalPages,
+    "currentPage": currentPage,
+    "nextPage": nextPage,
+    "prevPage": prevPage,
   };
 }
