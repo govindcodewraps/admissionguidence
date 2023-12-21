@@ -40,7 +40,8 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
   String newdate =" ";
   bool _isLoading = false;
   var Datewidget="2023-12-12";
-  String selectedDate="2023-12-19";
+  String selectedDate="";
+  String DDate="";
 
 
   Time _time = Time(hour: 11, minute: 30, second: 20);
@@ -59,6 +60,12 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
   @override
   void initState() {
     // TODO: implement initState
+   // labelText: widget.remark ?? 'No remark',
+    remarkInputController.text = widget.remark ?? 'No remark';
+    Datewidget=DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.date.split(' ')[0]));
+   // DDate=selectedDate.isEmpty ?Datewidget :selectedDate;
+    selectedDate=selectedDate.isEmpty ?Datewidget :selectedDate;
+    timeslotlist(DDate);
     super.initState();
   }
 
@@ -68,21 +75,25 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
     print("print mapp drop down list ");
     //print(_time);
     //print(_time.format(context));
-    _inputtime=_time.format(context);
-    print("Input time ${_inputtime}");
-    _inputdate=dateInputController.text;
+    // _inputtime=_time.format(context);
+    // print("Input time ${_inputtime}");
+    // _inputdate=dateInputController.text;
+    //
+    // print("OLD");
+    // print(widget.date);
+    // print("OLD");
+    // print("Datee ${DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.date.split(' ')[0]))}");
+    //
+    // Datewidget=DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.date.split(' ')[0]));
+    // print("AAAAAAAAAAA${Datewidget}");
+    // print("BBBBBBBBBBB${selectedDate}");
 
-    print("OLD");
-    print(widget.date);
-    print("OLD");
-    print("Datee ${DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.date.split(' ')[0]))}");
-    Datewidget=DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.date.split(' ')[0]));
+  // DDate=selectedDate.isEmpty ?Datewidget :selectedDate;
+  // print("Selected Date ${DDate}");
 
-
-
-    print("Input Date ${_inputdate}");
-    print("Remark ${widget.remark}");
-    print("Input Remark ${remarkInputController.text}");
+    // print("Input Date ${_inputdate}");
+    // print("Remark ${widget.remark}");
+    // print("Input Remark ${remarkInputController.text}");
     //print("time");
     return Scaffold(
       appBar: AppBar(
@@ -141,50 +152,6 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
 
                     SizedBox(height: 10,),
 
-                    //DOB
-                    // TextFormField(
-                    //
-                    //   decoration:  InputDecoration(
-                    //     border: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(12),
-                    //       borderSide: BorderSide(
-                    //           width: 3, color: Colors.greenAccent), //<-- SEE HERE
-                    //     ),
-                    //     // border: InputBorder.none,
-                    //     //label: "DOB",
-                    //     labelText:"Date",
-                    //     hintText: "Date",
-                    //     suffixIcon: Icon(Icons.calendar_month,color: Colors.black,),
-                    //
-                    //   ),
-                    //   controller: dateInputController,
-                    //   readOnly: true,
-                    //   onTap: () async {
-                    //     DateTime? pickedDate = await showDatePicker(
-                    //         context: context,
-                    //         initialDate: DateTime.now(),
-                    //         firstDate: DateTime.now(),
-                    //         lastDate: DateTime(2050));
-                    //
-                    //     if (pickedDate != null) {
-                    //       dateInputController.text =
-                    //           DateFormat('yyyy-MM-dd').format(pickedDate);
-                    //     }
-                    //
-                    //     // Call the future method when both dates are selected
-                    //
-                    //     // if (dateInputController.text.isNotEmpty ? dateInputController.text == '2023-11-29' : false
-                    //     // ) {
-                    //     //   // Call the future method when both dates are selected
-                    //     //
-                    //     // }
-                    //
-                    //   },
-                    // ),
-
-
-
-
                     TextFormField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -217,7 +184,15 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                              fetchTimeSlots(dateInputController.text);
 
                             selectedDate=dateInputController.text;
-                            timeslotlist(selectedDate);
+                            print("datewidget ${widget.date}");
+
+                            // DDate=selectedDate.isEmpty ?Datewidget :selectedDate;
+                            //timeslotlist(selectedDate);
+                             //DDate=selectedDate.isEmpty ?Datewidget :selectedDate;
+                             selectedDate=selectedDate.isEmpty ?Datewidget :selectedDate;
+                             print("Selected Date ${DDate}");
+
+                            timeslotlist(DDate);
                             print("date format ${selectedDate}");
                           });
 
@@ -231,52 +206,23 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                     //Time picker
 
                     timeslotwidget(),
-                    // TextFormField(
-                    //
-                    //   decoration:  InputDecoration(
-                    //     border: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(12),
-                    //       borderSide: BorderSide(
-                    //           width: 3, color: Colors.greenAccent), //<-- SEE HERE
-                    //     ),
-                    //     // border: InputBorder.none,
-                    //     //label: "DOB",
-                    //     labelText: _time.format(context),
-                    //     hintText: _time.format(context),
-                    //     suffixIcon: Icon(Icons.watch_later_outlined,color: Colors.black,),
-                    //
-                    //   ),
-                    //   //  controller: dateInputController,
-                    //   readOnly: true,
-                    //   onTap: () async {
-                    //     Navigator.of(context).push(
-                    //       showPicker(
-                    //         context: context,
-                    //         value: _time,
-                    //         sunrise: TimeOfDay(hour: 6, minute: 0), // optional
-                    //         sunset: TimeOfDay(hour: 18, minute: 0), // optional
-                    //         duskSpanInMinutes: 120, // optional
-                    //         onChange: onTimeChanged,
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
-                    SizedBox(height: 30,),
 
+                    SizedBox(height: 30,),
+                    //labelText: widget.remark ?? 'No remark',
                     TextField(
                       controller: remarkInputController,
                       maxLines: 4,
                       decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.never,
-                        labelText: widget.remark,
+                        //labelText: widget.remark,
                         filled: true,
                         isDense: true,
                         border: OutlineInputBorder(
-
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ),
+
                     SizedBox(height: 30,),
                     Align(
                       alignment: Alignment.centerRight,
@@ -306,8 +252,10 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
 
                               _inputtime=_time.format(context);
                               print("Input time ${_inputtime}");
-                              _inputdate=dateInputController.text;
+                              _inputdate=dateInputController.text.isEmpty? Datewidget :dateInputController.text;
+                              //_inputdate=dateInputController.text;
                               print("Input Date ${_inputdate}");
+                             var _remarkinput=remarkInputController.text .isEmpty ? widget.remark:remarkInputController.text;
                               print("Input Remark ${remarkInputController.text}");
                               var meetingidd = widget.meetingid;
                               print("Time slotttt");
@@ -327,7 +275,8 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
                               // Navigator.push(context,MaterialPageRoute(builder: (context)=>Reschedule_Screen()));
                               // onPressUpdatePassword();
 
-                             rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
+                             //rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,remarkInputController.text);
+                             rescheduleMeetingApi(meetingidd,_inputdate,_timeslotid,_remarkinput);
 
                             },
                             child:Text(
@@ -398,15 +347,15 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
     {
       newdate=" ";
       print("40111");
-      Fluttertoast.showToast(
-        msg: "Time slot is already booked. Please choose another time",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.redAccent[100],
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      // Fluttertoast.showToast(
+      //   msg: "Time slot is already booked. Please choose another time",
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.CENTER,
+      //   timeInSecForIosWeb: 1,
+      //   backgroundColor: Colors.redAccent[100],
+      //   textColor: Colors.white,
+      //   fontSize: 16.0,
+      // );
     }
     else {
       print(response.reasonPhrase);
@@ -416,6 +365,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
       _isLoading = false;
     });
   }
+
 
 
   Widget timeslotwidget() {
@@ -435,7 +385,7 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
         // //     ),
         // //   );
         // // }
-         else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+        else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
           return Container(
             child: Center(
               child: CircularProgressIndicator(),
@@ -550,6 +500,148 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
       print(response.statusMessage);
     }
   }
+
+
+  // Widget timeslotwidget() {
+  //   return FutureBuilder(
+  //     future: timeslotlist(DDate),
+  //     builder: (context, snapshot) {
+  //       if
+  //       (snapshot.connectionState == ConnectionState.waiting) {
+  //         return Container(
+  //           child: Center(child: CircularProgressIndicator()),
+  //         );
+  //       }
+  //       // // else if (snapshot.hasError) {
+  //       // //   return Container(
+  //       // //     child: Center(
+  //       // //       child: Text('Error: Internal error'),
+  //       // //     ),
+  //       // //   );
+  //       // // }
+  //        else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+  //         return Container(
+  //           child: Center(
+  //             child: CircularProgressIndicator(),
+  //           ),
+  //         );
+  //       }
+  //       else
+  //       {
+  //         return Container(
+  //           // padding: EdgeInsets.only(left: 16, right: 16),
+  //           child: Column(
+  //             children: [
+  //
+  //               Container(
+  //                 width: MediaQuery.of(context).size.width*1,
+  //                 padding: EdgeInsets.only(left: 10),
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(color: Colors.grey),  // Set the color of the border
+  //                   borderRadius: BorderRadius.circular(12), // Set the border radius
+  //                 ),
+  //                 child:
+  //
+  //                 DropdownButton<String>(
+  //                   isExpanded: true,
+  //
+  //                   value: selectedValue,
+  //                   onChanged: (newValue) {
+  //                     setState(() {
+  //                       selectedValue = newValue!;
+  //                       print(newValue);
+  //                       _timeslotid=newValue;
+  //                       print("time slot id print ${_timeslotid}");
+  //                     });
+  //                   },
+  //                   underline: Container(),
+  //
+  //                   items: [
+  //                     DropdownMenuItem<String>(
+  //
+  //                       value: 'Select Time',
+  //                       child: Text('Select Time'),
+  //                     ),
+  //                     ...snapshot.data!.data!.map((datum) {
+  //                       return DropdownMenuItem<String>(
+  //                         value: datum.id!,
+  //                         child: Text("${datum.slotFrom!}-${datum.slotTo!}"),
+  //                       );
+  //                     }).toList(),
+  //                   ],
+  //
+  //                 ),
+  //               ),
+  //
+  //               // selectedValue= snapshot.data.data.length;
+  //             ],
+  //           ),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
+  //
+  // Future<void> fetchTimeSlots(String selectedDate) async {
+  //   // Call your timeslotlist API with the selected date
+  //   try {
+  //     TimeslotModel? timeslotData = await timeslotlist(DDate);
+  //     if (timeslotData != null) {
+  //       // Handle the fetched time slots, if needed
+  //     }
+  //   } catch (error) {
+  //     // Handle any errors that may occur during API call
+  //     print("Error fetching time slots: $error");
+  //   }
+  // }
+  //
+  // Future<TimeslotModel?> timeslotlist(DDate) async {
+  //   // setState(() {
+  //   //   _isLoading = true;
+  //   // });
+  //   var headers = {
+  //     'accept': 'application/json',
+  //     'Content-Type': 'application/x-www-form-urlencoded',
+  //     'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
+  //   };
+  //   var data = {
+  //     'time_slot': '1',
+  //     //'date':selectedDate
+  //     'date':DDate
+  //     //'date': '2023-12-21'
+  //   };
+  //   var dio = Dio();
+  //   var response = await dio.request(
+  //     //'https://admissionguidanceindia.com/appdata/webservice.php',
+  //     BASEURL.DOMAIN_PATH,
+  //     options: Options(
+  //       method: 'POST',
+  //       headers: headers,
+  //     ),
+  //     data: data,
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //
+  //
+  //     var responseData = response.data is String
+  //         ? json.decode(response.data)
+  //         : response.data;
+  //     print("time slot list");
+  //     print(responseData);
+  //     print("time slot list");
+  //
+  //     //optionss=responseData;
+  //     return TimeslotModel.fromJson(responseData);
+  //   }
+  //   else {
+  //     print(response.statusMessage);
+  //   }
+  //
+  //   // setState(() {
+  //   //   _isLoading = false;
+  //   // });
+  // }
 
 }
 

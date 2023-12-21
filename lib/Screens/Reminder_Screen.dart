@@ -67,7 +67,14 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     // WidgetsBinding.instance?.addPostFrameCallback((_) {
     //   _selectDate(context);
    // });
+    DateTime today = DateTime.now();
+    print('Todays date: $today');
+
+    formattedDatee = DateFormat('yyyy-MM-dd').format(today);
+    print('Todays only date: $formattedDatee');
+
     reminderListApi(formattedDatee,_PAGECOUNT);
+    //reminderListApi(formattedDatee,_PAGECOUNT);
     ReminderTypeApi();
     //_selectDate();
 
@@ -107,6 +114,8 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
     final _calendarCarouselNoHeader = CalendarCarousel<Event>(
       todayBorderColor: Colors.green,
+
+
       onDayPressed: (date, events) {
         this.setState(() => _currentDate2 = date);
         events.forEach((event) => print(event.title)
@@ -114,9 +123,15 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
         String formattedDate = DateFormat('yyyy-MM-dd').format(_currentDate2);
         formattedDatee= "$formattedDate";
+        print('Current  date: $_currentDate2');
+
+
+
         print('Selected datae: $formattedDatee');
 
         setState(() {
+
+
           _PAGECOUNT="1";
          // reminderListApi(formattedDatee);
           reminderListApi(formattedDatee,_PAGECOUNT);
@@ -124,6 +139,9 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
         });
 
       },
+
+
+
       daysHaveCircularBorder: true,
       showOnlyCurrentMonthDate: false,
       weekendTextStyle: TextStyle(

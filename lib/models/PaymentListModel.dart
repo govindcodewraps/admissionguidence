@@ -11,20 +11,24 @@ String paymentListModelToJson(PaymentListModel data) => json.encode(data.toJson(
 class PaymentListModel {
   int? success;
   List<Datum>? data;
+  Pagination? pagination;
 
   PaymentListModel({
     this.success,
     this.data,
+    this.pagination,
   });
 
   factory PaymentListModel.fromJson(Map<String, dynamic> json) => PaymentListModel(
     success: json["success"],
     data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    pagination: json["pagination"] == null ? null : Pagination.fromJson(json["pagination"]),
   );
 
   Map<String, dynamic> toJson() => {
     "success": success,
     "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "pagination": pagination?.toJson(),
   };
 }
 
@@ -36,6 +40,7 @@ class Datum {
   String? newBalance;
   String? bankName;
   String? remark;
+  DateTime? date;
 
   Datum({
     this.id,
@@ -45,6 +50,7 @@ class Datum {
     this.newBalance,
     this.bankName,
     this.remark,
+    this.date,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -55,6 +61,7 @@ class Datum {
     newBalance: json["new_balance"],
     bankName: json["bank_name"],
     remark: json["remark"],
+    date: json["date"] == null ? null : DateTime.parse(json["date"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -65,5 +72,34 @@ class Datum {
     "new_balance": newBalance,
     "bank_name": bankName,
     "remark": remark,
+    "date": date?.toIso8601String(),
+  };
+}
+
+class Pagination {
+  int? totalPages;
+  int? currentPage;
+  int? nextPage;
+  int? prevPage;
+
+  Pagination({
+    this.totalPages,
+    this.currentPage,
+    this.nextPage,
+    this.prevPage,
+  });
+
+  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
+    totalPages: json["totalPages"],
+    currentPage: json["currentPage"],
+    nextPage: json["nextPage"],
+    prevPage: json["prevPage"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "totalPages": totalPages,
+    "currentPage": currentPage,
+    "nextPage": nextPage,
+    "prevPage": prevPage,
   };
 }

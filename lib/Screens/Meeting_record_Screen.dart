@@ -128,7 +128,20 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                             onPressed: (){
 
 
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => BookingAppointments()));
+                              Navigator.push(context,MaterialPageRoute(builder: (context)=>BookingAppointments())).then((value){ if(value != null && value)
+                              {
+                                setState(() {
+                                  notificationCountApi();
+                                  pastappointmentapi(_PAGECOUNT);
+                                  todayappointmentlist();
+                                  // upcoming_appointment();
+
+                                  upcoming_appointment(_PAGECOUNT);
+                                });
+                              };
+                              });
+
+                              //Navigator.push(context, MaterialPageRoute(builder: (context) => BookingAppointments()));
 
 
                              // Navigator.push(context, MaterialPageRoute(builder: (context)=>BookingAppointments()));
@@ -1039,8 +1052,12 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                           InkWell(
                                             onTap: () {
                                               // Add your logic here
+                                              var remarkk=  snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
+                                                  ? snapshot.data!.data![index].remark!
+                                                  : 'No Remark';
+                                              print(remarkk);
                                               print("Meeting ID upcoming : ${snapshot.data!.data![index].id.toString()}");
-                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString(),remark: snapshot.data!.data![index].remark.toString()),));
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Reschedule_Meeting_Screen(meetingid: snapshot.data!.data![index].id.toString(),date: snapshot.data!.data![index].appointmentDate.toString(),appointmenttime: snapshot.data!.data![index].appointmentTime.toString(),remark: remarkk),));
 
                                             },
                                             child: Icon(Icons.calendar_month_outlined),

@@ -21,6 +21,7 @@ class BookingAppointments extends StatefulWidget {
 }
 
 class _BookingAppointmentsState extends State<BookingAppointments> {
+
   TextEditingController dateInputController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -51,14 +52,21 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+
+    return WillPopScope(
+        onWillPop: () async {
+      Navigator.pop(context, true);
+      return true;
+    },
+    child:
+      Scaffold(
       appBar: AppBar(
       iconTheme: IconThemeData(
         color: Colors.white, // Change the icon color here
       ),
       backgroundColor: MyTheme.backgroundcolor,
       title: Text(
-        "Book Appontments",
+        "Book Appointments",
         style: TextStyle(
           color: Colors.white, // Change the text color here
         ),
@@ -192,6 +200,22 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
                   SizedBox(height: 10,),
 
 
+                    // TextField(
+                    //   controller: contactController,
+                    //   maxLines: 4,
+                    //   decoration: InputDecoration(
+                    //     floatingLabelBehavior: FloatingLabelBehavior.never,
+                    //     labelText: "Remark",
+                    //     filled: true,
+                    //     isDense: true,
+                    //     border: OutlineInputBorder(
+                    //
+                    //       borderRadius: BorderRadius.circular(12),
+                    //     ),
+                    //   ),
+                    // ),
+
+
                     TextField(
                       controller: contactController,
                       maxLines: 4,
@@ -206,6 +230,7 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
                         ),
                       ),
                     ),
+
 
 
                 ],),
@@ -359,7 +384,8 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
 
 
         ],),
-    ),),),);
+    ),),),),
+    );
   }
 
 
@@ -523,7 +549,7 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
     if (response.statusCode == 200) {
       print(json.encode(response.data));
       Fluttertoast.showToast(
-        msg: "successfully set remionder",
+        msg: "Successfully Booked Appointment",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
@@ -539,7 +565,8 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
       print("Email print ${emailController.text}");
       print("Contact print ${contactController.text}");
 
-      Navigator.pop(context);
+      //Navigator.pop(context);
+      Navigator.pop(context, true);
 
     }
     else {

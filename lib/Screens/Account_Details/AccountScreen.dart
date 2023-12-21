@@ -1319,148 +1319,148 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
 
 
 
-  Widget paymentlistwidget() {
-    return FutureBuilder(
-
-      future: paymentlistapi(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            child: Center(child: CircularProgressIndicator()),
-          );
-        }
-        // else if (snapshot.hasError) {
-        //   return Container(
-        //     child: Center(
-        //       child: Text('Error: Internal error'),
-        //     ),
-        //   );
-        // }
-
-        // else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
-        //   return Container(
-        //     child: Center(
-        //       child: Text('No data available.'),
-        //     ),
-        //   );
-        // }
-        else {
-
-          return  ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            reverse: true,
-            itemBuilder: (context, int index) {
-              return
-
-                InkWell(
-                  onTap: (){
-                    print("govind kkk");
-                    print("Remark: ${snapshot.data!.data![33].amount}");
-                    print("Remark: ${snapshot.data!.data![33].remark}");
-
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white70,
-                      borderRadius: BorderRadius.circular(10.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 4,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Text("Transaction Type  "),
-                                  SizedBox(width: 5,),
-                                  // Text(snapshot.data!.data![index]
-                                  //     .type.toString()),
-                                  // Text(snapshot.data!.data![index].type.toString(),style:TextStyle(color: Colors.black),),
-                                  if(snapshot.data!.data![index].type.toString() == "CR")
-                                    Text("Credit",style:TextStyle(color: Colors.black),),
-                                  if(snapshot.data!.data![index].type.toString()=="DR")
-                                    Text("Debit",style: TextStyle(color: Colors.black),),
-                                ],
-                              ),
-
-                              if(snapshot.data!.data![index].type.toString() == "CR")
-                                Icon(Icons.arrow_circle_left_outlined,color: Colors.green,),
-                              if(snapshot.data!.data![index].type.toString()=="DR")
-                              //Icon(Icons.arrow_upward_outlined,color: Colors.red,),
-                                Icon(Icons.arrow_circle_right_outlined,color: Colors.red,),
-
-
-
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Text("Amount "),
-                              SizedBox(width: MediaQuery.of(context).size.width*0.180,),
-                              if(snapshot.data!.data![index].type.toString() == "CR")
-                                Text("+₹${snapshot.data!.data![index].amount.toString()}",style: TextStyle(color: Colors.green),),
-                              if(snapshot.data!.data![index].type.toString()=="DR")
-                                Text("-₹${snapshot.data!.data![index].amount.toString()}",style: TextStyle(color: Colors.red),),
-
-                              // Text("₹${snapshot.data!.data![index].amount.toString()}"),
-
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text("Old Balance   "),
-                              SizedBox(width: MediaQuery.of(context).size.width*0.1,),
-                              Text("₹${snapshot.data!.data![index].oldBalance.toString()}"),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text("New Balance "),
-                              SizedBox(width: MediaQuery.of(context).size.width*0.1,),
-                              Text("₹${snapshot.data!.data![index].newBalance.toString()}"),
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Text("Bank Name   "),
-                              SizedBox(width: MediaQuery.of(context).size.width*0.1,),
-                              Flexible(child:
-                              // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
-                              Text("${formatAccountNumber(snapshot.data!.data![index].bankName.toString().split('.').last)}"),),
-                              // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
-                            ],
-                          ),
-
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(height: 16);
-            },
-            itemCount: snapshot.data!.data!.length,
-          );
-        }
-      },
-    );
-  }
+  // Widget paymentlistwidget() {
+  //   return FutureBuilder(
+  //
+  //     future: paymentlistapi(),
+  //     builder: (context, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.waiting) {
+  //         return Container(
+  //           child: Center(child: CircularProgressIndicator()),
+  //         );
+  //       }
+  //       // else if (snapshot.hasError) {
+  //       //   return Container(
+  //       //     child: Center(
+  //       //       child: Text('Error: Internal error'),
+  //       //     ),
+  //       //   );
+  //       // }
+  //
+  //       // else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+  //       //   return Container(
+  //       //     child: Center(
+  //       //       child: Text('No data available.'),
+  //       //     ),
+  //       //   );
+  //       // }
+  //       else {
+  //
+  //         return  ListView.separated(
+  //           shrinkWrap: true,
+  //           physics: const NeverScrollableScrollPhysics(),
+  //           reverse: true,
+  //           itemBuilder: (context, int index) {
+  //             return
+  //
+  //               InkWell(
+  //                 onTap: (){
+  //                   print("govind kkk");
+  //                   print("Remark: ${snapshot.data!.data![33].amount}");
+  //                   print("Remark: ${snapshot.data!.data![33].remark}");
+  //
+  //                 },
+  //                 child: Container(
+  //                   decoration: BoxDecoration(
+  //                     color: Colors.white70,
+  //                     borderRadius: BorderRadius.circular(10.0),
+  //                     boxShadow: [
+  //                       BoxShadow(
+  //                         color: Colors.black.withOpacity(0.2),
+  //                         spreadRadius: 2,
+  //                         blurRadius: 4,
+  //                         offset: Offset(0, 3),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   child: Container(
+  //                     padding: EdgeInsets.all(8.0),
+  //                     child: Column(
+  //                       children: [
+  //
+  //                         Row(
+  //                           mainAxisAlignment:
+  //                           MainAxisAlignment.spaceBetween,
+  //                           children: [
+  //                             Row(
+  //                               children: [
+  //                                 Text("Transaction Type  "),
+  //                                 SizedBox(width: 5,),
+  //                                 // Text(snapshot.data!.data![index]
+  //                                 //     .type.toString()),
+  //                                 // Text(snapshot.data!.data![index].type.toString(),style:TextStyle(color: Colors.black),),
+  //                                 if(snapshot.data!.data![index].type.toString() == "CR")
+  //                                   Text("Credit",style:TextStyle(color: Colors.black),),
+  //                                 if(snapshot.data!.data![index].type.toString()=="DR")
+  //                                   Text("Debit",style: TextStyle(color: Colors.black),),
+  //                               ],
+  //                             ),
+  //
+  //                             if(snapshot.data!.data![index].type.toString() == "CR")
+  //                               Icon(Icons.arrow_circle_left_outlined,color: Colors.green,),
+  //                             if(snapshot.data!.data![index].type.toString()=="DR")
+  //                             //Icon(Icons.arrow_upward_outlined,color: Colors.red,),
+  //                               Icon(Icons.arrow_circle_right_outlined,color: Colors.red,),
+  //
+  //
+  //
+  //                           ],
+  //                         ),
+  //
+  //                         Row(
+  //                           children: [
+  //                             Text("Amount "),
+  //                             SizedBox(width: MediaQuery.of(context).size.width*0.180,),
+  //                             if(snapshot.data!.data![index].type.toString() == "CR")
+  //                               Text("+₹${snapshot.data!.data![index].amount.toString()}",style: TextStyle(color: Colors.green),),
+  //                             if(snapshot.data!.data![index].type.toString()=="DR")
+  //                               Text("-₹${snapshot.data!.data![index].amount.toString()}",style: TextStyle(color: Colors.red),),
+  //
+  //                             // Text("₹${snapshot.data!.data![index].amount.toString()}"),
+  //
+  //                           ],
+  //                         ),
+  //                         Row(
+  //                           children: [
+  //                             Text("Old Balance   "),
+  //                             SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+  //                             Text("₹${snapshot.data!.data![index].oldBalance.toString()}"),
+  //                           ],
+  //                         ),
+  //                         Row(
+  //                           children: [
+  //                             Text("New Balance "),
+  //                             SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+  //                             Text("₹${snapshot.data!.data![index].newBalance.toString()}"),
+  //                           ],
+  //                         ),
+  //
+  //                         Row(
+  //                           children: [
+  //                             Text("Bank Name   "),
+  //                             SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+  //                             Flexible(child:
+  //                             // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
+  //                             Text("${formatAccountNumber(snapshot.data!.data![index].bankName.toString().split('.').last)}"),),
+  //                             // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
+  //                           ],
+  //                         ),
+  //
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               );
+  //           },
+  //           separatorBuilder: (context, index) {
+  //             return SizedBox(height: 16);
+  //           },
+  //           itemCount: snapshot.data!.data!.length,
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
 
   Widget paymentlistwidgettt() {
     return FutureBuilder(
@@ -1589,6 +1589,15 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                                   Flexible(child:
                                   // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
                                   Text("${formatAccountNumber(snapshot.data!.data![index].bankName.toString().split('.').last)}"),),
+                                  // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
+                                ],
+                              ),
+
+                              Row(
+                                children: [
+                                  Text("Date   "),
+                                  SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+                                  Text("${formatAccountNumber(snapshot.data!.data![index].bankName.toString().split('.').last)}"),
                                   // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
                                 ],
                               ),
