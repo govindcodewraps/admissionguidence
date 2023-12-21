@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../baseurl.dart';
 import '../models/AppointmentsList_Model.dart';
 import '../models/Upcoming_Appointment.dart';
 
@@ -248,7 +249,8 @@ class _stembuildddState extends State<stembuilddd> {
 
     try {
       var response = await dio.request(
-        'https://admissionguidanceindia.com/appdata/webservice.php',
+        //'https://admissionguidanceindia.com/appdata/webservice.php',
+        BASEURL.DOMAIN_PATH,
         options: Options(
           method: 'POST',
           headers: headers,
@@ -283,7 +285,8 @@ class _stembuildddState extends State<stembuilddd> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+     // 'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,

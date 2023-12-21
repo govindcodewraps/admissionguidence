@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../baseurl.dart';
 import '../models/NotificationListModel.dart';
 import '../my_theme.dart';
 import 'Meeting_record_Screen.dart';
@@ -160,7 +161,8 @@ class _Notification_ScreenState extends State<Notification_Screen> {
 
     try {
       var response = await dio.post(
-        'https://admissionguidanceindia.com/appdata/webservice.php',
+       // 'https://admissionguidanceindia.com/appdata/webservice.php',
+        BASEURL.DOMAIN_PATH,
         options: Options(
           headers: headers,
         ),

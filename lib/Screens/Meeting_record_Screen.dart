@@ -1,4 +1,5 @@
 import 'package:admissionguidence/Screens/stembuilder.dart';
+import 'package:admissionguidence/baseurl.dart';
 import 'package:admissionguidence/my_theme.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -1332,7 +1333,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
     try {
       var response = await dio.request(
-        'https://admissionguidanceindia.com/appdata/webservice.php',
+        BASEURL.DOMAIN_PATH,
+       // 'https://admissionguidanceindia.com/appdata/webservice.php',
         options: Options(
           method: 'POST',
           headers: headers,
@@ -1377,7 +1379,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
     try {
       var response = await dio.request(
-        'https://admissionguidanceindia.com/appdata/webservice.php',
+        //'https://admissionguidanceindia.com/appdata/webservice.php',
+        BASEURL.DOMAIN_PATH,
         options: Options(
           method: 'POST',
           headers: headers,
@@ -1424,7 +1427,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
     try {
       var response = await dio.post(
-        'https://admissionguidanceindia.com/appdata/webservice.php',
+        //'https://admissionguidanceindia.com/appdata/webservice.php',
+        BASEURL.DOMAIN_PATH,
         options: Options(
           headers: headers,
         ),
@@ -1714,7 +1718,9 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
 
     try {
       var response = await dio.request(
-        'https://admissionguidanceindia.com/appdata/webservice.php',
+        //'https://admissionguidanceindia.com/appdata/webservice.php',
+        //'https://www.webcluestechnology.com/php/admissionguidance/appdata/webservice.php',
+        BASEURL.DOMAIN_PATH,
         options: Options(
           method: 'POST',
           headers: headers,
@@ -1841,7 +1847,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+     // 'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -1890,7 +1897,8 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,

@@ -990,6 +990,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../baseurl.dart';
 import '../../models/AccountNameNumberModel.dart';
 import '../../models/PaymentListModel.dart';
 import '../../models/Time_slot_model.dart';
@@ -1656,7 +1657,8 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+     // 'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -1696,7 +1698,8 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+     // 'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -1869,7 +1872,8 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -2188,7 +2192,8 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -2240,7 +2245,9 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -2293,7 +2300,9 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -2335,7 +2344,8 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,

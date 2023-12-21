@@ -4,6 +4,7 @@ import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../baseurl.dart';
 import '../my_theme.dart';
 import 'Account_Details/AccountScreen.dart';
 import 'BookAppointmentScreen.dart';
@@ -501,7 +502,8 @@ class _HomeScreenState extends State<HomeScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -544,7 +546,8 @@ class _HomeScreenState extends State<HomeScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -587,7 +590,8 @@ class _HomeScreenState extends State<HomeScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
       options: Options(
         method: 'POST',
         headers: headers,
@@ -631,7 +635,8 @@ class _HomeScreenState extends State<HomeScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
       options: Options(
         method: 'POST',
         headers: headers,
@@ -673,7 +678,8 @@ class _HomeScreenState extends State<HomeScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
       options: Options(
         method: 'POST',
         headers: headers,
@@ -715,7 +721,8 @@ class _HomeScreenState extends State<HomeScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
       options: Options(
         method: 'POST',
         headers: headers,

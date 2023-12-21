@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
+import '../baseurl.dart';
 import '../models/Time_slot_model.dart';
 import '../my_theme.dart';
 
@@ -511,7 +512,8 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -659,7 +661,8 @@ class _BookingAppointmentsState extends State<BookingAppointments> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,

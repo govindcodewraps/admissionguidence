@@ -8,6 +8,7 @@ import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
+import '../baseurl.dart';
 import '../models/ReminderTypeModel.dart';
 import '../models/Time_slot_model.dart';
 import '../my_theme.dart';
@@ -386,7 +387,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+     // 'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -497,7 +499,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -544,7 +547,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,

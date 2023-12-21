@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import '../baseurl.dart';
 import '../models/Time_slot_model.dart';
 import '../my_theme.dart';
 import 'Meeting_record_Screen.dart';
@@ -361,7 +362,11 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Cookie': 'PHPSESSID=166abf8a3ff4cbe9eb5f7a030e7ee562'
     };
-    var request = http.Request('POST', Uri.parse('https://admissionguidanceindia.com/appdata/webservice.php'));
+    var request = http.Request('POST', Uri.parse(
+      BASEURL.DOMAIN_PATH
+        //'https://admissionguidanceindia.com/appdata/webservice.php'
+
+    ));
     request.bodyFields = {
       'reschedule_appointment': '1',
       'booking_id': _bookingId,
@@ -519,7 +524,8 @@ class _Reschedule_Meeting_ScreenState extends State<Reschedule_Meeting_Screen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,

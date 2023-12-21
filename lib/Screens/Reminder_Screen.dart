@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../baseurl.dart';
 import '../models/ReminderTypeModel.dart';
 import '../models/Reminder_List_Model.dart';
 import '../my_theme.dart';
@@ -889,7 +890,8 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -946,7 +948,8 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+      //'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -1032,7 +1035,8 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
     try {
       var response = await dio.post(
-        'https://admissionguidanceindia.com/appdata/webservice.php',
+        //'https://admissionguidanceindia.com/appdata/webservice.php',
+        BASEURL.DOMAIN_PATH,
         options: Options(
           headers: headers,
         ),
@@ -1078,7 +1082,8 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
 
     try {
       var response = await dio.post(
-        'https://admissionguidanceindia.com/appdata/webservice.php',
+       //'https://admissionguidanceindia.com/appdata/webservice.php',
+        BASEURL.DOMAIN_PATH,
         options: Options(
           headers: headers,
         ),
@@ -1117,7 +1122,8 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      'https://admissionguidanceindia.com/appdata/webservice.php',
+     // 'https://admissionguidanceindia.com/appdata/webservice.php',
+      BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,

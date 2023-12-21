@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../baseurl.dart';
 import '../my_theme.dart';
 import 'Home_Screen.dart';
 import 'commanwebview.dart';
@@ -391,7 +392,9 @@ class _LoginScreenState extends State<LoginScreen> {
       'password': password
     };
 
-    var url = 'https://admissionguidanceindia.com/appdata/webservice.php';
+    var url =
+        BASEURL.DOMAIN_PATH;
+        //'https://admissionguidanceindia.com/appdata/webservice.php';
 
     var response = await http.post(
       Uri.parse(url),
