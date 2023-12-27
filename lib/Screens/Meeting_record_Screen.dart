@@ -2,6 +2,7 @@ import 'package:admissionguidence/Screens/stembuilder.dart';
 import 'package:admissionguidence/baseurl.dart';
 import 'package:admissionguidence/my_theme.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -29,6 +30,8 @@ class Meeting_record_screen extends StatefulWidget {
 }
 
 class _Meeting_record_screenState extends State<Meeting_record_screen> {
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
   TextEditingController dateInputController = TextEditingController();
   TextEditingController dateInputController2 = TextEditingController();
 
@@ -47,6 +50,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    //_getFcmToken();
     notificationCountApi();
     pastappointmentapi(_PAGECOUNT);
     todayappointmentlist();
@@ -55,6 +59,12 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
     upcoming_appointment(_PAGECOUNT);
    // time_slot();
   }
+
+  // Future<void> _getFcmToken() async {
+  //   String? token = await _firebaseMessaging.getToken();
+  //   print("FCM Token: $token");
+  // }
+
 
   @override
   void setState(VoidCallback fn) {

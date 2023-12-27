@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "613336205490",
+    "project_id": "admissionguidence-f8201",
+    "storage_bucket": "admissionguidence-f8201.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613336205490:android:8b2a7cfee7e222dd91a1ab",
+        "android_client_info": {
+          "package_name": "com.admissionguidence.admissionguidence"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiQ8j0Nr9OPmTz2lJFPNg27Xit7s4aW2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
