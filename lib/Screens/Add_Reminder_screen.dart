@@ -240,7 +240,16 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                                       _isLoading = true;
                                     });
                                    // _timeslotid
-                                    addmeeting(dateInputController.text,remarkInputtextController.text,remindertypeid,selecttime);
+
+                                    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                                    print("Date input ${dateInputController.text}");
+                                    print("Remark input ${remarkInputtextController.text}");
+                                    print("Reminder input ${remindertypeid}");
+                                    print("Select time input ${selecttime}");
+                                    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+
+                                     addmeeting(dateInputController.text,remarkInputtextController.text,remindertypeid,selecttime);
                                   }
 
                                 },
