@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,13 +8,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../baseurl.dart';
+import '../main.dart';
 import '../my_theme.dart';
 import 'Home_Screen.dart';
 import 'commanwebview.dart';
 
 String? finalEmail;
+String? finalE="govind";
 
 class LoginScreen extends StatefulWidget {
+
+
   const LoginScreen({super.key});
 
   @override
@@ -26,6 +31,31 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   bool _isAgree = false;
   bool _obscureText = true;
+
+
+
+  late DeviceInfoPlugin deviceInfo;
+
+  @override
+  void initState() {
+    super.initState();
+    deviceInfo = DeviceInfoPlugin();
+    _getDeviceInfo();
+  }
+
+  Future<void> _getDeviceInfo() async {
+    try {
+      if (Theme.of(context).platform == TargetPlatform.android) {
+        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+        print('Android Device Info: $androidInfo');
+      } else if (Theme.of(context).platform == TargetPlatform.iOS) {
+        IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+        print('iOS Device Info: $iosInfo');
+      }
+    } catch (e) {
+      print('Error getting device info: $e');
+    }
+  }
 
 
   @override
@@ -389,7 +419,9 @@ class _LoginScreenState extends State<LoginScreen> {
     var data = {
       'login': '1',
       'username': userid,
-      'password': password
+      'password': password,
+      //Text(devicetoken.toString()),
+      'device_token': devicetoken
     };
 
     var url =

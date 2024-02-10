@@ -244,7 +244,9 @@ import '../baseurl.dart';
 import '../models/ReminderTypeModel.dart';
 import '../models/Time_slot_model.dart';
 import '../my_theme.dart';
-import 'Reminder_Screen.dart';
+import 'Reminder/Reminder_Screen.dart';
+import 'package:intl/intl.dart';
+
 
 class EditReminderScreen extends StatefulWidget {
   final String meetingid,reminderType,datew,timew,remarkw;
@@ -280,6 +282,15 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
   Widget build(BuildContext context) {
 
     var _dateee =widget.datew;
+
+    var _dateString = widget.datew;
+    var _dateTime = DateTime.parse(_dateString);
+    var _formattedDate = DateFormat('yyyy-MM-dd').format(_dateTime);
+    print(_formattedDate);
+    print("asdfghjk");// Output: 2024-02-16
+
+
+
     var _timee =widget.timew.isEmpty ? "11:30 AM" : widget.timew;
     var _remarkk =widget.remarkw;
     var _remindertypee =widget.reminderType;
@@ -332,7 +343,7 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
 
 
                         // Text(widget.reminderType),
-                        // Text(widget.datew),
+                         //Text(widget.datew),
                         // Text(widget.timew),
                         // Text(widget.remarkw),
 
@@ -359,8 +370,11 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                                 color: Colors.greenAccent,
                               ),
                             ),
-                            labelText: "${widget.datew}",
-                            hintText: "${widget.datew}",
+                            // labelText: "${widget.datew}",
+                            // hintText: "${widget.datew}",
+
+                             labelText: _formattedDate,
+                             hintText: _formattedDate,
                             suffixIcon: Icon(Icons.calendar_month, color: Colors.black),
                           ),
                           controller: dateInputController,
@@ -489,12 +503,12 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
 
 
 
-                                     String DATE = dateInputController.text.toString().isEmpty ? _dateee : dateInputController.text.toString();
+                                     String DATE = dateInputController.text.toString().isEmpty ? _formattedDate : dateInputController.text.toString();
                                      String TIME = selecttime.toString().isEmpty ? _timee.toString() : selecttime.toString();
                                      String REMARK = remarkInputtextController.text.toString().isEmpty ? _remarkk : remarkInputtextController.text.toString();
                                      String REMINDERTYPE = remindertypeid.isEmpty ? _remindertypee : remindertypeid;
 
-                                     print("DATEEE ${DATE}");
+                                     print("DATEEfffE ${DATE}");
                                      print("REMARK ${REMARK}");
                                      print("TIMEa ${TIME}");
 
