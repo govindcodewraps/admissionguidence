@@ -70,7 +70,7 @@ PODS:
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - Toast (4.0.0)
+  - Toast (4.1.0)
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
@@ -132,9 +132,9 @@ SPEC CHECKSUMS:
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
-  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  Toast: ec33c32b8688982cecc6348adeae667c1b9938da
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
-PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
+PODFILE CHECKSUM: 7b7293d0f8cf9dbe74622568c6ea9777112e6ef0
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2

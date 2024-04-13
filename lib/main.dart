@@ -147,7 +147,6 @@
 //
 
 
-
 import 'dart:async';
 import 'dart:developer';
 import 'package:admissionguidence/my_theme.dart';
@@ -175,7 +174,7 @@ void main() async {
   );
   final fcmToken = await FirebaseMessaging.instance.getToken();
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
-  log("FCMToken $fcmToken");
+  log("FCMTokenaaaaa $fcmToken");
   devicetoken=fcmToken;
   //print("object")
 }
@@ -200,6 +199,7 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
+
 class _SplashScreenState extends State<SplashScreen> {
  // FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -219,7 +219,6 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         );
       });
-
     });
 
 

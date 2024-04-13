@@ -332,6 +332,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ],
                               ),
                             ),
+
+                            //Text(devicetoken.toString()),
+
                             SizedBox(height: MediaQuery.of(context).size.height * 0.11),
                             Align(
                               alignment: Alignment.centerRight,
@@ -421,11 +424,13 @@ class _LoginScreenState extends State<LoginScreen> {
       'username': userid,
       'password': password,
       //Text(devicetoken.toString()),
-      'device_token': devicetoken
+      'device_token': "fhxbFNwFRVup2rH01xNX2I:APA91bHczbBlZuh79yIf38xk-jewg0dNzjID7o5NT1M-d6FWeKmigDSAO5qAW4Mt1EcOmJLgTyseH8phIXPyJJwcD0_3mWDEFIZVuCqAG6Il4HgnBQU6Ux31QEq4r97FqlNuLQNUrxIw"
+     // 'device_token': devicetoken
     };
 
     var url =
-        BASEURL.DOMAIN_PATH;
+        //BASEURL.DOMAIN_PATH;
+        "https://admissionguidanceindia.com/appdata/login.php";
         //'https://admissionguidanceindia.com/appdata/webservice.php';
 
     var response = await http.post(

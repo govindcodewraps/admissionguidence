@@ -499,6 +499,7 @@ SizedBox(height: 10,),
 
     if (response.statusCode == 200) {
       print(json.encode(response.data));
+      print("response ${response.data}");
       Fluttertoast.showToast(
         msg: "Reminder Deleted successfully",
         toastLength: Toast.LENGTH_LONG,

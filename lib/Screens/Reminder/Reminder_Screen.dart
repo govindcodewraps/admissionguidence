@@ -1991,9 +1991,12 @@ class _Reminder_ScreenState extends State<Reminder_Screen> {
     );
 
     if (response.statusCode == 200) {
+      print("?????????????");
       print(json.encode(response.data));
+      print("response delete reminder ${response.data}");
+      print("?????????????");
       Fluttertoast.showToast(
-        msg: "Reminder Deleted successfully",
+        msg: "Reminder Deleted successfullyyyyyyyyy",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
