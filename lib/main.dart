@@ -147,17 +147,23 @@
 //
 
 
-
 import 'dart:async';
 import 'dart:developer';
 import 'package:admissionguidence/my_theme.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Screens/Home_Screen.dart';
 import 'Screens/loginscreen.dart';
+import 'USER_Screens/User_Home_Screen.dart';
 import 'firebase_options.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+
+String? devicetoken;
+String? userTypee;
+String? userTye;
 
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -171,9 +177,13 @@ void main() async {
   );
   final fcmToken = await FirebaseMessaging.instance.getToken();
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
-  log("FCMToken $fcmToken");
+  log("FCMTokenaaaaa $fcmToken");
+  devicetoken=fcmToken;
   //print("object")
 }
+
+String deviceId = 'Unknown';
+
 
 
 class MyApp extends StatelessWidget {
@@ -192,25 +202,36 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
+
 class _SplashScreenState extends State<SplashScreen> {
  // FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
  // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
+
   @override
   void initState() {
     super.initState();
-   // _getFcmToken();
+    // _getFcmToken();
 
     Timer(Duration(seconds: 2), () {
       getValidationData().whenComplete(() async {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => finalEmail == null ? LoginScreen() : HomeScreen(),
-          ),
-        );
-      });
 
+        if (userTye == 'superadmin') {
+          print("AAAAAMM${userTye}");
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => finalEmail == null ? LoginScreen() : HomeScreen(),),);
+          // Navigator.push(context, MaterialPageRoute(builder: (context)=>finalEmail == null ?LoginScreen() : HomeScreen()));
+        } else {
+          print("BBBBBBMM${userTye}");
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => finalEmail == null ? LoginScreen() : UserHomeScreen(),),);
+          //Navigator.push(context, MaterialPageRoute(builder: (context)=>finalEmail == null ?LoginScreen() : UserHomeScreen()));
+
+        }
+
+
+        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => finalEmail == null ? LoginScreen() : HomeScreen(),),);
+
+
+      });
     });
 
 
@@ -222,6 +243,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
   }
+
+
+
 
 
   // @override
@@ -251,22 +275,28 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
 
-
-
-
-
   // Future<void> _getFcmToken() async {
   //   String? token = await _firebaseMessaging.getToken();
   //   print("FCM Token: $token");
   // }
 
+
+  // final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  // sharedPreferences.setString('token',fcmToken);
+  //
+
   Future getValidationData() async {
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var obtainEmail = sharedPreferences.getString('email');
+    var obtainusertype = sharedPreferences.getString('usertypee');
     setState(() {
       finalEmail = obtainEmail;
+      userTye=obtainusertype;
+      print("obtainusertype:: ${obtainusertype}");
     });
     print(finalEmail);
+    print("USerttt ${userTye}");
+    print("obtainusertype:: ${obtainusertype}");
   }
 
   @override

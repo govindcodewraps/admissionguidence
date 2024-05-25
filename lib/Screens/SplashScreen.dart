@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../USER_Screens/User_Home_Screen.dart';
+import '../main.dart';
 import 'Home_Screen.dart';
 import 'loginscreen.dart';
 
@@ -33,7 +35,17 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), () {
       // Navigate to the home screen after the delay
       getValidationData().whenComplete(() async {
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>finalEmail == null ?LoginScreen() : HomeScreen()));
+        if (userTye == 'superadmin') {
+         print("AAAAA${userTye}");
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>finalEmail == null ?LoginScreen() : HomeScreen()));
+        } else {
+          print("BBBBBB${userTye}");
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>finalEmail == null ?LoginScreen() : UserHomeScreen()));
+
+        }
+
+
+
       });
     });
   }
@@ -42,8 +54,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Future getValidationData() async{
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var obtainEmail = sharedPreferences.getString('email');
+    var obtainusertype = sharedPreferences.getString('usertypee');
     setState(() {
       finalEmail =obtainEmail;
+      userTye=obtainusertype;
     });
     print("""""""""""");
     print(finalEmail);

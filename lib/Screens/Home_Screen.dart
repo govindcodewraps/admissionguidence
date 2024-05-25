@@ -4,14 +4,20 @@ import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../USER_Screens/userscreen.dart';
+import 'Reminder/ReminderTabScreen.dart';
 import '../baseurl.dart';
+import '../main.dart';
 import '../my_theme.dart';
 import 'Account_Details/AccountScreen.dart';
 import 'BookAppointmentScreen.dart';
 import 'Meeting_record_Screen.dart';
-import 'Reminder_Screen.dart';
+import 'Reminder/Reminder_Screen.dart';
 import 'loginscreen.dart';
 import 'package:http/http.dart' as http;
+import 'loginscreen.dart';
+import 'loginscreen.dart';
+import 'loginscreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -41,6 +47,10 @@ class _HomeScreenState extends State<HomeScreen> {
   reminderfetchData();
   totalAppointmentAPI();
   totalpercentageAPI();
+  print("govind emaill:::");
+  print(finalE);
+
+
   totalReminderAPI();
     super.initState();
   }
@@ -50,6 +60,16 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _time = newTime;
     });
+  }
+
+  Future getValidationData() async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var obtainEmail = sharedPreferences.getString('email');
+    setState(() {
+      finalEmail = obtainEmail;
+    });
+    print("Govind");
+    print(finalEmail);
   }
 
 
@@ -81,6 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Perform logout actions
                   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                   sharedPreferences.remove('email');
+                  sharedPreferences.remove('userTye');
                   Navigator.pop(context);
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
@@ -166,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                           Container(
                             decoration: BoxDecoration(
@@ -194,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Text("Appointments",style:TextStyle(color: Colors.black),),
 
 
-                                  SizedBox(height: 10,),
+                                  SizedBox(height: 0,),
                                   Text("${_percntagecount}%",style:TextStyle(fontSize: 30),),
                                   Text("Today",style:TextStyle(color: Colors.black),),
                                   Text("Pending",style:TextStyle(color: Colors.black),),
@@ -224,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            height: 200,
+                            height: 110,
                             width: 130,
                             child:  Center(
                               child: Column(
@@ -237,12 +258,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Text("Reminders",style:TextStyle(color: Colors.black),),
 
 
-                                  SizedBox(height: 10,),
-
-                                  Text("${_percntagecount}%",style:TextStyle(fontSize: 30),),
-                                  Text("Today",style:TextStyle(color: Colors.black),),
-                                  Text("Pending",style:TextStyle(color: Colors.black),),
-                                  Text("Reminders",style:TextStyle(color: Colors.black),),
+                                  // SizedBox(height: 0,),
+                                  //
+                                  // Text("${_percntagecount}%",style:TextStyle(fontSize: 30),),
+                                  // Text("Today",style:TextStyle(color: Colors.black),),
+                                  // Text("Pending",style:TextStyle(color: Colors.black),),
+                                  // Text("Reminders",style:TextStyle(color: Colors.black),),
 
                                 ],
                               ),
@@ -257,6 +278,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
+
+
+                  ElevatedButton(onPressed: (){
+                    Navigator.push(context,MaterialPageRoute(builder: (context)=>UserScreen()));
+                  }, child: Text("User Screen")),
 
                   Container(
                     padding: EdgeInsets.fromLTRB(16, 20, 16, 16),
@@ -368,7 +394,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                  // Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen()));
 
 
-                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>Reminder_Screen())).then((value){ if(value != null && value)
+                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>ReminderTabScreen())).then((value){ if(value != null && value)
                                   {
                                     setState(() {
                                       transactionfetchData();

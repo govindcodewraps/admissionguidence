@@ -43,6 +43,7 @@ class _Transation_ScreenState extends State<Transation_Screen> {
 
   var accountNumber=" ";
   var transationtype="";
+  var buttontype="";
   String accountselectedValue = 'Select Account Number';
 
 
@@ -128,7 +129,9 @@ class _Transation_ScreenState extends State<Transation_Screen> {
                     // Add the logic for the button press here
                   },
                   child: Text(
-                    "Pay",
+                   // "Paygg",
+                    buttontype == "CR"? "Receive" : "Pay",
+
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -208,8 +211,10 @@ class _Transation_ScreenState extends State<Transation_Screen> {
                     onChanged: (newValue) {
                       setState(() {
                         selectedValue = newValue!;
+                        buttontype=newValue;
                         //  transationtype=newValue;
                         print("Transation type ${newValue}");
+                        print("Transation buttontype ${buttontype}");
                       });
                     },
                     underline: Container(),
