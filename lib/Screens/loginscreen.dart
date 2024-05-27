@@ -18,6 +18,7 @@ import 'commanwebview.dart';
 String? finalEmail;
 String? finalE="govind";
 String? userType;
+String? useriid;
 
 class LoginScreen extends StatefulWidget {
 
@@ -337,6 +338,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
 
                             //Text(devicetoken.toString()),
+                            Text(useridd.toString()),
 
                             SizedBox(height: MediaQuery.of(context).size.height * 0.11),
                             Align(
@@ -520,9 +522,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
       print("reeeeeeeee");
       userType = responseData['type'];
+      useriid = responseData['id'];
       print(responseData['type']);
       print("reeeeeeeee");
       print(userType);
+      print(useriid);
       print("usertttty");
 
 
@@ -530,11 +534,13 @@ class _LoginScreenState extends State<LoginScreen> {
         userType="superadmin";
         final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         sharedPreferences.setString('usertypee', userType.toString());
+        sharedPreferences.setString('useriid', useriid.toString());
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       } else {
         userType="admin";
         final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         sharedPreferences.setString('usertypee', userType.toString());
+        sharedPreferences.setString('useriid', useriid.toString());
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>UserHomeScreen()));
       }
 
