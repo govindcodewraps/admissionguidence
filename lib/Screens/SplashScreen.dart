@@ -55,9 +55,13 @@ class _SplashScreenState extends State<SplashScreen> {
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var obtainEmail = sharedPreferences.getString('email');
     var obtainusertype = sharedPreferences.getString('usertypee');
+    var useridd = sharedPreferences.getString('useriid');
+
     setState(() {
       finalEmail =obtainEmail;
       userTye=obtainusertype;
+      useridd=useridd;
+
     });
     print("""""""""""");
     print(finalEmail);

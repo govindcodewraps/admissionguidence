@@ -1,23 +1,23 @@
 // To parse this JSON data, do
 //
-//     final taskListModel = taskListModelFromJson(jsonString);
+//     final todaytaskListModel = todaytaskListModelFromJson(jsonString);
 
 import 'dart:convert';
 
-TaskListModel taskListModelFromJson(String str) => TaskListModel.fromJson(json.decode(str));
+TodaytaskListModel todaytaskListModelFromJson(String str) => TodaytaskListModel.fromJson(json.decode(str));
 
-String taskListModelToJson(TaskListModel data) => json.encode(data.toJson());
+String todaytaskListModelToJson(TodaytaskListModel data) => json.encode(data.toJson());
 
-class TaskListModel {
+class TodaytaskListModel {
   int success;
   List<Datum> data;
 
-  TaskListModel({
+  TodaytaskListModel({
     required this.success,
     required this.data,
   });
 
-  factory TaskListModel.fromJson(Map<String, dynamic> json) => TaskListModel(
+  factory TodaytaskListModel.fromJson(Map<String, dynamic> json) => TodaytaskListModel(
     success: json["success"],
     data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
@@ -33,16 +33,12 @@ class Datum {
   String taskName;
   String taskTime;
   String type;
-  int status;
-  String submissionTime;
 
   Datum({
     required this.id,
     required this.taskName,
     required this.taskTime,
     required this.type,
-    required this.status,
-    required this.submissionTime,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -50,8 +46,6 @@ class Datum {
     taskName: json["task_name"],
     taskTime: json["task_time"],
     type: json["type"],
-    status: json["status"],
-    submissionTime: json["submission_time"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -59,7 +53,5 @@ class Datum {
     "task_name": taskName,
     "task_time": taskTime,
     "type": type,
-    "status": status,
-    "submission_time": submissionTime,
   };
 }
