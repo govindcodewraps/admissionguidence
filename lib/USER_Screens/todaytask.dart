@@ -892,7 +892,10 @@ class _UserScreenState extends State<TodayTaskScreen> {
 
           return Center(child: Text("No more Meetings"));
         } else if (snapshot.hasData) {
+          bool showMore = false;
+
           if (snapshot.data != null && snapshot.data!.data != null) {
+            print(snapshot.data!.data!.length);
 
             return Container(
               padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
@@ -900,97 +903,7 @@ class _UserScreenState extends State<TodayTaskScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Padding(
-                  //   padding:  EdgeInsets.all(5.0),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Text(
-                  //         "Filter : ",
-                  //         style: TextStyle(
-                  //             fontSize: 18, fontWeight: FontWeight.bold),
-                  //       ),
-                  //       InkWell(
-                  //         onTap: () async {
-                  //           DateTime? newDate = await showDatePicker(
-                  //               context: context,
-                  //               initialDate: date,
-                  //               firstDate: DateTime(1900),
-                  //               lastDate: DateTime(2100));
-                  //
-                  //           if (newDate == null) return;
-                  //
-                  //           setState(() {
-                  //             date = newDate;
-                  //             date1 = date.toString().split(" ")[0];
-                  //           });
-                  //
-                  //           print(date1);
-                  //           print("1111111111");
-                  //         },
-                  //         child: Container(
-                  //           width: 70,
-                  //           height: 50,
-                  //           decoration: BoxDecoration(
-                  //               border: Border.all(
-                  //                 color: Colors.blue,
-                  //               ),
-                  //               borderRadius: BorderRadius.circular(10)),
-                  //           child: Center(
-                  //               child: Text(
-                  //                 "Select Date",
-                  //                 style: TextStyle(
-                  //                     fontSize: 12, fontWeight: FontWeight.bold),
-                  //               )),
-                  //         ),
-                  //       ),
-                  //       SizedBox(
-                  //         width: 10,
-                  //       ),
-                  //
-                  //       // Center(
-                  //       //   child: ElevatedButton(
-                  //       //     onPressed: _isButtonEnabled ? () {
-                  //       //       // Button logic
-                  //       //     } : null,
-                  //       //     child: Text('Your Button'),
-                  //       //   ),
-                  //       // ),
-                  //       Text(
-                  //         "Type : ",
-                  //         style: TextStyle(
-                  //             fontSize: 18, fontWeight: FontWeight.bold),
-                  //       ),
-                  //       Container(
-                  //         width: 120,
-                  //         height: 60,
-                  //         child: DropdownButtonFormField(
-                  //           iconEnabledColor: Colors.blue,
-                  //           decoration: InputDecoration(
-                  //               enabledBorder: OutlineInputBorder(
-                  //                   borderRadius: BorderRadius.circular(10),
-                  //                   borderSide: BorderSide(color: Colors.blue)),
-                  //               focusedBorder: OutlineInputBorder(
-                  //                   borderRadius: BorderRadius.circular(10),
-                  //                   borderSide:
-                  //                   BorderSide(color: Colors.black))),
-                  //           value: typeValue,
-                  //           onChanged: (value) {
-                  //             setState(() {
-                  //               typeValue = value;
-                  //             });
-                  //           },
-                  //           items: items.map((String items) {
-                  //             return DropdownMenuItem(
-                  //               value: items,
-                  //               child: Text(items),
-                  //             );
-                  //           }).toList(),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+
                   Expanded(
                     child: ListView.builder(
                       reverse: false,
@@ -1426,12 +1339,27 @@ class _UserScreenState extends State<TodayTaskScreen> {
       );
       print(response.statusCode);
 
+      // if (response.statusCode == 200) {
+      //   var responseData = response.data is String
+      //       ? json.decode(response.data)
+      //       : response.data;
+      //   return TodayTaskModel.fromJson(responseData);
+      // }
+
       if (response.statusCode == 200) {
+        print(json.encode(response.data));
+        print(response.data);
+        print("print response");
+        // setState(() {});
+        // Check if the response is a string, then decode it to a Map
         var responseData = response.data is String
             ? json.decode(response.data)
             : response.data;
+
         return TodayTaskModel.fromJson(responseData);
-      } else {
+      }
+
+      else {
         print('Failed with status code: ${response.statusCode}');
       }
     } catch (e) {
