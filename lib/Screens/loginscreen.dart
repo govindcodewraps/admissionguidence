@@ -1,19 +1,28 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../USER_Screens/User_Home_Screen.dart';
+import '../USER_Screens/userscreen.dart';
 import '../baseurl.dart';
+import '../main.dart';
 import '../my_theme.dart';
 import 'Home_Screen.dart';
 import 'commanwebview.dart';
 
 String? finalEmail;
+String? finalE="govind";
+String? userType;
+String? useriid;
 
 class LoginScreen extends StatefulWidget {
+
+
   const LoginScreen({super.key});
 
   @override
@@ -26,6 +35,31 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   bool _isAgree = false;
   bool _obscureText = true;
+
+
+
+  late DeviceInfoPlugin deviceInfo;
+
+  @override
+  void initState() {
+    super.initState();
+    deviceInfo = DeviceInfoPlugin();
+    _getDeviceInfo();
+  }
+
+  Future<void> _getDeviceInfo() async {
+    try {
+      if (Theme.of(context).platform == TargetPlatform.android) {
+        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+        print('Android Device Info: $androidInfo');
+      } else if (Theme.of(context).platform == TargetPlatform.iOS) {
+        IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+        print('iOS Device Info: $iosInfo');
+      }
+    } catch (e) {
+      print('Error getting device info: $e');
+    }
+  }
 
 
   @override
@@ -302,6 +336,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ],
                               ),
                             ),
+
+                            //Text(devicetoken.toString()),
+                            Text(useridd.toString()),
+
                             SizedBox(height: MediaQuery.of(context).size.height * 0.11),
                             Align(
                               alignment: Alignment.centerRight,
@@ -377,6 +415,76 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // Future loginapi(userid, password) async {
+  //   // Your existing loginapi function remains unchanged
+  //
+  //   var headers = {
+  //     'accept': 'application/json',
+  //     'Content-Type': 'application/x-www-form-urlencoded',
+  //     'Cookie': 'PHPSESSID=f96183e9729c0eae79af2650a7464f8d'
+  //   };
+  //
+  //   var data = {
+  //     'login': '1',
+  //     'username': userid,
+  //     'password': password,
+  //     //Text(devicetoken.toString()),
+  //    // 'device_token': "fhxbFNwFRVup2rH01xNX2I:APA91bHczbBlZuh79yIf38xk-jewg0dNzjID7o5NT1M-d6FWeKmigDSAO5qAW4Mt1EcOmJLgTyseH8phIXPyJJwcD0_3mWDEFIZVuCqAG6Il4HgnBQU6Ux31QEq4r97FqlNuLQNUrxIw"
+  //     'device_token': devicetoken
+  //   };
+  //
+  //
+  //   var url =
+  //       //BASEURL.DOMAIN_PATH;
+  //       "https://admissionguidanceindia.com/appdata/login.php";
+  //       //'https://admissionguidanceindia.com/appdata/webservice.php';
+  //
+  //   var response = await http.post(
+  //     Uri.parse(url),
+  //     headers: headers,
+  //     body: data,
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     print("response");
+  //     print(json.encode(json.decode(response.body)));
+  //     print("response");
+  //
+  //     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //     sharedPreferences.setString('email',_useridController.text);
+  //
+  //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+  //
+  //     Fluttertoast.showToast(
+  //       msg: "Login Successfully",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.CENTER,
+  //       timeInSecForIosWeb: 1,
+  //       backgroundColor: Colors.green,
+  //       textColor: Colors.white,
+  //       fontSize: 16.0,
+  //     );
+  //
+  //   } else {
+  //     print('Error: ${response.reasonPhrase}');
+  //     Fluttertoast.showToast(
+  //       msg: "Invalid User ID & Password",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.CENTER,
+  //       timeInSecForIosWeb: 1,
+  //       backgroundColor: Colors.red,
+  //       textColor: Colors.white,
+  //       fontSize: 16.0,
+  //     );
+  //   }
+  //
+  //   setState(() {
+  //     _isLoading = false;
+  //   });
+  // }
+
+
+
   Future loginapi(userid, password) async {
     // Your existing loginapi function remains unchanged
 
@@ -389,12 +497,11 @@ class _LoginScreenState extends State<LoginScreen> {
     var data = {
       'login': '1',
       'username': userid,
-      'password': password
+      'password': password,
+      'device_token': devicetoken
     };
 
-    var url =
-        BASEURL.DOMAIN_PATH;
-        //'https://admissionguidanceindia.com/appdata/webservice.php';
+    var url = "https://admissionguidanceindia.com/appdata/login.php";
 
     var response = await http.post(
       Uri.parse(url),
@@ -408,9 +515,34 @@ class _LoginScreenState extends State<LoginScreen> {
       print("response");
 
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      sharedPreferences.setString('email',_useridController.text);
+      sharedPreferences.setString('email', _useridController.text,);
+     // sharedPreferences.setString('usertypee', userType.toString());
 
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      var responseData = json.decode(response.body);
+
+      print("reeeeeeeee");
+      userType = responseData['type'];
+      useriid = responseData['id'];
+      print(responseData['type']);
+      print("reeeeeeeee");
+      print(userType);
+      print(useriid);
+      print("usertttty");
+
+
+      if (responseData['type'] == 'superadmin') {
+        userType="superadmin";
+        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        sharedPreferences.setString('usertypee', userType.toString());
+        sharedPreferences.setString('useriid', useriid.toString());
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      } else {
+        userType="admin";
+        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        sharedPreferences.setString('usertypee', userType.toString());
+        sharedPreferences.setString('useriid', useriid.toString());
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>UserHomeScreen()));
+      }
 
       Fluttertoast.showToast(
         msg: "Login Successfully",
@@ -439,4 +571,6 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = false;
     });
   }
+
+
 }

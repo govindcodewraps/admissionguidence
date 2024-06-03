@@ -524,12 +524,13 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         //   return Container(
         //     child: Center(child: CircularProgressIndicator()),
         //   );
-        // } else if (snapshot.hasError) {
-        //   return Container(
-        //     child: Center(child: Text("No more Meetings")),
-        //   );
-        // } else
-        if (snapshot.hasData) {
+        // }
+         if (snapshot.hasError) {
+          return Container(
+            child: Center(child: Text("No more Meetings")),
+          );
+        }
+        else if (snapshot.hasData) {
           bool showMore = false;
           if (snapshot.data != null && snapshot.data!.data != null) {
             print(snapshot.data!.data!.length);
@@ -647,36 +648,36 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                   //     ),
                                   //   ],
                                   // ),
-                                  SizedBox(height: 5,),
+                                  SizedBox(height: 10,),
 
                                   Row(
                                     children: [
                                       Text("Name :"),
-                                      SizedBox(width: 10,),
+                                      SizedBox(width: 25,),
                                       Text(snapshot.data!.data![index].name.toString()),
                                     ],
                                   ),
-                                  SizedBox(height: 10,),
-                                  Row(
-                                    children: [
-                                      Text("Contact:"),
-                                      SizedBox(width: 10,),
-                                      Text(snapshot.data!.data![index].email.toString()),
-                                    ],
-                                  ),
+                                  // SizedBox(height: 10,),
+                                  // Row(
+                                  //   children: [
+                                  //     Text("Contact:"),
+                                  //     SizedBox(width: 10,),
+                                  //     Text(snapshot.data!.data![index].email.toString()),
+                                  //   ],
+                                  // ),
 
 
                                   Row(
                                     children: [
                                       Text("Remark :"),
-                                     // SizedBox(width: 10),
+                                      SizedBox(width: 0),
                                       Expanded(
                                         child: ExpansionTile(
                                           title: Text(
                                             snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
                                                 ? snapshot.data!.data![index].remark!
                                                 : 'No Remark',
-                                            maxLines: 2, // Adjust the maxLines as needed
+                                            maxLines: 1, // Adjust the maxLines as needed
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           children: <Widget>[
@@ -754,12 +755,14 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                 ],
               ),
             );
-          } else {
+          }
+          else {
             return Container(
               child: Center(child: Text("No data available")),
             );
           }
-        } else {
+        }
+        else {
           return Container(
             child: Center(child: CircularProgressIndicator()),
           );
@@ -785,13 +788,13 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         //   );
         // }
 
-        // else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
-        //   return Container(
-        //     child: Center(
-        //       child: Text('No data available.'),
-        //     ),
-        //   );
-        // }
+        else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+          return Container(
+            child: Center(
+              child: Text('No Meeting'),
+            ),
+          );
+        }
         else {
 
           return
@@ -882,32 +885,35 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                             SizedBox(height: 10,),
 
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Name :"),
-                                Text(snapshot.data!.data![index].name.toString().split('.').last),
-                                SizedBox(width: 10,),
+                                SizedBox(width: 28,),
+                                Flexible(child: Text("${snapshot.data!.data![index].name.toString().split('.').last}")),
+                               // SizedBox(width: 10,),
                               ],
                             ),
-                            SizedBox(height: 10,),
+                            // SizedBox(height: 10,),
+                            //
+                            // Row(
+                            //   children: [
+                            //     Text("Contact:"),
+                            //     SizedBox(width: 2,),
+                            //     Text(snapshot.data!.data![index].email.toString()),
+                            //   ],
+                            // ),
 
                             Row(
                               children: [
-                                Text("Contact:"),
-                                SizedBox(width: 2,),
-                                Text(snapshot.data!.data![index].email.toString()),
-                              ],
-                            ),
-                            Row(
-                              children: [
                                 Text("Remark :"),
-                                SizedBox(width: 10),
+                                SizedBox(width: 0),
                                 Expanded(
                                   child: ExpansionTile(
                                     title: Text(
                                       snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
                                           ? snapshot.data!.data![index].remark!
                                           : 'No Remark',
-                                      maxLines: 2, // Adjust the maxLines as needed
+                                      maxLines: 1, // Adjust the maxLines as needed
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     children: <Widget>[
@@ -915,6 +921,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                         builder: (BuildContext context) {
                                           return Container(
                                             child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   snapshot.data!.data![index].remark != null && snapshot.data!.data![index].remark!.isNotEmpty
@@ -1000,13 +1007,13 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
         //   );
         // }
 
-        // else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
-        //   return Container(
-        //     child: Center(
-        //       child: Text('No data available.'),
-        //     ),
-        //   );
-        // }
+        else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+          return Container(
+            child: Center(
+              child: Text('No Meeting'),
+            ),
+          );
+        }
         else {
 
           return
@@ -1041,13 +1048,13 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                 Row(
                                   children: [
                                     Text("Date:"),
-                                    SizedBox(width: 5,),
+                                    SizedBox(width:0,),
                                     Text(
                                       DateFormat('yyyy-MM-dd').format(
                                         snapshot.data!.data![index].appointmentDate!.toLocal(),
                                       ),
                                     ),
-                                    SizedBox(width: 5,),
+                                    SizedBox(width:1,),
                                     Text(snapshot.data!.data![index]
                                         .appointmentTime
                                         .toString()),
@@ -1072,7 +1079,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                             },
                                             child: Icon(Icons.calendar_month_outlined),
                                           ),
-                                          SizedBox(width: 10,),
+                                          SizedBox(width: 5,),
                                           InkWell(
                                             onTap: () {
                                               _updateBookingStatus(
@@ -1082,7 +1089,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                             },
                                             child: Icon(Icons.done),
                                           ),
-                                          SizedBox(width: 10,),
+                                          SizedBox(width: 5,),
                                           InkWell(
                                             onTap: () {
                                               // _updateBookingStatus(
@@ -1124,24 +1131,26 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                             Row(
                               children: [
                                 Text("Name :"),
-                                Text(snapshot.data!.data![index].name.toString().split('.').last),
-                                SizedBox(width: 10,),
-                              ],
-                            ),
-                            SizedBox(height: 10,),
+                                SizedBox(width: 28,),
 
-                            Row(
-                              children: [
-                                Text("Contact:"),
-                                SizedBox(width: 2,),
-                                Text(snapshot.data!.data![index].email.toString()),
+                                Text(snapshot.data!.data![index].name.toString().split('.').last),
+                                //SizedBox(width: 10,),
                               ],
                             ),
+                           // SizedBox(height: 10,),
+
+                            // Row(
+                            //   children: [
+                            //     Text("Contact:"),
+                            //     SizedBox(width: 2,),
+                            //     Text(snapshot.data!.data![index].email.toString()),
+                            //   ],
+                            // ),
 
                             Row(
                               children: [
                                 Text("Remark :"),
-                                SizedBox(width: 10),
+                                SizedBox(width: 1),
                                 Expanded(
                                   child: ExpansionTile(
                                     title: Text(
@@ -1227,6 +1236,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
   }
 
 
+  
 
   void showDeleteConfirmationDialogfilterd(BuildContext context) {
     showDialog(
@@ -1486,6 +1496,7 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
       throw Exception('Error fetching appointments');
     }
   }
+
   Widget appointmentslist() {
 
     return
@@ -1606,17 +1617,17 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                                 ],
                               ),
 
-                              Row(
-                                children: [
-                                  Text("Contact:"),
-                                  SizedBox(
-                                    width: 2,
-                                  ),
-                                  Text(appointmentsListModel
-                                      .data![index].email
-                                      .toString()),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Text("Contact:"),
+                              //     SizedBox(
+                              //       width: 2,
+                              //     ),
+                              //     Text(appointmentsListModel
+                              //         .data![index].email
+                              //         .toString()),
+                              //   ],
+                              // ),
                               Row(
                                 children: [
                                   Text("Appointment Date:"),

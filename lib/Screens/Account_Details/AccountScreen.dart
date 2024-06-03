@@ -1015,6 +1015,7 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
   String _CASHINHANDCOUNT="0";
   String _TODAYAMOUNTCOUNT="0";
   String _PAGECOUNT="1";
+  String buttontype="";
 
 
 
@@ -1270,8 +1271,11 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
 
                               selectedtransactiontype = newValue!;
                               transationtypevalue=newValue;
+                              buttontype=newValue;
 
                               print("Transation type ${newValue}");
+                              print("Transation ty ${buttontype}");
+
                             });
                           },
                           underline: Container(),
@@ -1462,6 +1466,98 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
   //   );
   // }
 
+
+  // Widget paymentlistwidgettt() {
+  //   return FutureBuilder(
+  //     future: paymentlistpagination(_PAGECOUNT),
+  //     builder: (context, AsyncSnapshot snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.waiting) {
+  //         return Container(
+  //           child: Center(child: CircularProgressIndicator()),
+  //         );
+  //       } else if (snapshot.hasError) {
+  //         return Container(
+  //           child: Center(
+  //             child: Text('Server Error '),
+  //           ),
+  //         );
+  //       } else if (snapshot.hasData && snapshot.data != null && snapshot.data!.data != null && snapshot.data!.pagination != null) {
+  //         return Column(
+  //           children: [
+  //             ListView.separated(
+  //               shrinkWrap: true,
+  //               physics: const NeverScrollableScrollPhysics(),
+  //               reverse: true,
+  //               itemBuilder: (context, int index) {
+  //                 return InkWell(
+  //                   onTap: () {
+  //                     // Handle onTap event
+  //                   },
+  //                   child: Container(
+  //                     decoration: BoxDecoration(
+  //                       color: Colors.white70,
+  //                       borderRadius: BorderRadius.circular(10.0),
+  //                       boxShadow: [
+  //                         BoxShadow(
+  //                           color: Colors.black.withOpacity(0.2),
+  //                           spreadRadius: 2,
+  //                           blurRadius: 4,
+  //                           offset: Offset(0, 3),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     child: Container(
+  //                       padding: EdgeInsets.all(8.0),
+  //                       child: Column(
+  //                         children: [
+  //                           // Your widget content for each item
+  //                         ],
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 );
+  //               },
+  //               separatorBuilder: (context, index) {
+  //                 return SizedBox(height: 16);
+  //               },
+  //               itemCount: snapshot.data!.data!.length,
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.end,
+  //               children: [
+  //                 if (snapshot.data!.pagination!.prevPage! >= 1)
+  //                   ElevatedButton(
+  //                     onPressed: () {
+  //                       // Handle previous page button tap
+  //                     },
+  //                     child: Text("Prev"),
+  //                   ),
+  //                 Spacer(),
+  //                 if (snapshot.data!.pagination!.nextPage! > 1)
+  //                   ElevatedButton(
+  //                     onPressed: () {
+  //                       // Handle next page button tap
+  //                     },
+  //                     child: Text("Next"),
+  //                   ),
+  //               ],
+  //             ),
+  //           ],
+  //         );
+  //       } else {
+  //         return Container(
+  //           child: Center(
+  //             child: Text('No data available.'),
+  //           ),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
+
+
+
+
   Widget paymentlistwidgettt() {
     return FutureBuilder(
       future: paymentlistpagination(_PAGECOUNT),
@@ -1471,21 +1567,21 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
             child: Center(child: CircularProgressIndicator()),
           );
         }
-        // else if (snapshot.hasError) {
-        //   return Container(
-        //     child: Center(
-        //       child: Text('Error: Internal error'),
-        //     ),
-        //   );
-        // }
+        else if (snapshot.hasError) {
+          return Container(
+            child: Center(
+              child: Text('No Transaction Found !'),
+            ),
+          );
+        }
 
-        // else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
-        //   return Container(
-        //     child: Center(
-        //       child: Text('No data available.'),
-        //     ),
-        //   );
-        // }
+        else if (!snapshot.hasData || snapshot.data!.data!.isEmpty) {
+          return Container(
+            child: Center(
+              child: Text('No Transaction Found !'),
+            ),
+          );
+        }
         else {
 
           return  Column(
@@ -1593,14 +1689,14 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
                                 ],
                               ),
 
-                              Row(
-                                children: [
-                                  Text("Date   "),
-                                  SizedBox(width: MediaQuery.of(context).size.width*0.1,),
-                                  Text("${formatAccountNumber(snapshot.data!.data![index].bankName.toString().split('.').last)}"),
-                                  // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Text("Date   "),
+                              //     SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+                              //     Text("${formatAccountNumber(snapshot.data!.data![index].d.toString().split('.').last)}"),
+                              //     // Text(snapshot.data!.data![index].bankName.toString().split('.').last)),
+                              //   ],
+                              // ),
 
 
                             ],
@@ -1913,205 +2009,273 @@ class _AccountdetailsScreenState extends State<AccountdetailsScreen> {
   //  NEW TRANSACTION
 
 
-
-
-  Widget Transactionwidget() {
-    return SingleChildScrollView(
-      child:
-
-      Column(
-        children: [
-          Center(
-            child: _isLoading
-                ? CircularProgressIndicator() // Show the circular progress indicator
-                :
-            Container(
-              // height: MediaQuery.of(context).size.height*1,
-              height: MediaQuery.of(context).size.height*1,
-              decoration: BoxDecoration(
-                //color: Colors.yellow,
-
-                image: DecorationImage(
-
-                  image: AssetImage('assets/background.jpg'), // Replace with your image asset path
-                  fit: BoxFit.fill,
-                ),
-              ),
-              padding: EdgeInsets.only(left: 16, right: 16, top: 10),
-              child:BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 6, sigmaY:6),
-                child:
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Amount : ",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 15,),
-                    TextField(
-                      controller: _amountcontroller,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        labelText: "Enter Amount",
-                        filled: true,
-                        isDense: true,
-                        border: OutlineInputBorder(
-
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-
-
-
-                    SizedBox(height: 15,),
-                    // Text(valu),
-                    //SizedBox(height: 15,),
-
-                    Text(
-                      "Transaction Type: ",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 10,),
-                    Container(
-                      width: MediaQuery.of(context).size.width*0.98,
-                      padding: EdgeInsets.only(left: 10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),  // Set the color of the border
-                        borderRadius: BorderRadius.circular(12), // Set the border radius
-                      ),
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-
-                        value: selectedValue,
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectedValue = newValue!;
-                            //  transationtype=newValue;
-                            print("Transation type ${newValue}");
-                          });
-                        },
-                        underline: Container(),
-                        items: options.map((option) {
-                          return DropdownMenuItem<String>(
-                            value: option,
-                            child: Text(option),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-
-
-                    Text(
-                      "Account Number : ",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 10,),
-                    accountNumberWidget(),
-
-                    SizedBox(height: 10,),
-                    Text(
-                      "Remark : ",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(height: 15,),
-                    TextField(
-                      maxLines: 4,
-                      controller: _remarkcontroller,
-                      //keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        labelText: "Type Remark",
-                        filled: true,
-                        isDense: true,
-                        border: OutlineInputBorder(
-
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-
-                    // if(selectedValue == "CR")
-                    //   Text("creadet cart"),
-                    //  if(selectedValue == "DR")
-                    //    Text("DR cart"),
-                    //  if(selectedValue == "Transaction Type")
-                    //    Text("Transaction Type"),
-
-
-
-                    //  timeslotwidget(),
-                    SizedBox(height: 100,),
-
-                    SizedBox(
-                      height: 45,
-                      width: MediaQuery.of(context).size.width * 1,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                          MaterialStateProperty.all<Color>(MyTheme.backgroundcolor),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                              side: BorderSide(color: MyTheme.backgroundcolor),
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-
-                          print("Print Amount Controoler:${_amountcontroller.text}");
-                          //  print("Print Transaction Type:${transationtype}");
-                          //print("account number name:${accountNumber}");
-                          print("account type:${_remarkcontroller.text}");
-
-                          var AMOUNTVAR =_amountcontroller.text;
-                          var TRANSACTIONTYPEVAR =selectedValue;
-                          //var ACCOUNTNUMVAR =accountNumber!;
-                          var ACCOUNTNUMVAR =accountselectedValue!;
-                          var REMARKVAR =_remarkcontroller.text;
-
-                          print(":::::::::::::::::::::::::::::::::");
-                          print("AMOUNT ${AMOUNTVAR}");
-                          print("TRANSATCTION ${TRANSACTIONTYPEVAR}");
-                          print("ACCOUNT NUM ${ACCOUNTNUMVAR}");
-                          print("REMARK ${REMARKVAR}");
-                          print(":::::::::::::::::::::::::::::::::");
-
-
-
-                          addpaymentapi(AMOUNTVAR,TRANSACTIONTYPEVAR,ACCOUNTNUMVAR,REMARKVAR);
-
-
-                          //addpaymentapi(_amountcontroller.text,transationtype,accountNumber,_remarkcontroller.text);
-                          //_amount,_type,_bankid
-                          // Add the logic for the button press here
-                        },
-                        child: Text(
-                          "Pay",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-
-
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-        ],
-      ),
-    );
-  }
+  // Widget Transactionwidget() {
+  //   return SingleChildScrollView(
+  //     child:
+  //
+  //     Column(
+  //       children: [
+  //         Center(
+  //           child: _isLoading
+  //               ? CircularProgressIndicator() // Show the circular progress indicator
+  //               :
+  //           Container(
+  //             // height: MediaQuery.of(context).size.height*1,
+  //             height: MediaQuery.of(context).size.height*1,
+  //             decoration: BoxDecoration(
+  //               //color: Colors.yellow,
+  //
+  //               image: DecorationImage(
+  //
+  //                 image: AssetImage('assets/background.jpg'), // Replace with your image asset path
+  //                 fit: BoxFit.fill,
+  //               ),
+  //             ),
+  //             padding: EdgeInsets.only(left: 16, right: 16, top: 10),
+  //             child:BackdropFilter(
+  //               filter: ImageFilter.blur(sigmaX: 6, sigmaY:6),
+  //               child:
+  //               Column(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Text(
+  //                     "Amount : ",
+  //                     style: TextStyle(fontSize: 20),
+  //                   ),
+  //                   SizedBox(height: 15,),
+  //                   TextField(
+  //                     controller: _amountcontroller,
+  //                     keyboardType: TextInputType.number,
+  //                     decoration: InputDecoration(
+  //                       floatingLabelBehavior: FloatingLabelBehavior.never,
+  //                       labelText: "Enter Amount",
+  //                       filled: true,
+  //                       isDense: true,
+  //                       border: OutlineInputBorder(
+  //
+  //                         borderRadius: BorderRadius.circular(12),
+  //                       ),
+  //                     ),
+  //                   ),
+  //
+  //
+  //
+  //                   SizedBox(height: 15,),
+  //                   // Text(valu),
+  //                   //SizedBox(height: 15,),
+  //
+  //                   Text(
+  //                     "Transaction Type: ",
+  //                     style: TextStyle(fontSize: 20),
+  //                   ),
+  //                   SizedBox(height: 10,),
+  //                   Container(
+  //                     width: MediaQuery.of(context).size.width*0.98,
+  //                     padding: EdgeInsets.only(left: 10),
+  //                     decoration: BoxDecoration(
+  //                       border: Border.all(color: Colors.black),  // Set the color of the border
+  //                       borderRadius: BorderRadius.circular(12), // Set the border radius
+  //                     ),
+  //                     child: DropdownButton<String>(
+  //                       isExpanded: true,
+  //
+  //                       value: selectedValue,
+  //                       onChanged: (newValue) {
+  //                         setState(() {
+  //                           selectedValue = newValue!;
+  //                           //  transationtype=newValue;
+  //                           buttontype=newValue;
+  //                           print("Transation typre ${newValue}");
+  //                           print("Transation buttontype ${buttontype}");
+  //                           print("Transation selectedValue ${selectedValue}");
+  //                         });
+  //                       },
+  //                       underline: Container(),
+  //                       items: options.map((option) {
+  //                         return DropdownMenuItem<String>(
+  //                           value: option,
+  //                           child: Text(option),
+  //                         );
+  //                       }).toList(),
+  //                     ),
+  //                   ),
+  //                   SizedBox(height: 10,),
+  //
+  //
+  //                   Text(
+  //                     "Account Number : ",
+  //                     style: TextStyle(fontSize: 20),
+  //                   ),
+  //                   SizedBox(height: 10,),
+  //                   accountNumberWidget(),
+  //
+  //                   SizedBox(height: 10,),
+  //                   Text(
+  //                     "Remark : ",
+  //                     style: TextStyle(fontSize: 20),
+  //                   ),
+  //                   SizedBox(height: 15,),
+  //                   TextField(
+  //                     maxLines: 4,
+  //                     controller: _remarkcontroller,
+  //                     //keyboardType: TextInputType.number,
+  //                     decoration: InputDecoration(
+  //                       floatingLabelBehavior: FloatingLabelBehavior.never,
+  //                       labelText: "Type Remark",
+  //                       filled: true,
+  //                       isDense: true,
+  //                       border: OutlineInputBorder(
+  //
+  //                         borderRadius: BorderRadius.circular(12),
+  //                       ),
+  //                     ),
+  //                   ),
+  //
+  //                   // if(selectedValue == "CR")
+  //                   //   Text("creadet cart"),
+  //                   //  if(selectedValue == "DR")
+  //                   //    Text("DR cart"),
+  //                   //  if(selectedValue == "Transaction Type")
+  //                   //    Text("Transaction Type"),
+  //
+  //
+  //
+  //                   //  timeslotwidget(),
+  //                   SizedBox(height: 100,),
+  //
+  //                   SizedBox(
+  //                     height: 45,
+  //                     width: MediaQuery.of(context).size.width * 1,
+  //                     child: ElevatedButton(
+  //                       style: ButtonStyle(
+  //                         backgroundColor:
+  //                         MaterialStateProperty.all<Color>(MyTheme.backgroundcolor),
+  //                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+  //                           RoundedRectangleBorder(
+  //                             borderRadius: BorderRadius.circular(12.0),
+  //                             side: BorderSide(color: MyTheme.backgroundcolor),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                       onPressed: () {
+  //
+  //                         print("Print Amount Controoler:${_amountcontroller.text}");
+  //                         //  print("Print Transaction Type:${transationtype}");
+  //                         //print("account number name:${accountNumber}");
+  //                         print("account type:${_remarkcontroller.text}");
+  //
+  //                         var AMOUNTVAR =_amountcontroller.text;
+  //                         var TRANSACTIONTYPEVAR =selectedValue;
+  //                         //var ACCOUNTNUMVAR =accountNumber!;
+  //                         var ACCOUNTNUMVAR =accountselectedValue!;
+  //                         var REMARKVAR =_remarkcontroller.text;
+  //
+  //                         print(":::::::::::::::::::::::::::::::::");
+  //                         print("AMOUNT ${AMOUNTVAR}");
+  //                         print("TRANSATCTION ${TRANSACTIONTYPEVAR}");
+  //                         print("ACCOUNT NUM ${ACCOUNTNUMVAR}");
+  //                         print("REMARK ${REMARKVAR}");
+  //                         print(":::::::::::::::::::::::::::::::::");
+  //
+  //
+  //
+  //                         addpaymentapi(AMOUNTVAR,TRANSACTIONTYPEVAR,ACCOUNTNUMVAR,REMARKVAR);
+  //
+  //
+  //                         //addpaymentapi(_amountcontroller.text,transationtype,accountNumber,_remarkcontroller.text);
+  //                         //_amount,_type,_bankid
+  //                         // Add the logic for the button press here
+  //                       },
+  //                       child:
+  //
+  //                       Text(
+  //                       //  buttontype == "CR" ? "Receive" : "Pay",
+  //                         "Paygg",
+  //                         style: TextStyle(
+  //                           color: Colors.white,
+  //                           fontSize: 16,
+  //                           fontWeight: FontWeight.w600,
+  //                         ),
+  //                       )
+  //
+  //
+  //
+  //                     ),
+  //                   ),
+  //
+  //
+  //                   SizedBox(
+  //                     height: 45,
+  //                     width: MediaQuery.of(context).size.width * 1,
+  //                     child: ElevatedButton(
+  //                       style: ButtonStyle(
+  //                         backgroundColor:
+  //                         MaterialStateProperty.all<Color>(MyTheme.backgroundcolor),
+  //                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+  //                           RoundedRectangleBorder(
+  //                             borderRadius: BorderRadius.circular(12.0),
+  //                             side: BorderSide(color: MyTheme.backgroundcolor),
+  //                           ),
+  //                         ),
+  //                       ),
+  //                       onPressed: () {
+  //
+  //                         print("Print Amount Controoler:${_amountcontroller.text}");
+  //                         //  print("Print Transaction Type:${transationtype}");
+  //                         //print("account number name:${accountNumber}");
+  //                         print("account type:${_remarkcontroller.text}");
+  //
+  //                         var AMOUNTVAR =_amountcontroller.text;
+  //                         var TRANSACTIONTYPEVAR =selectedValue;
+  //                         //var ACCOUNTNUMVAR =accountNumber!;
+  //                         var ACCOUNTNUMVAR =accountselectedValue!;
+  //                         var REMARKVAR =_remarkcontroller.text;
+  //
+  //                         print(":::::::::::::::::::::::::::::::::");
+  //                         print("AMOUNT ${AMOUNTVAR}");
+  //                         print("TRANSATCTION ${TRANSACTIONTYPEVAR}");
+  //                         print("ACCOUNT NUM ${ACCOUNTNUMVAR}");
+  //                         print("REMARK ${REMARKVAR}");
+  //                         print(":::::::::::::::::::::::::::::::::");
+  //
+  //
+  //
+  //                         addpaymentapi(AMOUNTVAR,TRANSACTIONTYPEVAR,ACCOUNTNUMVAR,REMARKVAR);
+  //
+  //
+  //                         //addpaymentapi(_amountcontroller.text,transationtype,accountNumber,_remarkcontroller.text);
+  //                         //_amount,_type,_bankid
+  //                         // Add the logic for the button press here
+  //                       },
+  //                       child:
+  //
+  //                       Text(
+  //                       //  buttontype == "CR" ? "Receive" : "Pay",
+  //                         "Receive",
+  //                         style: TextStyle(
+  //                           color: Colors.white,
+  //                           fontSize: 16,
+  //                           fontWeight: FontWeight.w600,
+  //                         ),
+  //                       ),
+  //
+  //
+  //
+  //                     ),
+  //                   ),
+  //
+  //
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget accountNumberWidget() {
     return FutureBuilder(

@@ -8,10 +8,10 @@ import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
-import '../baseurl.dart';
-import '../models/ReminderTypeModel.dart';
-import '../models/Time_slot_model.dart';
-import '../my_theme.dart';
+import '../../baseurl.dart';
+import '../../models/ReminderTypeModel.dart';
+import '../../models/Time_slot_model.dart';
+import '../../my_theme.dart';
 import 'Reminder_Screen.dart';
 
 class AddReminderScreen extends StatefulWidget {
@@ -30,6 +30,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
   String selectedValue = 'Select Time';
   var _timeslotid;
   var selecttime;
+  var ttime;
 
  //TextEditingController dateInputController = TextEditingController();
   Time _time = Time(hour: 11, minute: 30, second: 20);
@@ -38,14 +39,60 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
   List<String> timeSlotOptions = ['Time Slot', '10:00 - 10:15', '10:30 - 11:11', '20:00 - 20:20'];
   String selectedTimeSlot = 'Time Slot'; // Initial value, you can set it based on your requirements
 
+
+
+  // void onTimeChanged(Time newTime) {
+  //   setState(() {
+  //     _time = newTime;
+  //     selecttime=_time.format(context);
+  //     print("Timmmmee ${selecttime}");
+  //
+  //   });
+  // }
+
+  // void onTimeChanged(Time newTime) {
+  //   String formattedHour = _time.hour < 10 ? '0${_time.hour}' : '${_time.hour}';
+  //
+  //   setState(() {
+  //     _time = newTime;
+  //         selecttime=_time.format(context);
+  //         print("Timmmmee ${selecttime}");
+  //   });
+  //
+  //   // Format the time with leading zeros if the hour or minute is less than 10
+  //   //String formattedHour = _time.hour < 10 ? '0${_time.hour}' : '${_time.hour}';
+  //   String formattedMinute = _time.minute < 10 ? '0${_time.minute}' : '${_time.minute}';
+  //
+  //   // Print the formatted time
+  //   print("Time selected: $formattedHour:$formattedMinute");
+  // }
+
+
+
+
   void onTimeChanged(Time newTime) {
     setState(() {
       _time = newTime;
-      selecttime=_time.format(context);
-      print("Timmmmee ${selecttime}");
-
+      selecttime = _time.format(context);
+      ttime=_formatTime(_time);
+      print("Timmmmee ${_formatTime(_time)}");
     });
   }
+
+  String _formatTime(TimeOfDay time) {
+    // Format the time with leading zeros for the hour
+    String formattedHour = time.hourOfPeriod.toString().padLeft(2, '0');
+    String formattedMinute = time.minute.toString().padLeft(2, '0');
+
+    // Determine AM or PM
+    String period = time.period == DayPeriod.am ? 'AM' : 'PM';
+
+    // Combine and return the formatted time
+    return '$formattedHour:$formattedMinute $period';
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -185,6 +232,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                             );
                           },
                         ),
+
+
                         //time slot end
 
                         //timeslotwidget(),
@@ -205,6 +254,12 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                           ),
                         ),
                         SizedBox(height: 30),
+
+                        // ElevatedButton(onPressed: (){
+                        //   print("Time::::: ${selecttime}");
+                        //
+                        // }, child:Text("Button")),
+
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
@@ -240,16 +295,15 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                                       _isLoading = true;
                                     });
                                    // _timeslotid
+                                 print("::::::::::::::::::::::::::::::::::::::::::");
+                                    print("Date :${dateInputController.text}");
+                                    print("remark :${remarkInputtextController.text}");
+                                    print("Reminder type :${remindertypeid}");
+                                    print("Time :${ttime}");
+                                    print("::::::::::::::::::::::::::::::::::::::::::");
 
-                                    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                                    print("Date input ${dateInputController.text}");
-                                    print("Remark input ${remarkInputtextController.text}");
-                                    print("Reminder input ${remindertypeid}");
-                                    print("Select time input ${selecttime}");
-                                    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-
-                                     addmeeting(dateInputController.text,remarkInputtextController.text,remindertypeid,selecttime);
+                                    addmeeting(dateInputController.text,remarkInputtextController.text,remindertypeid,ttime);
                                   }
 
                                 },
@@ -271,6 +325,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
                                   ),
                                 ),
                               ),
+
+
                             ),
                           ),
                         ),
@@ -556,8 +612,8 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
     };
     var dio = Dio();
     var response = await dio.request(
-      //'https://admissionguidanceindia.com/appdata/webservice.php',
-      BASEURL.DOMAIN_PATH,
+      'https://admissionguidanceindia.com/appdata/New-webservice.php',
+     // BASEURL.DOMAIN_PATH,
       options: Options(
         method: 'POST',
         headers: headers,
@@ -566,6 +622,7 @@ class _AddReminderScreenState extends State<AddReminderScreen> {
     );
 
     if (response.statusCode == 200) {
+      print("add reminder response : ${response.data}");
       print(json.encode(response.data));
       Fluttertoast.showToast(
         msg: "Reminder Set Succesfully",
