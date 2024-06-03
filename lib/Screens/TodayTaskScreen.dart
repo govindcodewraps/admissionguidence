@@ -5,7 +5,7 @@ import 'package:admissionguidence/models/TodayTaskModel.dart';
 import 'package:admissionguidence/usermodel/tasklistmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,7 +19,7 @@ class TodayTaskScreen extends StatefulWidget {
 }
 
 class _TodayTaskScreenState extends State<TodayTaskScreen> {
-  final AdmissionController _admissionController = AdmissionController();
+  // final AdmissionController _admissionController = AdmissionController();
   Set<int> selectedCheckboxIndices = {};
   Set<int> selectedButtonIndices = {};
   DateTime? submitDate;
@@ -52,17 +52,17 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _admissionController.getTasksList();
+    // _admissionController.getTasksList();
   }
 
-  void filterListByType(String type) {
-    setState(() {
-      filterType = type;
-      filteredTypeList = listdata!.data
-          .where((element) => element.type.contains(filterType))
-          .toList();
-    });
-  }
+  // void filterListByType(String type) {
+  //   setState(() {
+  //     filterType = type;
+  //     filteredTypeList = listdata!.data
+  //         .where((element) => element.type.contains(filterType))
+  //         .toList();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

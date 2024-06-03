@@ -731,8 +731,6 @@
 //   }
 // }
 
-
-
 import 'dart:convert';
 import 'package:admissionguidence/Screens/loginscreen.dart';
 import 'package:admissionguidence/usermodel/tasklistmodel.dart';
@@ -753,8 +751,6 @@ class TodayTaskScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<TodayTaskScreen> {
-
-
   //final AdmissionController _admissionController = AdmissionController();
   Set<int> selectedCheckboxIndices = {};
   Set<int> selectedButtonIndices = {};
@@ -762,7 +758,7 @@ class _UserScreenState extends State<TodayTaskScreen> {
   bool isSelected = false;
   bool isSelectedd = false;
   // bool buttonClicked = false;
-  DateTime  date = DateTime.now();
+  DateTime date = DateTime.now();
 
   String? date1;
   String? date2;
@@ -770,16 +766,11 @@ class _UserScreenState extends State<TodayTaskScreen> {
   String? Timeeee;
 
   String? typeValue;
-  var items = [
-    "no choice",
-    "weekly",
-    'monthly',
-    "daily"
-  ];
+  var items = ["no choice", "weekly", 'monthly', "daily"];
 
   Future getValidationData() async {
     final SharedPreferences sharedPreferences =
-    await SharedPreferences.getInstance();
+        await SharedPreferences.getInstance();
     var obtainEmail = sharedPreferences.getString('email');
     setState(() {
       finalEmail = obtainEmail;
@@ -788,41 +779,37 @@ class _UserScreenState extends State<TodayTaskScreen> {
     print(finalEmail);
   }
 
-
   TaskListModel? listdata;
 
   String filterType = '';
   List filteredTypeList = [];
   bool isloading = true;
 
-
-
-
   bool _isButtonEnabled = false;
 
-  Future<void> _calculateTimeDifference() async {
-    final currentTime = DateTime.now();
-    final targetTime = DateTime(currentTime.year, currentTime.month, currentTime.day, 16, 15); // 4:15 PM
-    final tenMinutesBeforeTarget = targetTime.subtract(Duration(minutes: 14));
-
-    if (currentTime.isAfter(tenMinutesBeforeTarget)) {
-      setState(() {
-        _isButtonEnabled = true;
-      });
-    } else {
-      setState(() {
-        _isButtonEnabled = false;
-      });
-    }
-  }
-
+  // Future<void> _calculateTimeDifference() async {
+  //   final currentTime = DateTime.now();
+  //   final targetTime = DateTime(currentTime.year, currentTime.month,
+  //       currentTime.day, 16, 15); // 4:15 PM
+  //   final tenMinutesBeforeTarget = targetTime.subtract(Duration(minutes: 14));
+  //
+  //   if (currentTime.isAfter(tenMinutesBeforeTarget)) {
+  //     setState(() {
+  //       _isButtonEnabled = true;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       _isButtonEnabled = false;
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
 
     super.initState();
-    //_calculateTimeDifference();
+    // _calculateTimeDifference();
 
     print("Govind hhhhhhhhh");
     print(finalEmail);
@@ -830,18 +817,14 @@ class _UserScreenState extends State<TodayTaskScreen> {
     // _admissionController.getTasksList();
   }
 
-
-
-
-
-  void filterListByType(String type) {
-    setState(() {
-      filterType = type;
-      filteredTypeList = listdata!.data
-          .where((element) => element.type.contains(filterType))
-          .toList();
-    });
-  }
+  // void filterListByType(String type) {
+  //   setState(() {
+  //     filterType = type;
+  //     filteredTypeList = listdata!.data
+  //         .where((element) => element.type.contains(filterType))
+  //         .toList();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -852,18 +835,15 @@ class _UserScreenState extends State<TodayTaskScreen> {
         ),
         backgroundColor: MyTheme.backgroundcolor,
         title: Text(
-          "Total Task",
+          "Today Task",
           style: TextStyle(
             color: Colors.white, // Change the text color here
           ),
         ),
       ),
       body: taskliswidget(),
-
     );
   }
-
-
 
   String _formatTime(String timeString) {
     // Split the time string into hours and minutes
@@ -881,19 +861,17 @@ class _UserScreenState extends State<TodayTaskScreen> {
     return formattedTime;
   }
 
-
-
   Widget taskliswidget() {
     return FutureBuilder<TodayTaskModel?>(
-
       future: tasklistapi(),
       builder: (context, snapshot) {
+        // if (snapshot.connectionState == ConnectionState.waiting) {
+        //   return Center(child: CircularProgressIndicator());
+        // }
         if (snapshot.hasError) {
-
           return Center(child: Text("No more Meetings"));
         } else if (snapshot.hasData) {
           if (snapshot.data != null && snapshot.data!.data != null) {
-
             return Container(
               padding: EdgeInsets.only(left: 16, right: 16, bottom: 20),
               child: Column(
@@ -998,397 +976,430 @@ class _UserScreenState extends State<TodayTaskScreen> {
                       itemBuilder: (context, index) {
                         //bool buttonClicked = selectedCheckboxIndices.contains(index);
                         bool buttonClicked2 =
-                        selectedButtonIndices.contains(index);
-                        bool isSelected = selectedCheckboxIndices.contains(index);
-                        _taskid= snapshot.data!.data![index].id.toString();
+                            selectedButtonIndices.contains(index);
+                        bool isSelected =
+                            selectedCheckboxIndices.contains(index);
+                        _taskid = snapshot.data!.data![index].id.toString();
 
                         return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Card(
-                              surfaceTintColor: Colors.transparent,
-                              color: Colors.orange.shade50,
-                              elevation: 20,
-                              shape: RoundedRectangleBorder(
-                                // side: BorderSide(color: Colors.blue, width: 1),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child:
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                height:
-                                MediaQuery.of(context).size.height * 0.3,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            surfaceTintColor: Colors.transparent,
+                            color: Colors.white,
+                            elevation: 20,
+                            shape: RoundedRectangleBorder(
+                              // side: BorderSide(color: Colors.blue, width: 1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height * 0.28,
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.blue, width: 2),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
                                     children: [
-                                      Row(
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 8.0, top: 10.0),
-                                            child: Text(
-                                              'Task Name : ',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8.0, top: 10.0),
-                                            child: Text(
-                                              snapshot.data!.data![index].id
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          Spacer(),
-
-                                          // Row(
-                                          //   children: [
-                                          //     Padding(
-                                          //       padding:
-                                          //       const EdgeInsets.all(
-                                          //           8.0),
-                                          //       child: Text(
-                                          //         DateFormat.jm().format(DateTime.now()),
-                                          //       ),
-                                          //     ),
-                                          //     Padding(
-                                          //       padding:
-                                          //       const EdgeInsets.all(
-                                          //           5.0),
-                                          //       child: Icon(
-                                          //         Icons.verified_user,
-                                          //         color: Colors.green,
-                                          //       ),
-                                          //     )
-                                          //   ],
-                                          // )
-
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.only(top: 10.0),
-                                        child: Divider(
-                                          color: Colors.black.withOpacity(0.7),
-                                          thickness: 1,
-                                          height: 1,
+                                      const Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 8.0, top: 10.0),
+                                        child: Text(
+                                          'Task Name : ',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ),
-                                      Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8.0, top: 10.0),
-                                            child: Text(
-                                              'Task Name : ',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8.0, top: 10.0),
-                                            child: Text(
-                                              snapshot
-                                                  .data!.data![index].taskName
-                                                  .toString(),
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                          ),
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, top: 10.0),
+                                        child: Text(
+                                          snapshot.data!.data![index].id
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                      Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8.0, top: 10.0),
-                                            child: Text(
-                                              'Type of Task : ',
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                          ),
-                                          // Padding(
-                                          //   padding: const EdgeInsets.only(
-                                          //       left: 8.0, top: 10.0),
-                                          //   child: Text(
-                                          //     snapshot.data!.data![index].type
-                                          //         .toString(),
-                                          //     style: TextStyle(fontSize: 16),
-                                          //   ),
-                                          // ),
-
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8.0, top: 10.0),
-                                            child: Text(
-                                              snapshot.data!.data![index].type
-                                                  .toString(),
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          // Text(DateFormat("hh:mm").parse(snapshot.data!.data![index].taskTime) as String),
-
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8.0, top: 10.0),
-                                            child: Text(
-                                              'Task Time : ',
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                          ),
-                                          // Padding(
-                                          //   padding: const EdgeInsets.only(
-                                          //       left: 8.0, top: 10.0),
-                                          //   child: Text(
-                                          //     snapshot
-                                          //         .data!.data![index].taskTime
-                                          //         .toString(),
-                                          //     style: TextStyle(fontSize: 16),
-                                          //   ),
-                                          // ),
-
-
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 8.0, top: 10.0),
-                                            child: Text(
-                                              _formatTime(snapshot.data!.data![index].taskTime.toString()),
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                          ),
-
-
-
-                                        ],
-                                      ),
-
-
-
-
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-
-                                      if(snapshot.data!.data![index].status==1)
-                                        Row(children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8.0, top: 1.0),
-                                            child: Text(
-                                              'Submission Time : ',
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                          ),
-
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8.0, top: 1.0),
-                                            child: Text(
-                                              snapshot
-                                                  .data!.data![index].submissionTime
-                                                  .toString(),
-                                              style: TextStyle(fontSize: 16),
-                                            ),
-                                          ),
-                                        ],),
-
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-
-
-
-
-
-
-                                      if(snapshot.data!.data![index].status==0)
-                                      Row(
-                                        children: [
-                                          Checkbox(
-                                            value: isSelected,
-                                            onChanged: (bool? value) {
-                                              setState(() {
-
-                                                final currentTime = DateTime.now();
-                                                final targetTime = DateTime(currentTime.year, currentTime.month, currentTime.day, 16, 40); // 4:15 PM
-                                                // final targetTime = DateTime(currentTime.year, currentTime.month, currentTime.day, 16, 40); // 4:15 PM
-                                                final tenMinutesBeforeTarget = targetTime.subtract(Duration(minutes: 1));
-
-                                                if (currentTime.isAfter(tenMinutesBeforeTarget)) {
-                                                  setState(() {
-                                                    _isButtonEnabled = true;
-                                                  });
-                                                } else {
-                                                  setState(() {
-                                                    _isButtonEnabled = false;
-                                                  });
-                                                }
-
-
-                                                //isSelected = value!;
-                                                if (value == true) {
-                                                  selectedCheckboxIndices
-                                                      .add(index);
-                                                } else {
-                                                  selectedCheckboxIndices
-                                                      .remove(index);
-                                                }
-                                              });
-                                            },
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(1.0),
-                                            child: Container(
-                                              //width: 80,
-                                              child: ElevatedButton(
-
-                                                onPressed: isSelected ? () {
-                                                  var taskidd= snapshot.data!.data![index].id.toString();
-                                                  print(taskidd);
-                                                  print("Hello QWERT");
-
-                                                  var submissiontime =DateFormat.jm().format(DateTime.now());
-
-                                                  print(submissiontime);
-                                                  alltasksubmit(taskidd,submissiontime);
-
-                                                  //   print(_taskid);
-
-                                                  // Add your submit logic here
-                                                } : null,
-
-                                                child: Center(
-                                                    child: Text(
-                                                      'Submit',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    )),
-                                                style:
-                                                ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                  Colors.green,
-                                                ),
-
-
-
-                                                //  onPressed:(){
-                                                //       setState(() {
-                                                //         buttonClicked =
-                                                //         true;
-                                                //         if (buttonClicked ==
-                                                //             true) {
-                                                //           selectedCheckboxIndices
-                                                //               .add(index);
-                                                //         } else {
-                                                //           selectedCheckboxIndices
-                                                //               .remove(
-                                                //               index);
-                                                //         }
-                                                //         tasksubmit();
-                                                //       }
-                                                //
-                                                // );
-                                                //   }
-
-                                                // isSelected
-                                                //     ? ()  {
-                                                //         setState(() {
-                                                //           buttonClicked =
-                                                //               true;
-                                                //           if (buttonClicked ==
-                                                //               true) {
-                                                //             selectedCheckboxIndices
-                                                //                 .add(index);
-                                                //           } else {
-                                                //             selectedCheckboxIndices
-                                                //                 .remove(
-                                                //                     index);
-                                                //           }
-                                                //           tasksubmit();
-                                                //         }
-                                                //         );
-                                                //       }
-                                                //     : null
-
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      if(snapshot.data!.data![index].status==1)
-                                        Center(child: Icon(Icons.done_all,color: Colors.green,))
-
+                                      Spacer(),
 
                                       // Row(
                                       //   children: [
-                                      //     Checkbox(
-                                      //       value: isSelected,
-                                      //       onChanged: (bool? value) {
-                                      //         setState(() {
-                                      //           //isSelected = value!;
-                                      //           if (value == true) {
-                                      //             selectedCheckboxIndices.add(index);
-                                      //           } else {
-                                      //             selectedCheckboxIndices.remove(index);
-                                      //           }
-                                      //         });
-                                      //       },
-                                      //     ),
                                       //     Padding(
-                                      //       padding: const EdgeInsets.all(1.0),
-                                      //       child: Container(
-                                      //         //width: 80,
-                                      //         child: ElevatedButton(
-                                      //           onPressed: _isButtonEnabled ? () {
-                                      //             var taskidd = snapshot.data!.data![index].id.toString();
-                                      //             print(taskidd);
-                                      //             print("Hello QWERT");
-                                      //
-                                      //             var submissiontime = DateFormat.jm().format(DateTime.now());
-                                      //             print(submissiontime);
-                                      //
-                                      //             alltasksubmit(taskidd, submissiontime);
-                                      //
-                                      //             //   print(_taskid);
-                                      //
-                                      //             // Add your submit logic here
-                                      //           } : null,
-                                      //           child: Center(
-                                      //             child: Text(
-                                      //               'Submit',
-                                      //               style: TextStyle(
-                                      //                 color: Colors.white,
-                                      //               ),
-                                      //             ),
-                                      //           ),
-                                      //           style: ElevatedButton.styleFrom(
-                                      //             backgroundColor: _isButtonEnabled ? Colors.green : Colors.grey, // Change button color based on enabled state
-                                      //           ),
-                                      //         ),
+                                      //       padding:
+                                      //       const EdgeInsets.all(
+                                      //           8.0),
+                                      //       child: Text(
+                                      //         DateFormat.jm().format(DateTime.now()),
                                       //       ),
                                       //     ),
+                                      //     Padding(
+                                      //       padding:
+                                      //       const EdgeInsets.all(
+                                      //           5.0),
+                                      //       child: Icon(
+                                      //         Icons.verified_user,
+                                      //         color: Colors.green,
+                                      //       ),
+                                      //     )
                                       //   ],
-                                      // ),
-
-
+                                      // )
                                     ],
                                   ),
-                                ),
-                              ),
-                            ));
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10.0),
+                                    child: Divider(
+                                      color: Colors.black.withOpacity(0.7),
+                                      thickness: 1,
+                                      height: 1,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, top: 10.0),
+                                        child: Text(
+                                          'Task Name : ',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, top: 10.0),
+                                        child: Text(
+                                          snapshot.data!.data![index].taskName
+                                              .toString(),
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, top: 10.0),
+                                        child: Text(
+                                          'Type of Task : ',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.only(
+                                      //       left: 8.0, top: 10.0),
+                                      //   child: Text(
+                                      //     snapshot.data!.data![index].type
+                                      //         .toString(),
+                                      //     style: TextStyle(fontSize: 16),
+                                      //   ),
+                                      // ),
 
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, top: 10.0),
+                                        child: Text(
+                                          snapshot.data!.data![index].type
+                                              .toString(),
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      // Text(DateFormat("hh:mm").parse(snapshot.data!.data![index].taskTime) as String),
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, top: 10.0),
+                                        child: Text(
+                                          'Task Time : ',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.only(
+                                      //       left: 8.0, top: 10.0),
+                                      //   child: Text(
+                                      //     snapshot
+                                      //         .data!.data![index].taskTime
+                                      //         .toString(),
+                                      //     style: TextStyle(fontSize: 16),
+                                      //   ),
+                                      // ),
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, top: 10.0),
+                                        child: Text(
+                                          _formatTime(snapshot
+                                              .data!.data![index].taskTime
+                                              .toString()),
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+
+                                  if (snapshot.data!.data![index].status == 1)
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, top: 1.0),
+                                          child: Text(
+                                            'Submission Time : ',
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, top: 1.0),
+                                          child: Text(
+                                            snapshot.data!.data![index]
+                                                .submissionTime
+                                                .toString(),
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+
+                                  if (snapshot.data!.data![index].status == 0)
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          value: isSelected ,
+                                          onChanged: (bool? value) {
+                                            setState(() {
+                                              final currentTime =
+                                              DateTime.now();
+                                              // final targetTime = DateTime(
+                                              //     currentTime.year,
+                                              //     currentTime.month,
+                                              //     currentTime.day,
+                                              //     16,
+                                              //     40); // 4:15 PM
+                                              final targetTime = DateTime(
+                                                currentTime.year,
+                                                currentTime.month,
+                                                currentTime.day,
+                                                int.parse(snapshot.data!
+                                                    .data![index].taskTime
+                                                    .toString()
+                                                    .substring(0, 2)),
+                                                int.parse(snapshot.data!
+                                                    .data![index].taskTime
+                                                    .toString()
+                                                    .substring(3)),
+                                              ); // 4:15 PM
+                                              print("targetTime");
+                                              print(targetTime);
+                                              final tenMinutesBeforeTarget =
+                                              targetTime.subtract(
+                                                  const Duration(
+                                                      minutes: 10));
+                                              print(
+                                                  "tenMinutesBeforeTarget");
+                                              print(
+                                                  tenMinutesBeforeTarget);
+
+                                              if (currentTime.isAfter(
+                                                  tenMinutesBeforeTarget)) {
+                                                setState(() {
+                                                  _isButtonEnabled = true;
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  _isButtonEnabled =
+                                                  false;
+                                                });
+                                              }
+
+                                              //isSelected = value!;
+                                              if (value == true) {
+                                                selectedCheckboxIndices
+                                                    .add(index);
+                                              } else {
+                                                selectedCheckboxIndices
+                                                    .remove(index);
+                                              }
+                                            });
+                                          },
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(1.0),
+                                          child: Container(
+                                            //width: 80,
+                                            child: ElevatedButton(
+                                              onPressed:  isSelected &&
+                                                  _isButtonEnabled
+                                                  ? () {
+                                                      var taskidd = snapshot
+                                                          .data!.data![index].id
+                                                          .toString();
+                                                      print(taskidd);
+                                                      print("Hello QWERT");
+
+                                                      var submissiontime =
+                                                          DateFormat.jm()
+                                                              .format(DateTime
+                                                                  .now());
+
+                                                      print(submissiontime);
+                                                      alltasksubmit(taskidd,
+                                                          submissiontime);
+
+                                                      //   print(_taskid);
+
+                                                      // Add your submit logic here
+                                                    }
+                                                  : null,
+
+                                              child: Center(
+                                                  child: Text(
+                                                'Submit',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.green,
+                                              ),
+
+                                              //  onPressed:(){
+                                              //       setState(() {
+                                              //         buttonClicked =
+                                              //         true;
+                                              //         if (buttonClicked ==
+                                              //             true) {
+                                              //           selectedCheckboxIndices
+                                              //               .add(index);
+                                              //         } else {
+                                              //           selectedCheckboxIndices
+                                              //               .remove(
+                                              //               index);
+                                              //         }
+                                              //         tasksubmit();
+                                              //       }
+                                              //
+                                              // );
+                                              //   }
+
+                                              // isSelected
+                                              //     ? ()  {
+                                              //         setState(() {
+                                              //           buttonClicked =
+                                              //               true;
+                                              //           if (buttonClicked ==
+                                              //               true) {
+                                              //             selectedCheckboxIndices
+                                              //                 .add(index);
+                                              //           } else {
+                                              //             selectedCheckboxIndices
+                                              //                 .remove(
+                                              //                     index);
+                                              //           }
+                                              //           tasksubmit();
+                                              //         }
+                                              //         );
+                                              //       }
+                                              //     : null
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  if (snapshot
+                                      .data!.data![index].status ==
+                                      1)
+                                    const Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 10.0, top: 5.0),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Task Submitted",
+                                            style: TextStyle(
+                                                color: Colors.green),
+                                          ),
+                                          Icon(
+                                            Icons.done_all,
+                                            color: Colors.green,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+
+                                  // Row(
+                                  //   children: [
+                                  //     Checkbox(
+                                  //       value: isSelected,
+                                  //       onChanged: (bool? value) {
+                                  //         setState(() {
+                                  //           //isSelected = value!;
+                                  //           if (value == true) {
+                                  //             selectedCheckboxIndices.add(index);
+                                  //           } else {
+                                  //             selectedCheckboxIndices.remove(index);
+                                  //           }
+                                  //         });
+                                  //       },
+                                  //     ),
+                                  //     Padding(
+                                  //       padding: const EdgeInsets.all(1.0),
+                                  //       child: Container(
+                                  //         //width: 80,
+                                  //         child: ElevatedButton(
+                                  //           onPressed: _isButtonEnabled ? () {
+                                  //             var taskidd = snapshot.data!.data![index].id.toString();
+                                  //             print(taskidd);
+                                  //             print("Hello QWERT");
+                                  //
+                                  //             var submissiontime = DateFormat.jm().format(DateTime.now());
+                                  //             print(submissiontime);
+                                  //
+                                  //             alltasksubmit(taskidd, submissiontime);
+                                  //
+                                  //             //   print(_taskid);
+                                  //
+                                  //             // Add your submit logic here
+                                  //           } : null,
+                                  //           child: Center(
+                                  //             child: Text(
+                                  //               'Submit',
+                                  //               style: TextStyle(
+                                  //                 color: Colors.white,
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //           style: ElevatedButton.styleFrom(
+                                  //             backgroundColor: _isButtonEnabled ? Colors.green : Colors.grey, // Change button color based on enabled state
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -1399,12 +1410,12 @@ class _UserScreenState extends State<TodayTaskScreen> {
             return Center(child: Text("No data available"));
           }
         } else {
-          return Center(child: CircularProgressIndicator());
+          // return Center(child: CircularProgressIndicator());
+          return Center(child: Text("No Meetings"));
         }
       },
     );
   }
-
 
   Future<TodayTaskModel?> tasklistapi() async {
     var dio = Dio();
@@ -1418,10 +1429,7 @@ class _UserScreenState extends State<TodayTaskScreen> {
     try {
       var response = await dio.post(
         'https://admissionguidanceindia.com/appdata/task.php',
-        data: {
-          'todayTask': '1',
-          'user_id': '5'
-        },
+        data: {'todayTask': '1', 'user_id': '5'},
         options: Options(headers: headers),
       );
       print(response.statusCode);
@@ -1438,10 +1446,9 @@ class _UserScreenState extends State<TodayTaskScreen> {
       print('Failed with error: $e');
     }
   }
-
 }
 
-Future alltasksubmit(taskid,submissiontime) async {
+Future alltasksubmit(taskid, submissiontime) async {
   var headers = {
     'accept': 'application/json',
     'Content-Type': 'application/x-www-form-urlencoded',
@@ -1483,5 +1490,3 @@ Future alltasksubmit(taskid,submissiontime) async {
     print('Error: $e');
   }
 }
-
-

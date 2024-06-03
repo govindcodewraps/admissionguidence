@@ -9,43 +9,49 @@ TaskListModel taskListModelFromJson(String str) => TaskListModel.fromJson(json.d
 String taskListModelToJson(TaskListModel data) => json.encode(data.toJson());
 
 class TaskListModel {
-  int success;
-  List<Datum> data;
+  int? success;
+  List<Datum>? data;
 
   TaskListModel({
-    required this.success,
-    required this.data,
+     this.success,
+     this.data,
   });
 
   factory TaskListModel.fromJson(Map<String, dynamic> json) => TaskListModel(
     success: json["success"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    // data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "success": success,
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    // "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+
   };
 }
 
 class Datum {
-  String id;
-  String taskName;
-  String taskTime;
-  String type;
-  int status;
-  String submissionTime;
+  dynamic sno;
+  String? id;
+  String? taskName;
+  String? taskTime;
+  String? type;
+  int? status;
+  String? submissionTime;
 
   Datum({
-    required this.id,
-    required this.taskName,
-    required this.taskTime,
-    required this.type,
-    required this.status,
-    required this.submissionTime,
+    this.sno,
+     this.id,
+     this.taskName,
+     this.taskTime,
+     this.type,
+     this.status,
+     this.submissionTime,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    sno: json["sno"],
     id: json["id"],
     taskName: json["task_name"],
     taskTime: json["task_time"],
@@ -55,6 +61,7 @@ class Datum {
   );
 
   Map<String, dynamic> toJson() => {
+    "sno": sno,
     "id": id,
     "task_name": taskName,
     "task_time": taskTime,

@@ -755,12 +755,14 @@ class _Meeting_record_screenState extends State<Meeting_record_screen> {
                 ],
               ),
             );
-          } else {
+          }
+          else {
             return Container(
               child: Center(child: Text("No data available")),
             );
           }
-        } else {
+        }
+        else {
           return Container(
             child: Center(child: CircularProgressIndicator()),
           );
