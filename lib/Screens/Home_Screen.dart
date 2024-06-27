@@ -4,6 +4,7 @@ import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../USER_Screens/todaytask.dart';
 import '../USER_Screens/userscreen.dart';
 import 'Reminder/ReminderTabScreen.dart';
 import '../baseurl.dart';
@@ -99,9 +100,12 @@ class _HomeScreenState extends State<HomeScreen> {
               TextButton(
                 onPressed: () async {
                   // Perform logout actions
+                  gobaluseridd = '';
                   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                   sharedPreferences.remove('email');
                   sharedPreferences.remove('userTye');
+
+
                   Navigator.pop(context);
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
@@ -280,9 +284,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
 
-                  ElevatedButton(onPressed: (){
-                    Navigator.push(context,MaterialPageRoute(builder: (context)=>UserScreen()));
-                  }, child: Text("User Screen")),
 
                   Container(
                     padding: EdgeInsets.fromLTRB(16, 20, 16, 16),
@@ -293,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: Column(
                       children: [
-                        SizedBox(height: 60,),
+                        SizedBox(height: 20,),
 
                         Align(
                           alignment: Alignment.centerRight,
@@ -362,7 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 40,),
+                        SizedBox(height: 20,),
 
                         Align(
                           alignment: Alignment.centerRight,
@@ -434,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 40,),
+                        SizedBox(height: 20,),
 
                         Align(
                           alignment: Alignment.centerRight,
@@ -504,7 +505,145 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 40,),
+
+                        SizedBox(height: 11,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                          SizedBox(
+                            height: 50,
+                            //width:double.infinity,
+                            child: ElevatedButton(
+
+                              style: ButtonStyle(
+                                  backgroundColor:MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
+
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+
+                                        borderRadius: BorderRadius.circular(12.0),
+                                        // side: BorderSide()
+                                      )
+                                  )
+                              ),
+
+                              onPressed: (){
+
+                                Navigator.push(context,MaterialPageRoute(builder: (context)=>UserScreen()));
+
+
+
+                                // Navigator.push(context,MaterialPageRoute(builder: (context)=>Meeting_record_screen())).then((value){ if(value != null && value)
+                                // {
+                                //   setState(() {
+                                //     transactionfetchData();
+                                //     appoinmentsfetchData();
+                                //     reminderfetchData();
+                                //     totalAppointmentAPI();
+                                //     totalpercentageAPI();
+                                //     totalReminderAPI();
+                                //   });
+                                // };
+                                // });
+
+
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Total Task",
+                                    // AppLocalizations.of(context).update_password_ucf,
+                                    style: TextStyle(
+                                        color:MyTheme.WHITECOLOR,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  //SizedBox(width: 10,),
+                                  // Text(
+                                  //   //" 98 ",
+                                  //   "(${_TOTALAPPOINTMENTSCOUNT})",
+                                  //   //TOTALAPPOINTMENTSCOUNT.toString(),
+                                  //   // AppLocalizations.of(context).update_password_ucf,
+                                  //   style: TextStyle(
+                                  //       color:MyTheme.WHITECOLOR,
+                                  //       fontSize: 16,
+                                  //       fontWeight: FontWeight.w600),
+                                  // ),
+                                ],
+                              ),),
+                          ),
+                            SizedBox(
+                              height: 50,
+                              //width:double.infinity,
+                              child: ElevatedButton(
+
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(MyTheme.WHITECOLOR),
+                                    // MaterialStateProperty.all<Color>(MyTheme.YELLOCOLOR),
+
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+
+                                          borderRadius: BorderRadius.circular(12.0),
+                                          //side: BorderSide()
+                                        )
+                                    )
+                                ),
+
+                                onPressed: (){
+                                  //Navigator.push(context,MaterialPageRoute(builder: (context)=>stembuilddd()));
+                                  Navigator.push(context,MaterialPageRoute(builder: (context)=>TodayTaskScreen()));
+
+
+                                  // Navigator.push(context,MaterialPageRoute(builder: (context)=>ReminderTabScreen())).then((value){ if(value != null && value)
+                                  // {
+                                  //   setState(() {
+                                  //     transactionfetchData();
+                                  //     appoinmentsfetchData();
+                                  //     reminderfetchData();
+                                  //     totalAppointmentAPI();
+                                  //     totalpercentageAPI();
+                                  //     totalReminderAPI();
+                                  //   });
+                                  // };
+                                  // });
+
+                                },
+                                child:Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Today Task",
+                                      // AppLocalizations.of(context).update_password_ucf,
+                                      style: TextStyle(
+                                          color: MyTheme.backgroundcolor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    SizedBox(width: 10,),
+                                    // Text(
+                                    //   "(${_TOTALREMINDERCOUNT})",
+                                    //   //"8",
+                                    //   // AppLocalizations.of(context).update_password_ucf,
+                                    //   style: TextStyle(
+                                    //       color: MyTheme.backgroundcolor,
+                                    //       fontSize: 16,
+                                    //       fontWeight: FontWeight.w600),
+                                    // ),
+                                  ],
+                                ),),
+                            ),
+                        ],),
+
+
+
+
+
+
+
+
+                        SizedBox(height: 4,),
                       ],
                     ),
                   ),

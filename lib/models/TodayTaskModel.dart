@@ -92,6 +92,7 @@ class Datum {
   String? taskTime;
   String? type;
   String? submissionTime;
+  String? date;
   int? status;
 
   Datum({
@@ -101,6 +102,7 @@ class Datum {
     this.taskTime,
     this.type,
     this.submissionTime,
+    this.date,
     this.status,
   });
 
@@ -111,6 +113,7 @@ class Datum {
     taskTime: json["task_time"],
     type: json["type"],
     submissionTime: json["submission_time"],
+    date: json["date"],
     status: json["status"],
   );
 
@@ -121,6 +124,7 @@ class Datum {
     "task_time": taskTime,
     "type": type,
     "submission_time": submissionTime,
+    "date": date,
     "status": status,
   };
 }

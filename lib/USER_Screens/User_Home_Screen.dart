@@ -11,8 +11,11 @@ import '../Screens/Reminder/ReminderTabScreen.dart';
 import '../Screens/loginscreen.dart';
 import '../USER_Screens/userscreen.dart';
 import '../baseurl.dart';
+import '../loginlogoutdetails.dart';
+import '../main.dart';
 import '../my_theme.dart';
 
+String? logouttime;
 
 class UserHomeScreen extends StatefulWidget {
   const UserHomeScreen({super.key});
@@ -33,6 +36,17 @@ class _HomeScreenState extends State<UserHomeScreen> {
   String _TOTALREMINDERCOUNT="0";
   String _TOTALAPPOINTMENTSCOUNT="0";
   String _TOTALTRANSACTIONCOUNT="0";
+
+
+  void fetchCurrentTime() {
+    setState(() {
+      currentTime = DateTime.now().toString();
+      logouttime=currentTime;
+      print("Print current time ${currentTime}");
+      print("Print current timeee${logouttime}");
+    });
+  }
+
 
   @override
   void initState() {
@@ -94,6 +108,8 @@ class _HomeScreenState extends State<UserHomeScreen> {
               TextButton(
                 onPressed: () async {
                   // Perform logout actions
+                  logout_time_api();
+                  gobaluseridd = '';
                   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                   sharedPreferences.remove('email');
                   Navigator.pop(context);
@@ -146,14 +162,24 @@ class _HomeScreenState extends State<UserHomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment. end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+
+
+
+
                   Padding(
                     padding: const EdgeInsets.only(top: 11),
                     child: InkWell(
                       onTap: () {
+                        fetchCurrentTime();
                         showLogoutConfirmationDialog(context);
                       },
-                      child: Column(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          ElevatedButton(onPressed: (){
+                    Navigator.push(context,MaterialPageRoute(builder: (context)=>loginlogoutdetails()));
+                          }, child: Text("Login details"),),
+
                           //Icon(Icons.logout, color: Colors.red),
                           ClipOval(
 
@@ -163,6 +189,18 @@ class _HomeScreenState extends State<UserHomeScreen> {
                       ),
                     ),
                   ),
+
+
+                  Container(
+                    height: MediaQuery.of(context).size.height*0.387,
+                    child: SizedBox(
+                        child: Image.asset("assets/logo.png",)),
+                    // height: 200,
+                    //olor: Colors.red,
+                  ),
+
+
+
                   // Container(
                   //   padding: EdgeInsets.fromLTRB(16, 10, 16, 16 ),
                   //   decoration: BoxDecoration(
@@ -290,7 +328,8 @@ class _HomeScreenState extends State<UserHomeScreen> {
                     child: Column(
                       children: [
                         SizedBox(height: 60,),
-
+                       // Text(currentTime.toString()),
+                       //  Text("asdfghj"),
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
@@ -435,6 +474,7 @@ class _HomeScreenState extends State<UserHomeScreen> {
                             ),
                           ),
                         ),
+                        //Text(gobaluseridd.toString()),
                         SizedBox(height: 40,),
 
                         // Align(
@@ -781,5 +821,43 @@ class _HomeScreenState extends State<UserHomeScreen> {
     }
   }
 
+  Future logout_time_api()async {
+    var headers = {
+      'access_token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMTQiLCJhY2Nlc3NfdG9rZW4iOiIxMjM0NTYifQ.IBe_g4HmFhe4RNylBNzJR1HalgCqaI5WIYTK89oC6Q8',
+      'Cookie': 'PHPSESSID=islv5lvuqil9bhmas8d10o8kgb'
+    };
+
+    var data = FormData.fromMap({
+      'logout': '1',
+      'logout_time': logouttime,
+      'user_id': gobaluseridd.toString()
+    });
+
+    var dio = Dio();
+
+    try {
+      var response = await dio.request(
+        'https://admissionguidanceindia.com/appdata/task.php',
+        options: Options(
+          method: 'POST',
+          headers: headers,
+        ),
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+
+        print("logout api :::${response.data}");
+        print(json.encode(response.data));
+      } else {
+        print(response.statusMessage);
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
 }
+
+
+

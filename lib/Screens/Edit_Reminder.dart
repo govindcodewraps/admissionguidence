@@ -437,28 +437,21 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                         // timeslotwidget(),
 
                         SizedBox(height: 25),
-                        TextField(
 
-                          controller: remarkInputtextController,
+                        TextField(
+                          controller: remarkInputtextController..text = widget.remarkw,
                           maxLines: 3,
                           decoration: InputDecoration(
                             floatingLabelBehavior: FloatingLabelBehavior.never,
-                            labelText: "${widget.remarkw}",
+                            hintText: "", // Clear the hint text
                             filled: true,
                             isDense: true,
                             border: OutlineInputBorder(
-
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          // decoration: InputDecoration(
-                          //     hintText:"${widget.remarkw}",
-                          //   contentPadding: EdgeInsets.symmetric(vertical: 10.0),
-                          //   border: OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(12),
-                          //   ),
-                          // ),
                         ),
+
                         SizedBox(height: 30),
                         Align(
                           alignment: Alignment.centerRight,

@@ -39,6 +39,7 @@ class Datum {
   String? type;
   int? status;
   String? submissionTime;
+  String? date;
 
   Datum({
     this.sno,
@@ -48,6 +49,7 @@ class Datum {
      this.type,
      this.status,
      this.submissionTime,
+     this.date,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -58,6 +60,7 @@ class Datum {
     type: json["type"],
     status: json["status"],
     submissionTime: json["submission_time"],
+    date: json["date"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -68,5 +71,6 @@ class Datum {
     "type": type,
     "status": status,
     "submission_time": submissionTime,
+    "date": date,
   };
 }

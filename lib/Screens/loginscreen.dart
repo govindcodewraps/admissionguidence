@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -18,7 +19,8 @@ import 'commanwebview.dart';
 String? finalEmail;
 String? finalE="govind";
 String? userType;
-String? useriid;
+String? gobaluseridd;
+String? currentTime = "";
 
 class LoginScreen extends StatefulWidget {
 
@@ -32,6 +34,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _useridController = TextEditingController();
   TextEditingController _userpasswordController = TextEditingController();
+
   bool _isLoading = false;
   bool _isAgree = false;
   bool _obscureText = true;
@@ -43,9 +46,33 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    print("Token device ${devicetoken}");
     deviceInfo = DeviceInfoPlugin();
     _getDeviceInfo();
+   // fetchCurrentTime();
+
   }
+
+
+
+
+  void fetchCurrentTime() {
+    setState(() {
+      currentTime = DateTime.now().toString();
+      print("Print current time ${currentTime}");
+    });
+  }
+
+
+  // void fetchCurrentTime() {
+  //   Timer.periodic(Duration(seconds: 1), (Timer t) {
+  //     setState(() {
+  //       currentTime = DateTime.now().toString();
+  //       print("Print current time ${currentTime}");
+  //     });
+  //   });
+  // }
+
 
   Future<void> _getDeviceInfo() async {
     try {
@@ -113,6 +140,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             Text("Welcome Back !",style:TextStyle(fontSize: 25,fontWeight: FontWeight.w600,color: MyTheme.backgroundcolor),),
                             //SizedBox(height: 20,),
+
+
+                            Text(devicetoken.toString()),
+
                             SizedBox(height: MediaQuery.of(context).size.height * 0.04),
                             Text("User Name", style: GoogleFonts.roboto(fontWeight: FontWeight.w500, fontSize: 16,),),
 
@@ -338,7 +369,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
 
                             //Text(devicetoken.toString()),
-                            Text(useridd.toString()),
+                            //Text(useridd.toString()),
 
                             SizedBox(height: MediaQuery.of(context).size.height * 0.11),
                             Align(
@@ -498,7 +529,8 @@ class _LoginScreenState extends State<LoginScreen> {
       'login': '1',
       'username': userid,
       'password': password,
-      'device_token': devicetoken
+      //'device_token': devicetoken
+      'device_token': "fbSLEtTUQnC86nL3Oiyf-n:APA91bGZAnlFMG_H4kyQorcfufJ3nqdpRvS0Q2DvQMdyOzkzroDbEpJt4fwnikVc6g2qabhE_x0RTsYuPaJeIfW3_l07PEQ3UdFFN-aSfLlBAnylh1QywnYnWaWGo9Jfk_HLpehp7r7k"
     };
 
     var url = "https://admissionguidanceindia.com/appdata/login.php";
@@ -522,11 +554,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
       print("reeeeeeeee");
       userType = responseData['type'];
-      useriid = responseData['id'];
+      gobaluseridd = responseData['id'];
       print(responseData['type']);
       print("reeeeeeeee");
       print(userType);
-      print(useriid);
+      print(gobaluseridd);
       print("usertttty");
 
 
@@ -534,13 +566,17 @@ class _LoginScreenState extends State<LoginScreen> {
         userType="superadmin";
         final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         sharedPreferences.setString('usertypee', userType.toString());
-        sharedPreferences.setString('useriid', useriid.toString());
+        sharedPreferences.setString('useriid', gobaluseridd.toString());
+
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       } else {
         userType="admin";
         final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         sharedPreferences.setString('usertypee', userType.toString());
-        sharedPreferences.setString('useriid', useriid.toString());
+        sharedPreferences.setString('useriid', gobaluseridd.toString());
+         setState(() {
+           fetchCurrentTime();
+         });
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>UserHomeScreen()));
       }
 

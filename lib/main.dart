@@ -164,7 +164,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 String? devicetoken;
 String? userTypee;
 String? userTye;
-String? useridd;
+//String? gobaluseridd;
 
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -294,7 +294,7 @@ class _SplashScreenState extends State<SplashScreen> {
     setState(() {
       finalEmail = obtainEmail;
       userTye=obtainusertype;
-      useridd=useridd;
+      gobaluseridd=useridd;
       print("obtainusertype:: ${obtainusertype}");
     });
     print(finalEmail);
