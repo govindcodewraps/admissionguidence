@@ -142,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             //SizedBox(height: 20,),
 
 
-                            Text(devicetoken.toString()),
+                            //Text(devicetoken.toString()),
 
                             SizedBox(height: MediaQuery.of(context).size.height * 0.04),
                             Text("User Name", style: GoogleFonts.roboto(fontWeight: FontWeight.w500, fontSize: 16,),),
@@ -529,8 +529,8 @@ class _LoginScreenState extends State<LoginScreen> {
       'login': '1',
       'username': userid,
       'password': password,
-      //'device_token': devicetoken
-      'device_token': "fbSLEtTUQnC86nL3Oiyf-n:APA91bGZAnlFMG_H4kyQorcfufJ3nqdpRvS0Q2DvQMdyOzkzroDbEpJt4fwnikVc6g2qabhE_x0RTsYuPaJeIfW3_l07PEQ3UdFFN-aSfLlBAnylh1QywnYnWaWGo9Jfk_HLpehp7r7k"
+      'device_token': devicetoken
+      //'device_token': "fbSLEtTUQnC86nL3Oiyf-n:APA91bGZAnlFMG_H4kyQorcfufJ3nqdpRvS0Q2DvQMdyOzkzroDbEpJt4fwnikVc6g2qabhE_x0RTsYuPaJeIfW3_l07PEQ3UdFFN-aSfLlBAnylh1QywnYnWaWGo9Jfk_HLpehp7r7k"
     };
 
     var url = "https://admissionguidanceindia.com/appdata/login.php";
