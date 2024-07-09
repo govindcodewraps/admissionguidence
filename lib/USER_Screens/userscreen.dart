@@ -22,6 +22,9 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
+ // String _PAGECOUNT="1";
+  int _PAGECOUNT = 1;
+  late int totalPa;
   //final AdmissionController _admissionController = AdmissionController();
   Set<int> selectedCheckboxIndices = {};
   Set<int> selectedButtonIndices = {};
@@ -77,7 +80,7 @@ class _UserScreenState extends State<UserScreen> {
     // TODO: implement initState
     super.initState();
 
-    tasklistapi();
+    tasklistapi(_PAGECOUNT);
     print("Govind hhhhhhhhh");
     print(intiii);
     print("Govind hhhhhhhhh");
@@ -138,7 +141,7 @@ class _UserScreenState extends State<UserScreen> {
 
   Widget taskliswidget() {
     return FutureBuilder<TaskListModel?>(
-      future: tasklistapi(),
+      future: tasklistapi(_PAGECOUNT),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Center(child: Text("No more Meetings"));
@@ -244,6 +247,7 @@ class _UserScreenState extends State<UserScreen> {
                     ),
                   ),
                   Expanded(
+                    flex: 1,
                     child: ListView.builder(
                       reverse: false,
                       itemCount: snapshot.data!.data!.length,
@@ -378,7 +382,7 @@ class _UserScreenState extends State<UserScreen> {
                                       Padding(
                                         padding: const EdgeInsets.only(left: 5.0, top: 10.0),
                                         child: Text(
-                                          (snapshot.data!.data![index].date!),
+                                          snapshot.data!.data![index].date!.toString().split(' ')[0], // Extracts only the date part
                                           style: const TextStyle(fontSize: 18),
                                         ),
                                       ),
@@ -475,6 +479,59 @@ class _UserScreenState extends State<UserScreen> {
                       },
                     ),
                   ),
+                  Row(
+                    //crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+
+                      // snapshot.data!.pagination!.prevPage!.toString()
+                      Visibility(
+                        visible: _PAGECOUNT > 1, // Show the button only if _PAGECOUNT is greater than 1
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              if (_PAGECOUNT > 1) {
+                                _PAGECOUNT--; // Decrease _PAGECOUNT when button is pressed
+                                print("page count previous $_PAGECOUNT");
+                                // Call your pagination function here with _PAGECOUNT if needed
+                                // paymentlistpagination(_PAGECOUNT);
+                                // tasklistapi(_PAGECOUNT);
+                              } else {
+                                print("Already on the first page");
+                              }
+                            });
+                          },
+                          child: Text("Previous"),
+                        ),
+                      ),
+
+                      Spacer(),
+                      //if(snapshot.data!.pagination!.nextPage! <= 1)
+                     // if(snapshot.data!.pagination!.nextPage! > 1)
+                     // if(_PAGECOUNT >= 1)
+
+
+                      Visibility(
+                        visible: _PAGECOUNT < totalPa, // Hide the button when _PAGECOUNT is equal to totalPa
+                        child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              if (_PAGECOUNT < totalPa) {
+                                _PAGECOUNT++; // Increase _PAGECOUNT when button is pressed
+                                print("page count next $_PAGECOUNT");
+                                tasklistapi(_PAGECOUNT);
+                              } else {
+                                print("Already on the last page");
+                              }
+                            });
+                          },
+                          child: Text("Next"),
+                        ),
+                      )
+
+
+                    ],
+                  ),
                 ],
               ),
             );
@@ -488,7 +545,7 @@ class _UserScreenState extends State<UserScreen> {
   }
 
 
-  Future<TaskListModel?> tasklistapi() async {
+  Future<TaskListModel?> tasklistapi(page) async {
     var dio = Dio();
 
     var headers = {
@@ -500,7 +557,9 @@ class _UserScreenState extends State<UserScreen> {
       'tasklist': '1',
       'user_id': gobaluseridd.toString(),
       'date': formatted,
-      'type': typeValue
+      'type': typeValue,
+      'page': page,
+      'limit': 5
     };
     try {
       var response = await dio.request(
@@ -511,55 +570,24 @@ class _UserScreenState extends State<UserScreen> {
         ),
         data: data,
       );
-      print({
-        'tasklist': '1',
-        'user_id': gobaluseridd.toString(),
-        'date': formatted,
-        'type': typeValue
-      }.toString());
 
       if (response.statusCode == 200) {
+        var responseData = response.data is String ? json.decode(response.data) : response.data;
+
         print("Response Status: ${response.statusCode}");
-        print("Response Data: ${response.data}");
-
-        var responseData = response.data is String
-            ? json.decode(response.data)
-            : response.data;
-
-        print(responseData);
+        print("Response Data: $responseData");
 
         final success = responseData['success'];
         print("Success: $success");
 
         if (success == 1) {
+          var total_pages = responseData['total_pages'];
+          print("Total Pages: $total_pages");
+          totalPa=total_pages;
+
           List<Datum> tasks = TaskListModel.fromJson(responseData).data ?? [];
           List<String> taskTimes = tasks.map((task) => task.taskTime ?? '').toList();
-
-
-          print("Task Times: $taskTimes");
-
-
-          hoursss=taskTimes;
-          print(hoursss);
-           hourss = hoursss.toString().replaceAll('[', '').replaceAll(']', '');
-          print("ASDFGHJK ${hourss}");
-          print("Task Timesll: $hoursss");
-          //hourss=taskTimes;
-
-          // Splitting task times into hours and minutes
-          List<String> hours = taskTimes.map((time) => time.split(':')[0]).toList();
-          List<String> minutes = taskTimes.map((time) => time.split(':')[1]).toList();
-          //  hourss =hours.join(', ');
-          hour =hours.join(', ');
-          minutess =minutes.join(', ');
-
-          // print("Task Hours: ${hours.join(', ')}");
-          print("Task Hours: ${hour}");
-          print("Task minutess: ${minutess}");
-          //print("Task Minutes: ${minutes.join(', ')}");
-
-          print(hourss);
-
+          // Handle your task data as needed
 
           return TaskListModel.fromJson(responseData);
         } else {
@@ -575,6 +603,99 @@ class _UserScreenState extends State<UserScreen> {
       return null;
     }
   }
+
+
+
+
+  // Future<TaskListModel?> tasklistapi(page) async {
+  //   var dio = Dio();
+  //
+  //   var headers = {
+  //     'accept': 'application/json',
+  //     'Content-Type': 'application/x-www-form-urlencoded',
+  //     'Cookie': 'PHPSESSID=30iojdud9ae6v0038eaojook6m'
+  //   };
+  //   var data = {
+  //     'tasklist': '1',
+  //     'user_id': gobaluseridd.toString(),
+  //     'date': formatted,
+  //     'type': typeValue,
+  //     'page':page,
+  //     'limit':5
+  //   };
+  //   try {
+  //     var response = await dio.request(
+  //       'https://admissionguidanceindia.com/appdata/webservice.php',
+  //       options: Options(
+  //         method: 'POST',
+  //         headers: headers,
+  //       ),
+  //       data: data,
+  //     );
+  //     print({
+  //       'tasklist': '1',
+  //       'user_id': gobaluseridd.toString(),
+  //       'date': formatted,
+  //       'type': typeValue
+  //     }.toString());
+  //
+  //     if (response.statusCode == 200) {
+  //       print("Response Status: ${response.statusCode}");
+  //       print("Response Data: ${response.data}");
+  //
+  //       var responseData = response.data is String
+  //           ? json.decode(response.data)
+  //           : response.data;
+  //
+  //       print(responseData);
+  //
+  //       final success = responseData['success'];
+  //       print("Success: $success");
+  //
+  //       if (success == 1) {
+  //         List<Datum> tasks = TaskListModel.fromJson(responseData).data ?? [];
+  //         List<String> taskTimes = tasks.map((task) => task.taskTime ?? '').toList();
+  //
+  //
+  //         print("Task Times: $taskTimes");
+  //
+  //
+  //         hoursss=taskTimes;
+  //         print(hoursss);
+  //          hourss = hoursss.toString().replaceAll('[', '').replaceAll(']', '');
+  //         print("ASDFGHJK ${hourss}");
+  //         print("Task Timesll: $hoursss");
+  //         //hourss=taskTimes;
+  //
+  //         // Splitting task times into hours and minutes
+  //         List<String> hours = taskTimes.map((time) => time.split(':')[0]).toList();
+  //         List<String> minutes = taskTimes.map((time) => time.split(':')[1]).toList();
+  //         //  hourss =hours.join(', ');
+  //         hour =hours.join(', ');
+  //         minutess =minutes.join(', ');
+  //
+  //         // print("Task Hours: ${hours.join(', ')}");
+  //         print("Task Hours: ${hour}");
+  //         print("Task minutess: ${minutess}");
+  //         //print("Task Minutes: ${minutes.join(', ')}");
+  //
+  //         print(hourss);
+  //
+  //
+  //         return TaskListModel.fromJson(responseData);
+  //       } else {
+  //         print("Failed to fetch tasks: ${responseData['message']}");
+  //         return null;
+  //       }
+  //     } else {
+  //       print("Failed with status code: ${response.statusCode}");
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     print('Failed with error: $e');
+  //     return null;
+  //   }
+  // }
 
 
 
@@ -605,7 +726,7 @@ class _UserScreenState extends State<UserScreen> {
 
       if (response.statusCode == 200) {
         setState(() {
-          tasklistapi();
+          tasklistapi(_PAGECOUNT);
         });
 
         print(json.encode(response.data));

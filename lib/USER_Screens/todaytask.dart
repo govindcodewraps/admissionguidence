@@ -694,7 +694,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
         ),
         backgroundColor: MyTheme.backgroundcolor,
         title: Text(
-          "Total Task",
+          "Today Task",
           style: TextStyle(
             color: Colors.white, // Change the text color here
           ),
@@ -1067,10 +1067,10 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
               ),
             );
           } else {
-            return const Center(child: Text("No tasks available"));
+            return const Center(child: Text("No task for today!"));
           }
         }
-        return const Center(child: Text("No tasks available"));
+        return const Center(child: Text("No task for today!"));
       },
     );
   }

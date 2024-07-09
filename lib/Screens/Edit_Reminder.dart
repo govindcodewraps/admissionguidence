@@ -277,6 +277,16 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
     });
   }
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    // labelText: widget.remark ?? 'No remark',
+   // remarkInputController.text = widget.remark ?? 'No remark';
+    remarkInputtextController..text = widget.remarkw;
+    print("Reminder type:::: ${widget.reminderType}");
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -439,7 +449,8 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                         SizedBox(height: 25),
 
                         TextField(
-                          controller: remarkInputtextController..text = widget.remarkw,
+                         // dfgh
+                          controller: remarkInputtextController,
                           maxLines: 3,
                           decoration: InputDecoration(
                             floatingLabelBehavior: FloatingLabelBehavior.never,
